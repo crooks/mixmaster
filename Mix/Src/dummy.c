@@ -9,3 +9,8 @@ int menu_getuserpass(BUFFER *b, int i)
 
 void cl(int y, int x)
 {}
+
+int download_stats(char *sourcename)
+{
+    return -1;
+}
