@@ -1,4 +1,4 @@
-/* mpgp version 0.3.0 -- (C) 2000 - 2004 Ulf Moeller and others.
+/* mpgp -- (C) 2000 - 2004 Ulf Moeller and others.
 
    mpgp may be redistributed and modified under certain conditions.
    This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
@@ -6,8 +6,9 @@
    details.
 
    Test application for OpenPGP features
-   $Id: mpgp.c $ */
+   $Id$ */
 
+#define MPGPVERSION "0.3.0"
 
 #include "mix3.h"
 #include "pgp.h"
@@ -71,7 +72,8 @@ void usage(char *n)
   fprintf(stderr, "       %s -C [-b]\n", n);
   fprintf(stderr, "       %s -d [passphrase]\n", n);
   fprintf(stderr, "       %s -g[r] yourname@domain [bits]\n", n);
-  fprintf(stderr, "       %s -a[+-] [-b]\n\n", n);
+  fprintf(stderr, "       %s -a[+-] [-b]\n", n);
+  fprintf(stderr, "       %s -V\n\n", n);
   fprintf(stderr, "PGP public key ring: %s\n", PGPPUBRING);
   fprintf(stderr, "PGP secret key ring: %s\n", PGPSECRING);
 }
@@ -234,6 +236,14 @@ int main(int argc, char *argv[])
       break;
     case 'd':
       err = decrypt(u, option, argv[0]);
+      break;
+    case 'h':
+      usage(argv[0]);
+      err = 0;
+      break;
+    case 'V':
+      fprintf(stderr, "mpgp version %s\n", MPGPVERSION);
+      err = 0;
       break;
     }
 end:
