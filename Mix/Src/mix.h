@@ -164,7 +164,7 @@ int mix_send(void);
   Return value: The size of the pool after the messages have been sent.
 
 
-void mix_regular(int force);
+int mix_regular(int force);
 
   This function is responsible for regular actions of the remailer such
   as sending messages from the pool, getting mail from POP3 servers and
