@@ -658,6 +658,10 @@ should cause your MTA to requeue the message if you are running
 mixmaster from a
 .BR .forward
 file.
+.TP
+.B STATSAUTOUPDATE
+Set non-zero to enable Daemon stats download mode. Default: 
+.BR 0 .
 .PP
 The following are time variables. They can be given as years (
 .BR y
@@ -765,6 +769,12 @@ Similar to
 but allow jumping this far into the future.
 Default: 
 .BR 2w .
+.TP
+.B STATSINTERVAL
+Time interval between daemon downloads of stats files. Enabled by
+.BR STATSAUTOUPDATE .
+Default: 
+.BR 2h .
 .PP
 The following strings must be specified at compile-time in
 .BR config.h .
