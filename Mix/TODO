@@ -10,7 +10,6 @@ Items that need to be completed before the next MAIN release:
   - rename pop3.cfg to pop3.cfg.txt
   - different editor handling?  if so, provide suggestions.
   - Sane randomness handling
-- Add equivalent features to -V and --about to mpgp and document in mpgp.1
 - Remove OpenSSL version checks. Maybe print a message stating the 
   supported versions, and leave it up to the user?
 
