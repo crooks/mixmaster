@@ -26,12 +26,9 @@ int prepare_type2list(BUFFER *out)
   int assigned;
   time_t created, expires;
 
-  list = mix_openfile(TYPE2LIST, "r");
-  if (list == NULL) {
-    list = mix_openfile(PUBRING, "r");
-    if (list == NULL)
-      return (-1);
-  }
+  list = mix_openfile(PUBRING, "r");
+  if (list == NULL)
+    return (-1);
   while (fgets(line, sizeof(line), list) != NULL) {
     if (strleft(line, begin_key)) {
       while (fgets(line, sizeof(line), list) != NULL &&
@@ -88,13 +85,10 @@ int mix2_rlist(REMAILER remailer[], int badchains[MAXREM][MAXREM])
     fclose(excl);
   }
 
-  list = mix_openfile(TYPE2LIST, "r");
+  list = mix_openfile(PUBRING, "r");
   if (list == NULL) {
-    list = mix_openfile(PUBRING, "r");
-    if (list == NULL) {
-      buf_free(starex);
-      return (-1);
-    }
+    buf_free(starex);
+    return (-1);
   }
   for (n = 1; fgets(line, sizeof(line), list) != NULL && n < MAXREM;)
     if (strleft(line, begin_key)) {
