@@ -284,8 +284,11 @@ int sendmail(BUFFER *message, char *from, BUFFER *address)
       closepipe(f);
     }
   }
-  if (err != 0)
+  if (err != 0) {
+    errlog(ERRORMSG, "Unable to execute sendmail. Check path!\n");
     err = 1;			/* error while sending, retry later */
+  }
+
 end:
   buf_free(block);
   buf_free(head);
