@@ -230,12 +230,8 @@
 #define DEFAULT_POOL "pool"            /* remailer pool subdirectory */
 #define DEFAULT_TYPE1LIST "rlist.txt"
 #define DEFAULT_TYPE2REL "mlist.txt"
-#ifdef SHORTNAMES
-#define DEFAULT_TYPE2LIST "type2.lis"
-#else
-#define DEFAULT_TYPE2LIST "type2.list"
-#endif
 #define DEFAULT_PIDFILE "mixmaster.pid"
+#define DEFAULT_STATSSRC "stats-src.txt"
 
 #define DEFAULT_PGPREMPUBRING "pubring.pgp"
 #define DEFAULT_PGPREMPUBASC "pubring.asc"
@@ -246,7 +242,6 @@
 #define DEFAULT_ALLPINGERSURL "http://www.noreply.org/allpingers/allpingers.txt"
 #define DEFAULT_ALLPINGERSFILE "allpingers.txt"
 #define DEFAULT_WGET "wget"
-#define DEFAULT_STATSSRC "stats-src.txt"
 
 DLLIMPORT extern char MIXCONF[];
 extern char DISCLAIMFILE[];
@@ -280,7 +275,6 @@ extern char REGULAR[];
 extern char POOL[];
 extern char TYPE1LIST[];
 extern char TYPE2REL[];
-extern char TYPE2LIST[];
 extern char PIDFILE[];
 extern char STAREX[];
 

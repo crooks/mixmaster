@@ -70,7 +70,6 @@ char REGULAR[PATHMAX];
 char POOL[PATHMAX];
 char TYPE1LIST[PATHMAX];
 char TYPE2REL[PATHMAX];
-char TYPE2LIST[PATHMAX];
 char PIDFILE[PATHMAX];
 
 char PGPREMPUBRING[PATHMAX];
@@ -409,7 +408,6 @@ static void mix_setdefaults()
 	strnncpy(POOL         , DEFAULT_POOL);
 	strnncpy(TYPE1LIST    , DEFAULT_TYPE1LIST);
 	strnncpy(TYPE2REL     , DEFAULT_TYPE2REL);
-	strnncpy(TYPE2LIST    , DEFAULT_TYPE2LIST);
 	strnncpy(PIDFILE      , DEFAULT_PIDFILE);
 
 	strnncpy(PGPREMPUBRING, DEFAULT_PGPREMPUBRING);
@@ -607,7 +605,7 @@ int mix_configline(char *line)
 	  read_conf(ALLPINGERSFILE) ||
 	  read_conf(HDRFILTER) || read_conf(REGULAR) ||
 	  read_conf(POOL) || read_conf(TYPE1LIST) ||
-	  read_conf(TYPE2REL) || read_conf(TYPE2LIST) ||
+	  read_conf(TYPE2REL) ||
 	  read_conf(PGPREMPUBRING) || read_conf(PGPREMPUBASC) ||
 	  read_conf(PGPREMSECRING) || read_conf(NYMSECRING) ||
 	  read_conf(NYMDB) || read_conf(PIDFILE) ||
