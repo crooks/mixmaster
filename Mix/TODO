@@ -6,7 +6,6 @@ Items that need to be completed before the next MAIN release:
 
 - Full functionality / regression testing around chain operations
   following the recent whitespace bug fix. (everyone)
-- ignore type2.list
 - Full WIN32 support.
   - rename pop3.cfg to pop3.cfg.txt
   - different editor handling?  if so, provide suggestions.
