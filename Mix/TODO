@@ -1,7 +1,4 @@
 stats stuff:
- - move things out of main into their own functions
- - let it use the logging functions
- - allow the daemon to update stats at regular intervals
  - let wget download to temporary files, and only move them over the existing
    stats when all downloads succeeded (and perhaps passed basic sanity checks)
 
