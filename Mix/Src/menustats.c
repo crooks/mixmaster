@@ -141,13 +141,13 @@ int get_attribute(BUFFER *inifile, char *section, char *attribute, BUFFER *value
 
 
 
-static char *files[] = { "mlist", "rlist", "mixring", "pgpring", "type2list"};
+static char *files[] = { "mlist", "rlist", "mixring", "pgpring"};
 #define NUMFILES sizeof(files)/sizeof(*files)
 
 /* Download all the needed files from the specified source */
 /* returns -1 on error */
 int stats_download(BUFFER *allpingers, char *sourcename, int curses) {
-  char *localfiles[] = { TYPE2REL, TYPE1LIST, PUBRING, PGPREMPUBASC, TYPE2LIST };
+  char *localfiles[] = { TYPE2REL, TYPE1LIST, PUBRING, PGPREMPUBASC };
   char path[PATHMAX];
   BUFFER *value;
   int ret = 0;
