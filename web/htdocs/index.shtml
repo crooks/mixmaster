@@ -32,6 +32,17 @@ distributions on a mirror near you. Also see
 <p>
 For pingers and other remailer implementations see <a href="related.shtml">related Software</a>.
 
+<h2>Development Tree</h2>
+
+To check out a copy of the Mixmaster development tree you need
+<a href="http://subversion.tigris.org/">Subversion</a>.
+
+<blockquote>
+<code>
+	svn co http://source.mixmaster.anonymizer.com/svn/mixmaster/trunk/Mix/ mixmaster-devel
+</code>
+</blockquote>
+
 <h2>Signing Releases</h2>
 
 <p>
