@@ -16,6 +16,8 @@ mpgp \- Mixmaster OpenPGP Module
 .B mpgp \fB\-g\fR[\fBr\fR] \fIkeyname\fR [\fIbits\fR]
 .PP
 .B mpgp \fB\-a\fR[\fB+\-\fR] [\fB\-b\fR] [\fIfilename\fR]
+.PP
+.B mpgp \fB\-V\fR
 .SH DESCRIPTION
 Mixmaster is an anonymous remailer. mpgp is a light-weight OpenPGP
 implementation, primarily used to diagnose issues with OpenPGP keys and
@@ -30,6 +32,9 @@ input. It asks for a passphrase when needed.
 .TP
 .B "\-h"
 Print a summary of command line options.
+.TP
+.B "\-V"
+Print the current version, authorship and copyright information.
 .TP
 .B "\-e"
 Encrypt a message with the first OpenPGP key from the public key ring 

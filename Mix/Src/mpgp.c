@@ -243,6 +243,8 @@ int main(int argc, char *argv[])
       break;
     case 'V':
       fprintf(stderr, "mpgp version %s\n", MPGPVERSION);
+      fprintf(stderr, "(C) 2000 - 2004 Ulf Moeller and others.\n");
+      fprintf(stderr, "See the file COPYRIGHT for details.\n");
       err = 0;
       break;
     }
