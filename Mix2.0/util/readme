@@ -1,0 +1,27 @@
+This directory contains some small shell scripts that allow you to send
+Mixmaster messages in a convenient way from within your mail and news
+reading software:
+
+  R    reply to a message anonymously.
+  G    send group reply anonymously.
+  M    mail a new message anonymously.
+  F    post an anonymous followup.
+  D    send dummy message.
+
+To reply to a message, pipe it to one of the scripts `R', `G' or `F'.
+Most mail and news readers allow you to do so by typing `|' and the
+script name.
+
+The scripts will prepare the message and start your standard editor.
+There is an additional pseudo-header `Chain:' which allows you to
+select remailers.  You may chose remailers by their short name or
+their number.  As usual, `0' means that Mixmaster will randomly chose
+a reliable remailer.
+
+If the file ~/.anonsig exists, it will be included as a signature.
+For obvious reasons, this should be a symbolic link to an encrypted
+directory.
+
+
+The script `M' provides the same user interface for sending a new
+message. It can be run directly from the shell.

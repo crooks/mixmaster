@@ -1,0 +1,80 @@
+This software is being distributed under the GNU Public License, see
+the file GNU.license for more details.
+
+Mixmaster can be used with either of the cryptographic libraries
+RSAREF or OpenSSL. The Src directory should contain a directory (or
+symbolic link) named `rsaref' or `ssleay' (for legacy reasons). Mixmaster 
+also checks for OpenSSL in /usr/local/ssl. OpenSSL is available from
+<URL:http://www.openssl.org/source/openssl-0.9.6g.tar.gz>.
+
+Installation:
+-------------
+
+To install or upgrade Mixmaster, type `./Install'.
+
+The Mixmaster remailer can be installed on any account that can
+receive mail.  Non-remailer messages will be delivered as usual.  See
+the manual page mixmaster(1) for instructions on using Mixmaster and
+for details about Mixmaster as a remailer.
+
+You can get a list of Mixmaster remailers (type2.list) and their public
+keys (pubring.mix) by running the script "getlist" in the directory where 
+these files are to be stored. This script will also obtain a list of reliable
+remailers (mix.list).  If you're paranoid, get them directly from 
+the remailers and slap them into the proper files yourself with your 
+favorite editor. The mix.list file can be obtained from the WWW by running
+"lynx -dump http://stats.melontraffickers.com/mlist.txt >$MIXPATH/mix.list".
+This command can be run periodically using cron.
+
+
+======================
+Credit where credit is due:
+   I have had help on this project from many people.
+   Many uncredited ideas, and pieces of code were provided by the Mixmaster
+   beta test team. They were:
+      John A. Perry <perry@jpunix.com>
+      L. McCarthy <lmccarth@opine.cs.umass.edu>
+      John B. Fleming <jfleming@kether.alias.net>
+      Andre' M. VanKlaveren <vanklava@eniac.ac.siue.edu>
+      rfritz@spiff.ccs.carleton.ca (Ron Fritz)
+
+   For asistance after the release of version 2.0:
+      Patrick J. LoPresti <patl@lcs.mit.edu>
+      Mark Hahn <hahn@neurocog.lrdc.pitt.edu>
+
+   For significant contributions to release 2.0.3
+      Jim Castleberry <jcastle@in-system.com>
+
+   Finally, I thank my wife Barbara for supporting me through all those nights
+   in front of the computer.
+
+Lance Cottrell     1 Oct 1995
+<loki@obscura.com>
+
+======================
+
+Modified by <um@idril.shnet.org>.
+Modified by Len Sassaman <rabbi@abditum.com>.
+Please report problems to <rabbi@abditum.com> and 
+<mixmaster-users@lists.mixmaster.anonymizer.com>.
+
+Thanks for help and valuable suggestions to:
+  Antonomasia <ant@notatla.demon.co.uk>
+  Lance Cottrell <loki@infonex.com>
+  Todd Cutter <todd.cutter@usa.net>
+  Andy Dustman <adustman@comstar.net>
+  Mark Grant <mark@unicorn.com>
+  Lucky Green <shamrock@cypherpunks.to>
+  Johannes Kroeger <jkroeger@squirrel.owl.de>
+  Medusa <medusa-admin@weasel.owl.de>
+  Dave Del Torto <ddt@pgp.com>
+  RProcess <rprocess@nym.alias.net>
+  Nikolay Sturm <sturm@sec.informatik.tu-darmstadt.de>
+  Rodney Thayer <rodney@tillerman.to>
+  Dingo Admin <dingoadmin@dingoremailer.com>
+  Peter Palfrader <peter@palfrader.org>
+
+  Mixmaster uses Jean-loup Gailly and Mark Adler's free compression library
+  zlib and Philip Hazel's free regex library.
+
+$Id: README,v 1.4 2002/09/23 17:54:23 rabbi Exp $

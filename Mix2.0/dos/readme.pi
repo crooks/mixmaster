@@ -1,0 +1,63 @@
+Mixmaster and Private Idaho 2.7
+-------------------------------
+Mixmaster (or Type II) remailers offer a high level of security 
+(see http://mixmaster.sf.net for complete details).  Up until now,
+Mixmaster has only been available to UNIX users.  Mixmaster's author, 
+Lance Cottrell, has recently released a DOS client version of the 
+application that works with Private Idaho 2.7b (and later).
+
+Since the Mixmaster client uses export-controlled cryptography, it is not
+included with Private Idaho.  Refer to http://mixmaster.sf.net for 
+information on how to get a copy of MIXMASTE.ZIP (the compressed version
+of Mixmaster and its support files).
+
+To be able to send messages through Mixmaster remailers you need several 
+files:
+
+MIXMASTE.EXE - the Mixmaster client
+MIXMASTE.CON - a support file
+PUBRING.MIX - the list of Mixmaster remailer keys
+TYPE2.LIS - the list of Mixmaster remailers
+MIXMASTE.HTM - statistics on Mixmaster remailers
+MIX.PIF - the PIF file for shelling to the DOS application
+
+These files are included in the MIXMASTE.ZIP file.  Uncompress the files and
+move them to the directory containing Private Idaho.
+
+After you've installed these files, in the AUTOEXEC.BAT file add the 
+following line:
+
+MIXPATH=C:\PIDAHO 
+
+with the directory path specifying the Private Idaho directory.  Reboot your 
+computer and run Private Idaho.
+
+Using Mixmaster remailers with Private Idaho is no different than using 
+Cypherpunk style remailers.  Select Mixmaster from the Remailers menu, 
+compose and address your message, select the remailer(s) from the drop-down
+list box to use, and choose Append info from the Message menu.
+
+Private Idaho will shell out to the DOS version of Mixmaster, and prepare 
+the message for sending.
+
+Note: The 2.7b beta release of Private Idaho does not support sending 
+Mixmaster messages directly from Private Idaho.  You need to transfer the 
+encrypted message to your normal e-mail in order to send it.  This will be 
+fixed in a later release.
+
+You'll need to update information about Mixmaster remailers, just like 
+Cypherpunk remailers.  Specifically the PUBRING.MIX, TYPE2.LIS, and
+MIXMASTE.HTM files.
+
+Updated Mixmaster information can be found at:
+
+http://anon.efga.org/Remailers/
+
+and
+
+http://stats.melontraffickers.com
+
+Please address any comments, questions about Private Idaho to:
+
+Joel McNamara
+joelm@eskimo.com

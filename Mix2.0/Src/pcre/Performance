@@ -1,0 +1,172 @@
+Some comparisons of PCRE with the original Henry Spencer (1986) regular
+expression functions were done on a SPARCstation IPC using gcc version 2.6.3
+with -O optimization, to give some idea as to how the two libraries compare.
+This is not a major statistical investigation.
+
+
+Code size
+---------
+
+The code size of PCRE is a bit over twice the size of the Henry Spencer
+functions (roughly 33K vs 14K bytes on a SPARCstation with gcc -O).
+
+
+Store size for compiled expressions
+-----------------------------------
+
+For expressions that are compatible with both libraries, PCRE uses less store
+for the examples tried, except in some cases that involve the use of character
+classes. Except in the special case of a negated charcter class containing only
+one character (e.g. [^a]), PCRE uses a 32-byte bit map for each character
+class, in order to get the maximum matching speed. By contrast the Spencer code
+uses a strchr() call.
+
+The Spencer functions have an overhead of 92 bytes per expression, because
+there is a table for up to 10 matched substrings held with every compiled
+expression. In contrast, PCRE's overhead is just 9 bytes, since it requires the
+caller to supply a vector to receive the offsets of the matched substrings. In
+the table below, the size without the overhead is shown in brackets.
+
+PCRE      Spencer       Pattern
+----      -------       -------
+
+ 18 (09)    109 (17)    /^$/
+ 25 (16)    120 (28)    /^.*nter/
+ 26 (17)    121 (29)    /^12.34/
+ 37 (28)    126 (34)    /the quick brown fox/
+ 50 (41)    114 (22)    /^[]cde]/
+ 50 (41)    114 (22)    /^[^]cde]/
+ 51 (42)    125 (33)    /^[.^$|()*+?{,}]+/
+ 52 (43)    126 (34)    /^[0-9]+$/
+ 56 (47)    153 (61)    /^(abc)(abc)?zz/
+ 57 (48)    133 (41)    /^xxx[0-9]+$/
+ 57 (48)    145 (53)    /([0-9a-fA-F:]+)$/
+ 62 (53)    171 (79)    /^([^!]+)!(.+)=apquxz\.ixr\.zzz\.ac\.uk$$/
+ 70 (61)    170 (78)    /^(b+|a)(b+|a)?c/
+ 74 (65)    173 (81)    /^(ba|b*)(ba|b*)?bc/
+ 99 (90)    235 (143)   /^(a(b(c)))(d(e(f)))(h(i(j)))$/
+119 (110)   157 (65)    /^.+[0-9][0-9][0-9]$/
+165 (156)   446 (354)   /^[a-zA-Z0-9][a-zA-Z0-9\-]*(\.[a-zA-Z0-9][a-zA-z0-9\-]*)*\.$/
+451 (442)   605 (513)   /^From +([^ ]+) +[a-zA-Z][a-zA-Z][a-zA-Z] +[a-zA-Z][a-zA-Z][a-zA-Z] +[0-9]?[0-9] +[0-9][0-9]:[0-9][0-9]/
+
+
+Compilation time
+----------------
+
+Timing was done using the clock() function to time 2000 compilations of each
+expression and then dividing by twice the number of clocks per second, to get a
+value in milliseconds. The variation observed over several runs was never more
+than 0.01:
+
+PCRE      Spencer       Pattern
+----      -------       -------
+
+0.04       0.07         /^$/
+0.06       0.12         /^.*nter/
+0.06       0.13         /^12.34/
+0.06       0.09         /^[]cde]/
+0.07       0.14         /^[0-9]+$/
+0.07       0.10         /^[^]cde]/
+0.08       0.17         /^xxx[0-9]+$/
+0.08       0.14         /the quick brown fox/
+0.09       0.14         /^[.^$|()*+?{,}]+/
+0.10       0.33         /([0-9a-fA-F:]+)$/
+0.12       0.26         /^.+[0-9][0-9][0-9]$/
+0.12       0.42         /^(abc)(abc)?zz/
+0.14       0.51         /^(b+|a)(b+|a)?c/
+0.15       0.53         /^(ba|b*)(ba|b*)?bc/
+0.19       0.51         /^([^!]+)!(.+)=apquxz\.ixr\.zzz\.ac\.uk$/
+0.34       1.59         /^(a(b(c)))(d(e(f)))(h(i(j)))$/
+0.47       1.32         /^[a-zA-Z0-9][a-zA-Z0-9\-]*(\.[a-zA-Z0-9][a-zA-z0-9\-]*)*\.$/
+0.66       1.78         /^From +([^ ]+) +[a-zA-Z][a-zA-Z][a-zA-Z] +[a-zA-Z][a-zA-Z][a-zA-Z] +[0-9]?[0-9] +[0-9][0-9]:[0-9][0-9]/
+
+
+Execution time
+--------------
+
+Execution timing was done in a similar manner. Blank entries in the "pattern"
+column below indicate the use of the same pattern as before.
+
+PCRE   Spencer   Subject                Pattern
+----   -------   -------                -------
+
+0.03     0.02    <null string>          /^$/
+0.04     0.04    enter                  /^.*nter/
+0.04     0.04    uponter
+0.03     0.03    12\r34                 /^12.34/
+0.03     0.03    0                      /^[0-9]+$/
+0.04     0.03    100
+0.03     0.03    ]thing                 /^[]cde]/
+0.03     0.03    ething
+0.03     0.03    athing                 /^[^]cde]/
+0.04     0.04    xxx0                   /^xxx[0-9]+$/
+0.04     0.04    xxx1234
+0.04     0.07    .^\$(*+)|{?,?}         /^[.^$|()*+?{,}]+/
+0.03     0.03    the quick brown fox    /the quick brown fox/
+0.06     0.08    What do you know about the quick brown fox?
+0.04     0.07    0abc                   /([0-9a-fA-F:]+)$/
+0.04     0.07    abc
+0.05     0.13    5f03:12C0::932e
+0.06     0.07    x123                   /^.+[0-9][0-9][0-9]$/
+0.06     0.07    123456
+0.06     0.09    abczz                  /^(abc)(abc)?zz/
+0.06     0.12    abcabczz               /^(abc)(abc)?zz/
+                                        /^([^!]+)!(.+)=apquxz\.ixr\.zzz\.ac\.uk$/
+0.23     0.28    abc!pqr=apquxz.ixr.zzz.ac.uk
+0.09     0.15    bc                     /^(b+|a)(b+|a)?c/
+0.09     0.15    bbc
+0.08     0.15    bbbc
+0.09     0.15    bac
+0.09     0.15    bbac
+0.07     0.14    aac
+0.09     0.15    abbbbbbbbbbbc
+0.09     0.15    bbbbbbbbbbbac
+0.09     0.18    babc                   /^(ba|b*)(ba|b*)?bc/
+0.12     0.24    bbabc
+0.07     0.15    bababc
+0.06     0.10    a.                     /^[a-zA-Z0-9][a-zA-Z0-9\-]*(\.[a-zA-Z0-9][a-zA-z0-9\-]*)*\.$/
+0.13     0.34    ab-c.pq-r.
+0.24     0.58    sxk.zzz.ac.uk.
+0.12     0.34    x-.y-.
+0.20     0.38    abcdefhij              /^(a(b(c)))(d(e(f)))(h(i(j)))$/
+                                        /^From +([^ ]+) +[a-zA-Z][a-zA-Z][a-zA-Z] +[a-zA-Z][a-zA-Z][a-zA-Z] +[0-9]?[0-9] +[0-9][0-9]:[0-9][0-9]/
+0.18     0.30    From abcd  Mon Sep 01 12:33:02 1997
+
+In general, PCRE runs faster than the Spencer function, but remember, this
+is just for one particular compiler on one set of hardware and operating
+system. Until comprehensive tests have been run in other environments, the most
+one can plausibly say is that it is probably no worse on average for the kinds
+of expression tested here.
+
+
+Speeding up matching
+--------------------
+
+A character class is much more efficient than a set of bracketed alternatives.
+Matching /^[abc]{12}/ against "abcabcabcabc" took 0.03 ms, whereas
+/^(a|b|c){12}/ took 0.33 ms. This is because brackets and alternatives involve
+recursion.
+
+
+Serious test
+------------
+
+One of the tests of PCRE is the monster regular expression from "Mastering
+Regular Expressions" (O'Reilly's "hip owls" book, 1997, ISBN 1-56592-257-3)
+which recognizes email addresses. There are two versions, unoptimized and
+optimized. For interest, here are their timings, again on a SPARCstation IPC.
+The compile times were 55 ms and 94 ms, and the compiled expressions
+occupied 11010 and 15426 bytes of store, respectively. The following strings
+were matched in the times shown (unoptimized first):
+
+0.34  0.38   user@dom.ain
+0.38  0.42   <user@dom.ain>
+0.88  0.60   Alan Other <user@dom.ain>
+1.87  0.82   "A. Other" <user.1234@dom.ain> (a comment)
+1.77  1.19   A. Other <user.1234@dom.ain> (a comment)
+2.21  0.42   "/s=user/ou=host/o=place/prmd=uu.yy/admd= /c=gb/"@x400-re.lay
+
+The optimization of the expression clearly has a dramatic effect in some cases.
+
+Philip Hazel <ph10@cus.cam.ac.uk>
+October 1997

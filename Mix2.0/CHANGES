@@ -1,0 +1,335 @@
+Version history.
+
+2.0.5    2004-xx-xx rabbi
+        Drop messages without timestamps and ignore messages with 
+        timestamps from the future. This abandons backwards compatibility 
+        with Mixmaster versions 2.0.4b36 and earlier, but makes behavior 
+        consistent with Mixmaster 3.0.
+
+2.0.4    2004-05-17 rabbi
+        Version 2.0.4 skipped.
+
+2.0.4b47 2002-10-19 rabbi
+        Documentation updates, key version string format changes, and a 
+        DOS Makefile fix. (internal release).
+
+2.0.4b46 2002-09-23 rabbi
+        Security fixes for zlib and SSLeay. Now requires OpenSSL instead
+        of SSLeay.
+
+2.0.4b45 1999-01-19 um
+        Bug fixes for DOS.
+
+2.0.4b43 1998-08-21 um
+        Bug fix: use stderr when asking for random user input.
+
+2.0.4b42 1998-08-20 um
+        Added missing "success" report (for DOS).
+        zlib/Makefile: do not optimize deflate.c (fails on DOS).
+
+2.0.4b41 1998-08-17 um
+        Bug fix: Verify the message digest in packet headers.
+        Successful remailer operation is logged if VERBOSE is set.
+        Error messages are written to stdout if ERRSTDOUT is set to 1
+          (for DOS remailers where stderr cannot be redirected).
+
+2.0.4b40 1998-05-28 um
+        Improved getlist script. New file urls contains URLs of mix lists.
+
+2.0.4b39 1998-05-25 um
+        fixed sign error in new timestamp code.
+
+2.0.4b38 1998-05-11 um
+        Install script bug fixes / enhancements.
+        Bug fix for IDEXP/PACKETEXP.
+        Scripts in util now look for mixmaster in the Mix directory.
+
+2.0.4b37 1998-05-08 um
+        Format extension for better protection against replay attacks:
+          Messages can contain a timestamp (day minus random number 0..2).
+          Remailers supporting this extension will discard messages that are
+          older than IDEXP.  See function check_packetID() and occurrences
+          of TSMAGIC in chain2.c and type2.c for details.
+        rxmatch() rewritten by Johannes Kroeger for the PCRE regexp library.
+        MIDDLEMAN and T1PGPONLY described in manpage.
+        IDEXP and PACKETEXP definitions moved to mixmaster.conf; now given
+          in hours.
+
+2.0.4b36 1998-04-21 um
+        Newly introduced bug removed.
+
+2.0.4b35 1998-04-20 um
+        Bug fix for sending a message on multiple chains.
+	Bug fix for trimming ID log file.
+        Optional PGP-only interface to Type 1 remailer added.
+
+2.0.4b34 1998-04-16 um
+        Changes for SSLeay 0.9.0 in docs, Install and bsafeeay.
+
+2.0.4b33 1998-04-14 um
+        Modification for MSDOS.
+        Bug fix by Johannes Kroeger.
+
+2.0.4b32 1998-03-02 um
+        New function getline() replaces fgets() + chop().
+
+2.0.4b31 1998-02-26 um
+        Can be used with SSLeay (using the BSAFEeay API).
+
+2.0.4b30 1998-02-18 um
+        Check R_DecodePEMBlock return values.
+
+2.0.4b29 1998-01-30 um
+        Makefile correction (thanks to Michael Below).
+
+2.0.4b28 1998-01-13 um
+        /dev/random patch for OpenBSD from Richard Johnson.
+
+2.0.4b27 1997-12-22 um
+        process_pool bug fix from Johannes.
+
+2.0.4b26 1997-12-15 um
+        rx patch by Johannes Kroeger.
+
+2.0.4b25 1997-12-12 um
+        bug fix.
+
+2.0.4b24 1997-12-08 um
+        process_pool bug fix by Andy Dustman.
+        build.cmd for OS/2 added (anonymous contribution).
+        source blocking also reads Sender: and Reply-To: header.
+
+2.0.4a24 1997-11-08 um
+        command line option -GD generates DH parameter.
+        -D1 starts server for a single protocol run.
+        included client.c and server.c.
+
+2.0.4b23 1997-11-05 um
+        new version of coerce, with eat-spam (by Andy Dustman).
+        DOS: documentation on using Mixmaster with Potato (readme.pot).
+        DOS: use current directory rather than C:\MIX if MIXPATH is not set.
+
+2.0.4b22 1997-10-20 um
+        strifind bug fix from Andy Dustman.
+
+2.0.4b21 1997-10-10 um
+        bug fix from Johannes Kroeger: parse header lines without " " after
+          the ":" correctly.
+
+2.0.4b20 1997-10-07 um
+        coerce script, by Andy Dustman.
+        bug fix from Johannes Kroeger: skip blank lines in source.block.
+        DOS: fix for backward compatibility with PI versions < 3.3t
+
+2.0.4b19 1997-09-23 um
+        new mixmaster.conf entry VERBOSE: print information about the
+          selected chain if set to 1.
+        write output to files if SENDMAIL is set to "outfile" (default for
+          MSDOS).
+
+2.0.4b18 1997-09-22 um
+        lantency statistics by Andy Dustman.
+        help/key/stats request lines must be case-insensitive exact match.
+
+2.0.4b17 1997-09-17 um
+        bug fix for -Q.
+
+2.0.4b16 1997-09-15 um
+        bug fix for multi-line headers (by Johannes Kroeger).
+
+2.0.4b15 1997-09-08 um
+        header file renamed to "mix.h" due to Windows filename restrictions.
+        minor modifications in the DOS directory.
+        </PRE> marks end of reliable mixmaster list.
+
+2.0.4b14 1997-09-02 um
+        Simpler Makefile.
+        Use of zlib and Rx can be switched on and off in the Makefile.
+        Blocking is done using regular expressions by default.
+        Mixmaster -K checks passphrase.
+        -Q takes additional destination as optional argument.
+
+2.0.4b13 1997-08-31 um
+        ORGANIZATION entry for mixmaster.conf, used for inews posting as
+          in freedom 2.0.
+
+2.0.4b12 1997-08-30 um
+        header filtering now parses multiple-line message headers properly.
+        yet another bug fix for "post:".
+
+2.0.4b11 1997-08-29 um
+        bug fix: mail2news gateway is added only for "post:" destinations.
+
+2.0.4b10 1997-08-26 um
+        new option -d to generate dummy messages. Will be sent through
+          5..15 random remailers unless specified otherwise.
+        new option -Q adds message from stdin to pool.
+        bug fixes: reliability check didn't work.
+        bug fixes in init_mix().
+        remailer-conf output includes mixmaster version.
+	Install script creates world-readable .forward file.
+
+2.0.4b9 1997-08-25 um
+        list of reliable remailers may contain arbitrary text before the
+          separator line (patch from Andy Dustman).
+
+2.0.4b8 1997-08-22 um
+        bug fix.
+        minor adjustments for the DOS version.
+
+2.0.4b7 1997-08-20 um
+        getlist now fingers anon.efga.org (lynx not required).
+        bug fix in init_mix, by Johannes Kroeger.
+        scaled bar graph for statistics with mix/cpunk stacked bars,
+          by Andy Dustman.
+        modifications to mix.help.in.
+
+2.0.4b6 1997-08-19 um
+        ANONNAME now defaults to the value of REMAILERNAME.
+        one character entries in destination.block/allow are accepted.
+        Install script bug fixes.
+        Patch from Johannes Kroeger:
+          changed REMAILERFROM to ANONADDR for symmetry reasons.
+          recognize additional type1 header lines.
+
+2.0.4b5 1997-08-15 um
+        new client command line options:
+          -v 'Header: text' - set message header.
+          -m                - accept RFC822 message as stdin.
+        new mixmaster.conf entry:
+          ANONNAME - long name for anonymous messages, by Andy Dustman.
+	use calloc() where appropriate.
+        disclaimer as RFC822 `Comments:' header; defined in mixmaster.h;
+         it is now inserted to a message when it is _sent_ from the pool.
+        send middleman messages directly without calling premail.
+        Install uses procmail if .procmailrc exists, .forward otherwise.
+
+2.0.4b4 1997-07-01 um
+        bug fix.
+
+2.0.4b3 1997-07-01 um
+        Middleman patch (Medusa, um).
+        bug fix in chain selection.
+        manual page improvements.
+
+2.0.4b2 1997-06-18 um
+        updated manual page.
+        new chaining methods, suggested by Mark Grant.
+        bug fixes in util.c, by Medusa.
+        corrected randomness handling.
+        REMAILERFROM address, by Johannes Kroeger.
+        formatted remailer-stats, by Johannes Kroeger.
+        filter for unwanted header lines (headers.del).
+        comments for mixmaster.h prototypes.
+        new file keyinfo.txt (header for mix.key, may contain type 1 keys).
+        new disclaimer, by Dave Del Torto.
+	cleaned up mixmaster.conf.
+        capital letters for remailer command line options, small letters for
+        client mode.
+        minor clarifications.
+
+2.0.4b1 1997-06-03 um
+        improved Install script
+        exponential pool (RATE in mixmaster.conf)
+        print capabilities in type2.list entry.
+        new function to make ASCII armor.
+
+        1997-05-30 um
+	re-indented source code. (To generate diffs relative to 2.0.3,
+	run `indent *[ch]' first.)
+
+        several bug fixes (including those posted to mix-l).
+        gcc warnings eliminated (-Wall).
+        "middle only" remailer.
+        large messages are compressed with zlib
+        support for /dev/random.
+        rudimentary support for the list of reliable Mixmaster remailers.
+        new installation script.
+	chaining code moved to chain2.c.
+        mixmaster -x to seed the random number generator.
+	output for Subject: remailer-conf
+        prototypes added.
+        improved Makefile.
+
+2.0.3/DOS um
+	DOS/Windows version.
+
+2.0.3	10/11/95
+	magic strings moved from mixmaster.h to main.c
+	mixmaster -r now the same as mixmaster -R
+	mixmaster -O added.
+	  Just like -o except that a "To:" line is added
+	  to the top so the file can be piped right into sendmail.
+	mixmaster -G creates if they do not exist.
+	Expiration of pac* files should work now.
+	multiple recipients now seperated by commas on TO line.
+	New Makefile. The password for the server must be specified
+	at compile time.
+
+2.0.2	9/12/95
+	sendmail now called with -t rather than putting
+	the destination on the sendmail command line.
+
+	Mixmaster -R accepts files with multiple Mixmaster
+	messages in it.
+
+	Some bug fixes with stdin and stdout
+
+2.0.1	5/27/95
+	Updated documentation
+
+2.0	5/5/95
+	Release version. Only change was the version number
+
+2.0b11	4/30/95
+	packet time stamps were read improperly.
+	Caused pac files to be deleted each time mixmaster -S
+	was run.
+
+	"reorder" code added. Spools incoming messages and
+	gives them to mixmaster -R one at a time.
+
+	Stats.c now correctly handles
+	type1 and type2 messages.
+	Format of one tmp file name
+	was wrong and has been fixed.
+
+2.0b10	4/25/95
+	DH key format changed.
+	get_DH function added to keymgt.c
+	Key lengths increased to operating
+	length (they had been short to allow
+	quick testing).
+
+2.0b9	4/25/95
+	mix.key said it contained a PGP key.
+	Now reports it contains a Mixmaster key.
+
+2.0b8	4/25/95
+	Fixed outgoing messages to show 
+	From: REMAILERNAME <REMALERADDR>
+	Added support for piping to a type 1 remailer.
+	Major rewrite of the documentation.
+
+2.0b7	Intermediate hops were sent immediately. Now fixed.
+
+2.0b6	This version is incompatible with earlier versions.
+	Removed the last mkstemp. Fixed a bug in kind_of_message
+	Change in memcpy in add_to_buffer.
+	Changed secret key encryption to fill all
+	24 bytes of the triple Des key. First and third keys are the same.
+	Message format changed. Now a key in the encrypted header is
+	used to decrypt all the other headers and the body.
+	The encrypted header contains a different IV for each header
+	and the body.
+
+2.0b5	Fixed the problem with key fingerprints on 
+	different architectures.
+
+2.0b4	Different default keys and more documentation changes.
+
+2.0b3	Tiny bug fixes and documentation changes.
+
+2.0b2	Changed from mkstemp to mktemp.
+
+2.0b	Initial release.

@@ -1,0 +1,67 @@
+# coerce-1.11 1997/12/08
+# (C) 1997 Andy Dustman <andy@CCMSD.chem.uga.edu>
+# Use (at your own risk) instead of your sendmail to prevent abuse and
+# traffic analysis of type-I messages and other wonderful things.
+
+# 1997/12/08: Munges return address for all USENET posts, all gateways.
+#               Adds disclaimer for multiple From: lines (if enabled in
+#               your remailer). Separate config file.
+# 1997/11/18: Broke some of the more complicated stuff out into
+#		separate files. Should improve performance. Minor bug fixes
+#		(thanks, Secret Squirrel).
+# 1997/11/10: Minor bugfix for post Message-ID:
+# 1997/11/07: USENET post Message-ID: calculations done on body only to
+#		prevent multiple-post spamming.
+# 1997/11/03: Anti-spam-baiting now done through external program.
+#                Read the code.
+# 1997/10/06: Tightened up anti-spam-baiting recipe.
+# 1997/09/25: Added CANTREACH to chain through another remailer if the
+#	  	destination is not reachable.
+# 1997/09/19: Added DONTREMIX to prevent mail loss when remixing to
+#		"dumb" middlemen. Unrenamed!
+# 1997/09/10: Bulk mail inhibitor (20 recipients max). Improved ADDNOSPAM.
+# 1997/09/03: General improvements, renamed from "coerce"
+# 1997/08/11: Smarter Middleman, spam-bait mangler.
+# 1997/08/01: Incorporated some procmail suggestions by Secret Squirrel.
+
+Most of the relevant configuration options are up top. However, if you
+plan to use the MIDDLE function, you may inspect and possibly alter that
+recipe. Certainly you should see what everything does before using it.
+Things which are indented depend on the thing immediately above being
+enabled. REMIX and MIDDLE depend pretty heavily upon Mixmaster 2.0.3+.
+DISABLEBINARYPOSTS won't work correctly with Mixmaster 2.0.3, but see the
+comments for how to fix it. Mixmaster 2.0.4 and greater have their own
+middleman feature (messages to other Mixmasters are sent directly, all
+others are chained through a random Mixmaster). MIDDLE does the same, but
+also directly remails PGP messages, which is generally a low-risk
+operation. You probably don't want to use both. Unless you have my
+eat-spam Python script, you will probably want to set EATSPAM=internal. I
+think the Python script is probably faster (a better database), but the
+internal version is pretty good. Write me if you want the Python version.
+
+New feature: Will reject messages with more than 20 recipients.
+No configuration option for this, unfortunately; you'll just have to
+change the recipe (delete it, comment it out, change the number).
+
+This script was originally just to implement REMIX, which I originally
+called "coerce", i.e. coerce messages into Mixmaster format whenever
+possible. I decided REMIX was catchier and more descriptive for the
+feature, and that Gauntlet was a more suitable name for the script.
+This is probably the final version, as there is probably not much that
+can be done. The settings are all presently used on cracker.
+Note: Changed name back. Ant sez someone else is using the name Gauntlet
+for a firewall or something.
+
+If multiple From: lines are present, the last one is saved and a disclaimer
+is added. Obviously your remailer has to be set up to allow multiple
+From: lines (or at least not prevent it) for this to do anything.
+The configuration is now stored separately, just in case there's another
+upgrade...
+
+The return address on all USENET posts is munged to prevent spam-baiting
+and spam sent to the remailer. Because of this, you should turn ADDNOSPAM
+off unless you cannot set the From: line for some reason. For similar
+reasons, you should turn off ADDIGNORE which prevents test group
+autoresponse robots from mailing you (if your address is munged, they can't
+mail you anyway).
+

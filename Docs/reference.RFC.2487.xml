@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<reference anchor='RFC2487'>
+
+<front>
+<title abbrev='SMTP Service Extension'>SMTP Service Extension for Secure SMTP over TLS</title>
+<author initials='P.' surname='Hoffman' fullname='Paul Hoffman'>
+<organization>Internet Mail Consortium</organization>
+<address>
+<postal>
+<street>127 Segre Place</street>
+<city>Santa Cruz</city>
+<region>CA</region>
+<code>95060</code>
+<country>USA</country></postal>
+<phone>+1 408 426 9827</phone>
+<email>phoffman@imc.org</email></address></author>
+<date year='1999' month='January' />
+<area>Applications</area>
+<keyword>SMTP</keyword>
+<keyword>attack</keyword>
+<keyword>authentication</keyword>
+<keyword>security</keyword>
+<keyword>simple mail transfer protocol</keyword>
+<keyword>transport layer security</keyword></front>
+
+<seriesInfo name='RFC' value='2487' />
+<format type='TXT' octets='15120' target='ftp://ftp.isi.edu/in-notes/rfc2487.txt' />
+<format type='HTML' octets='27126' target='http://xml.resource.org/public/rfc/html/rfc2487.html' />
+<format type='XML' octets='22468' target='http://xml.resource.org/public/rfc/xml/rfc2487.xml' />
+</reference>

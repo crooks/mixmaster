@@ -1,0 +1,721 @@
+#!/bin/sh
+
+# $Id: Install,v 1.4 2002/09/10 20:06:52 rabbi Exp $
+#
+#      Mixmaster installation script, using many ideas from
+#      Adam Shostack's Install-Mix.
+
+MIXDIR=$PWD
+if [ "$MIXDIR" = "" ]
+then
+ MIXDIR=`pwd`
+fi
+MIXSRC=$MIXDIR/Src
+
+MIXDEST0=${MIXPATH:-$HOME/Mix}
+if [ ! -z "$1" ]
+then
+  if [ "$1" = "-v" ]
+  then
+    if [ ! -z "$2" ]
+    then
+      MIXDEST0=$2
+    fi
+  else
+    MIXDEST0=$1
+  fi
+fi
+
+#whereis program default-path
+whereis()
+{
+  #echo "Looking for $1..."
+  found=""
+  for i in $* `which $1 2>&1`
+  do
+    if [ -f "$i" -a -x "$i" ]
+    then
+      found=$i
+    fi
+  done
+  if [ "$found" = "" ]
+  then
+    found=$2
+#    echo "$1 not found. Using $found."
+#  else
+#    echo "$1 is at $found."
+  fi
+}
+
+whereis gmake make
+MAKE=$found
+
+if echo -n | grep n >/dev/null
+then
+ echo1=""
+ echo2="\c"
+else
+ echo1="-n"
+ echo2=""
+fi
+
+readln()
+{
+  echo $echo1 "$1 [$2] $echo2"
+  read ans
+  if [ -z "$ans" ]
+  then
+    ans="$2"
+  fi
+}
+
+inst_files()
+{
+  cd $MIXDIR
+  touch install.$$
+  if [ ! -f $MIXDEST/install.$$ ]
+  then
+    for i in $1
+    do
+      cp $i $MIXDEST
+    done
+  else
+    cp $mixmaster $MIXDEST
+  fi
+  rm -f install.$$
+}
+
+conf_file()
+{
+sed -e "s/%RMN/$_RMN/g"   \
+    -e "s/%SRMN/$_SRMN/g" \
+    -e "s/%RMA/$_RMA/g"   \
+    -e "s/%RAA/$_RAA/g"   \
+    -e "s/%RAN/$_RAN/g"   \
+    -e "s/%CA/$_CA/g"     \
+    -e "s/%PS/$_PS/g"     \
+    -e "s/%PP/$_PP/g"     \
+    -e "s#%NEWS#$_NEWS#g" \
+    -e "s#%MAIL#$_MAIL#g" \
+    -e "s/%ORG/$_ORG/g"   \
+    -e "s/%M2N/$_M2N/g"   \
+    -e "s/%MM/$_MM/g" ${MIXDIR}/$1.in > $1
+}
+
+
+mix_testloop()
+{
+  echo step $1
+  MIXPATH=. ./mixmaster -R <infile
+  if [ ! -f mail* ]
+  then
+    echo "Failed."
+    exit 1
+  fi
+  mv -f mail* infile
+}
+
+mix_test() {
+if [ "`echo mail*`" = 'mail*' ]
+then
+  cd $MIXDEST
+  to=`grep COMPLAINTS mixmaster.conf | sed 's/.*[ 	]//'`
+  n=`grep SHORTNAME mixmaster.conf | sed 's/.*[ 	]//'`
+  if [ "$to" = "" ]
+  then
+    to=nobody
+    echo "Problem: COMPLAINTS is not set in mixmaster.conf!"
+  fi
+  if [ "$n" = "" ]
+  then
+    echo "Problem: SHORTNAME is not set in mixmaster.conf! Installation aborted."
+    exit 1
+  fi
+  echo "Testing Mixmaster:"
+  if [ "$MODE" = 2 ]
+  then
+    echo "[You can ignore the warning below.]"
+  fi
+
+  echo "This is a test." >infile
+  MIXPATH=. ./mixmaster infile -f -to $to -s "test message"  -o outfile -l $n $n $n
+  if [ ! -f outfile ]
+  then
+    echo "Failed."
+    exit 1
+  fi
+  mv outfile infile
+  mix_testloop 1
+  mix_testloop 2
+  mix_testloop 3
+  cat infile
+  rm -f infile
+  echo "Test passed."
+fi
+}
+
+if [ -d "$MIXSRC" ]
+then
+  mixmaster=$MIXSRC/mixmaster
+else
+  if [ -f mixmaster ]
+  then
+    mixmaster=$MIXDIR/mixmaster
+  else
+    echo "Cannot find mixmaster source directory $MIXDIR."
+    exit 1
+  fi
+fi
+
+if [ -d $MIXSRC/rsaref ]
+then
+ echo "Using RSAREF."
+ cp $MIXSRC/Makefile-rsaref $MIXSRC/Makefile
+else
+ if [ ! -d $MIXSRC/ssleay ]
+ then
+  if [ -r /usr/local/ssl/lib/libcrypto.a ]
+  then
+   mkdir $MIXSRC/ssleay
+   ln -s /usr/local/ssl/lib $MIXSRC/ssleay/lib
+   ln -s /usr/local/ssl/include $MIXSRC/ssleay/include
+  elif [ -d $MIXDIR/SSLeay-* ]
+  then
+   ln -s $MIXDIR/SSLeay-* $MIXSRC/ssleay
+  elif [ -d $MIXSRC/SSLeay-* ]
+  then
+    ln -s $MIXSRC/SSLeay-* $MIXSRC/ssleay
+  else 
+   echo "Error: No cryptographic library found."
+   echo
+   echo "Please install the RSAREF or OpenSSL source code in $MIXSRC,"
+   echo "install OpenSSL in /usr/local/ssl, or link your OpenSSL directory to"
+   echo "$MIXSRC/ssleay."
+   exit 1
+  fi
+ fi
+ if [ ! -f $MIXSRC/ssleay/lib/libcrypto.a ]
+ then
+  (cd $MIXSRC/ssleay
+   if [ ! -x ./Configure ]
+   then
+    echo "Problem: $MIXSRC/ssleay exists, but does not contain the required files."
+    exit 1
+   fi
+   ./Configure
+   readln "Your system?" `uname| tr 'A-Z' 'a-z'`-gcc
+   ./Configure $ans
+   cd crypto
+   make)
+ fi
+ echo "Using OpenSSL."
+ cp $MIXSRC/Makefile-bsafe $MIXSRC/Makefile
+fi
+
+NAME=`whoami`
+if [ "$NAME" = root ]
+then
+  echo "Installing Mixmaster as root is not recommended.
+Please create a new user, e.g. \`mixmaster'."
+  readln "Continue anyway?" n
+  if [ "$ans" = y ]
+  then
+    root=1
+  else
+    exit 1
+  fi
+fi
+
+########################################################################
+
+readln "Mixmaster directory?" $MIXDEST0
+MIXDEST=$ans
+
+umask 077
+
+if [ ! -d $MIXDEST ]
+then
+  echo "Creating directory $MIXDEST"
+  mkdir $MIXDEST
+fi
+
+if [ ! -d $MIXDEST ]
+then
+  echo "Cannot not create $MIXDEST"
+  exit 1
+fi
+
+if [ -f $MIXDEST/secring.mix ]
+then
+  echo "Upgrading from previous remailer installation..."
+  if grep '^X.*Comm.*:' $MIXDEST/mail* /dev/null >/dev/null 2>/dev/null
+  then
+    echo
+    echo "WARNING: Due to a change in the internal format, the messages that
+are currently in your pool may carry a double disclaimer.
+Press ^C to abort and send the messages before you proceed.
+Press RETURN to continue."
+    read
+  fi
+  MODE=3
+else
+  echo "How do you want to use Mixmaster?
+
+ 1: client only
+ 2: middleman remailer
+ 3: public remailer"
+
+  read MODE
+  if [ "$MODE" != 1 -a "$MODE" != 2 -a "$MODE" != 3 ]
+  then
+   echo "Installation aborted."
+   exit 1
+  fi
+fi
+
+_MM=0
+if [ "$MODE" = 2 ]
+then
+  echo "Anonymous messages will not be sent to the recipient directly.  In addition,
+you can hide your identity from users by using an anonymous address for your
+remailer.  In that case, the remailer will send status messages anonymously."
+  readln "Are you going to do that?" n
+  if [ "$ans" = "y" ]
+  then
+    _MM=1
+    echo "NOTE: Encrypted mixmaster packets will be sent to the next hop directly.
+You will have to configure the remailer to send all outgoing messages through a
+remailer chain if you need to protect your identity from more determined
+adversaries."
+  fi
+fi
+
+if [ "$MODE" != 1 ]
+then
+  if [ -d $MIXSRC ]
+  then
+    echo "Please enter a pass phrase for your remailer (must be the same
+whenever you re-compile Mixmaster)."
+    read PASS
+    if [ ! -z "$PASS" ]
+    then
+      cd $MIXSRC; $MAKE newpass
+    fi
+  fi
+fi
+
+if [ -d $MIXSRC ]
+then
+  SYSTEM=`uname | tr A-Z a-z`
+  if [ $SYSTEM = "sunos" ]; then
+      if [ `uname -r | awk -F. '{print $1}'` = 5 ]; then
+          SYSTEM='solaris'
+      fi
+  fi
+  
+  cd $MIXSRC
+  
+  if grep "^$SYSTEM:" Makefile >/dev/null
+  then
+    TARGET=$SYSTEM
+  else
+    echo "This does not seem to be a tested system."
+    TARGET=all
+  fi
+
+  echo "Now building mixmaster. Please wait."
+
+  $MAKE $TARGET PASS=$PASS MIXPATH=$MIXDEST
+
+  if [ ! -x mixmaster ]
+  then
+    echo "As you can probably see, the build failed.  Read the docs."
+    if [ "$TARGET" = all ]
+    then
+      echo "It may be necessary to modify the Makefile for your system."
+    fi
+    exit 1
+  fi
+fi
+
+whereis sendmail /usr/lib/sendmail /usr/sbin/sendmail
+SENDMAIL=$found
+
+if [ "$MODE" = 1 ]
+then
+  inst_files "$mixmaster type2.list pubring.mix mixmaster.1 mix.list urls"
+  if [ ! -f "$SENDMAIL" ]
+  then
+    readln "Name and path of sendmail program:" "$SENDMAIL"
+    SENDMAIL="$ans"
+  fi
+  sed "s#/usr/lib/sendmail#$SENDMAIL#" <mixmaster.conf >$MIXDEST/mixmaster.conf
+else
+  if [ -f $MIXDEST/secring.mix ]
+  then
+    # upgrade
+    inst_files "$mixmaster mixmaster.1 urls"
+  else
+    # new installation
+    inst_files "$mixmaster type2.list pubring.mix destination.block \
+    mix.help pubring.mix source.block mixmaster.1 headers.del mix.list urls"
+  fi
+fi
+
+cd $MIXDEST
+
+readln "Get the current mixmaster list now?" y
+if [ "$ans" = y ]
+then
+  $MIXDIR/getlist
+fi
+
+if [ "$MODE" = 1 ]
+then
+  cd $MIXDEST
+elif [ ! -f $MIXDEST/secring.mix ]
+then
+
+  if [ "$root" != 1 ]
+  then
+    readln "Do you have cooperation from root in installing Mixmaster?" n
+    if [ "$ans" = y ]
+    then
+      root=1
+    fi
+  fi
+
+  if [ "$root" != 1 ]
+  then
+    # Assume that procmail is installed if .procmailrc exists and if it is
+    # called from .forward.
+    if [ -f ~/.procmailrc ]
+    then
+      procmail=1
+    elif grep procmail ~/.forward >/dev/null 2>/dev/null
+    then
+      procmail=1
+    else
+      whereis procmail
+      if [ -x $found ]
+      then
+        ans=n
+        readln "Do you want to run Mixmaster from procmail?" y
+        if [ "$ans" = y ]
+        then
+          procmail=2
+        fi
+      fi
+    fi
+  fi
+
+  readln "Do you want to log error messages?" y
+  if [ "$ans" = y ]
+  then
+      MIXLOG="2>>${MIXDEST}/log"
+  fi
+
+  readln "Do you want to run Mixmaster from cron?" y
+  if [ "$ans" = y ]
+  then
+    cron=1
+  else
+    MIXOPT="-S -L"
+  fi
+
+  if [ "$1" = "-v" ]
+  then
+    readln "Packet-ID logging?" y
+  else
+    ans="y"
+  fi
+  if [ "$ans" = y ]
+  then
+    touch id.log
+  fi
+
+  if [ "$root" = 1 ]
+  then
+    readln "The e-mail address of your remailer:" mixmaster@`hostname`
+  else
+    readln "The e-mail address of your remailer:" $NAME@`hostname`
+  fi
+  _RMA=$ans
+  NAME2=`echo $_RMA | sed 's/@.*//'`
+
+  if [ "$root" = 1 -a "$NAME2" != "$NAME" ]
+  then
+    MBOX="${MIXDEST}/mbox"  # will use an alias address
+  else
+    MBOX=${MAIL:-/usr/spool/mail/$NAME}
+    if touch $MBOX >/dev/null 2>/dev/null
+    then
+      root=0 # We can write to the default mbox and don't set an alias
+    else
+      MBOX="${MIXDEST}/mbox"
+    fi
+  fi
+
+  if [ "$MODE" = 2 ]
+  then
+    echo "You can set up a list of addresses that your remailer will mail to directly.
+All other messages will be forwarded to another remailer.
+It is usually a good idea to allow sending mail to nym servers and to yourself.
+This list will be sent to users in reponse to a \"remailer-conf\" request.
+Specify the addresses or \`none'."
+    echo "@`echo $_RMA | sed 's/.*@//'`" >destination.allow
+    echo "@nym.xganon.com @hod.aarg.net @nym.gmsociety.org @nym.alias.net @alias.cyberpass.net @nym.cryptofortress.com @rodent.frell.eu.org @blackhole.riot.eu.org" >destination.allow
+    readln "Allow mailing to:" "`tr '
+' ' ' <destination.allow`"
+    if echo "$ans" | grep none >/dev/null
+    then
+      echo >destination.allow
+      _RMN="Mixmaster"
+    else
+      echo "$ans" | tr ' ' '
+' >destination.allow
+    fi
+  fi # MODE = 2
+
+  if [ "$_RMN" = "Mixmaster" -a "$1" != "-v" ]
+  then
+    # mail to users not allowed. We can use default values for mixmaster.conf
+    _CA=$_RMA
+    _RAN="Anonymous"
+  else
+    readln "An address to appear in the \`From:' line of anonymous messages:" `echo $_RMA | sed 's/.*@/nobody@/'`
+    _RAA=$ans
+
+    readln "Address for complaints to be sent to:" `whoami`@`echo $_RMA | sed 's/.*@//'`
+    _CA=$ans
+    echo "Choose a name for your remailer.  It will appear in remailer status messages."
+    readln "Long name:" "Anonymous Remailer"
+    _RMN=$ans
+
+    echo "Choose a name to be used in the \`From:' line of remailed messages."
+    readln "Anon long name:" "Anonymous"
+    _RAN=$ans
+  fi
+
+  readln "A short name to appear in lists:" `hostname|sed 's/\..*//'`
+  _SRMN=`echo $ans | tr -d ' '`
+
+  echo "How many messages do you want to keep in the reordering pool?
+The security of the mixmaster is better with larger pools, but the
+large pool also causes higher latency.  As your mixmaster grows in
+popularity, you can increase the poolsize to get more security.
+0 means to remail immediately."
+  readln "Message pool size:" 5
+  _PS=$ans
+
+  _PP=100
+  if [ "$1" = "-v" -a "$cron" = 1 ]
+  then
+    echo "You can define the rate at which messages leave the system. A
+reduced rate can be useful to avoid \`flooding attacks' and reduce system
+load when lots of messages arrive at the same time. Specify the fraction of
+messages to send each time the pool is processed."
+    readln "Percent of messages (1-100):" 100
+    _PP="$ans"
+  fi
+
+  _MAIL="$SENDMAIL -t"
+  if [ "$1" = "-v" -o ! -f "$SENDMAIL" ]
+  then
+    readln "Name and path of sendmail program (-t flag required):" "$_MAIL"
+    _MAIL="$ans"
+  fi
+
+  _M2N="mail2news@nym.alias.net"
+
+  if [ "$MODE" != 2 ]
+  then
+    echo "Do you want to allow posting to Usenet? Newsgroups can be restricted
+using the destination.block file.
+  y = Yes, post locally;  m = Use mail-to-news gateway;  n = No."
+    readln "Allow posting to Usenet?" m
+    if [ "$ans" = y ]
+    then
+      whereis inews /usr/lib/news/inews
+      readln "News posting software:" "$found -h"
+      _NEWS="$ans"
+      readln "Organization line for anonymous Usenet posts:" "Anonymous Posting Service"
+      _ORG="$ans"
+    fi
+    if [ "$ans" = m ]
+    then
+      readln "Mail-to-news gateway:" mail2news@nym.alias.net
+      _NEWS="mail-to-news"
+      _M2N="$ans"
+    fi
+  fi
+
+  cd $MIXDEST
+  conf_file mixmaster.conf
+  conf_file mix.help
+  conf_file keyinfo.txt
+
+  if [ "$MODE" = 2 ]
+  then
+    echo "
+This remailer can only be used in the middle of a chain." >>mix.help
+  fi
+
+#if [ -f testkey ]                    # for debugging
+#then                                 # for debugging
+# echo "WARNING: Using test key!!!"   # for debugging
+# cp testkey secring.mix              # for debugging
+# MIXPATH=. ./mixmaster -K            # for debugging
+#else                                 # for debugging
+  MIXPATH=. ./mixmaster -G
+#fi                                   # for debugging
+
+  grep @ mix.key | head -1 >> type2.list
+  echo >> pubring.mix
+  sed '1,/-=-=-=/d' mix.key >> pubring.mix
+
+  mix_test
+
+  echo "----------------------------------------------------------------------------"
+
+  if [ "$cron" = 1 ]
+  then
+    echo
+    echo "Add the following line to your crontab:"
+    echo "5,15,25,35,45,55 * * * * ${MIXDEST}/mixmaster -S -L $MIXLOG"
+    if crontab -l 2>/dev/null | grep mixmaster >/dev/null
+    then
+     echo '(Mixmaster already is registered in your crontab.)' 
+    else
+      readln "Do that now?" y
+      if [ "$ans" = y ]
+      then
+       (crontab -l 2>/dev/null
+        echo "5,15,25,35,45,55 * * * * ${MIXDEST}/mixmaster -S -L $MIXLOG" ) >$MIXDIR/inst
+        if crontab $MIXDIR/inst 2>&1 | grep usage >/dev/null 2>/dev/null
+        then
+          crontab -r $MIXDIR/inst
+        fi
+      fi
+    fi
+  fi
+
+  umask 033
+
+  if [ "$procmail" = 2 ]
+  then
+    procmail=1
+    if [ -f ~/.forward ]
+    then
+      echo "Your current .forward is:"
+      cat ~/.forward
+    fi
+    echo "Set .forward to the following line:"
+    echo "\"|$found\"" | tee $MIXDIR/inst
+    if [ -f ~/.forward ]
+    then
+      readln "Overwrite?" n
+    else
+      readln "Do that now?" y
+    fi
+    if [ "$ans" = y ]
+    then
+      cat $MIXDIR/inst >~/.forward
+    fi
+  fi
+
+  if [ "$procmail" = 1 ]
+  then
+    echo "Add the following lines to .procmailrc:"
+  ( echo
+    echo ":0 f :remailer.lock"
+    echo "|${MIXDEST}/mixmaster -R $MIXOPT $MIXLOG" ) | tee $MIXDIR/inst
+    echo
+    if grep mixmaster ~/.procmailrc >/dev/null 2>/dev/null
+    then
+      echo '(Mixmaster already is registered in your .procmailrc file.)'
+    else
+      readln "Do that now?" y
+      if [ "$ans" = y ]
+      then
+        cat $MIXDIR/inst >>~/.procmailrc
+      fi
+    fi
+  else
+    if [ "$1" = "-v" ]
+    then
+     readln "Mailbox for non-remailer messages:" $MBOX
+     MBOX=$ans
+    fi
+    touch $MBOX >/dev/null 2>/dev/null
+    if [ "$root" != 1 -a ! -w $MBOX ]
+    then
+      echo "Warning: $MBOX is not writable!  This may result in lost messages."
+    fi
+
+    if [ "$root" = 1 ]
+    then
+      echo
+      echo "Add the following line to /etc/aliases:"
+      echo "`echo $_RMA | sed 's/@.*//'`: \"|${MIXDEST}/mixmaster -R $MIXOPT >>$MBOX $MIXLOG\""
+    else
+      echo
+      if [ -f ~/.forward ]
+      then
+        echo "Your current .forward is:"
+        cat ~/.forward
+      fi
+      echo "Set .forward to the following line:"
+      echo "\"|${MIXDEST}/mixmaster -R $MIXOPT >>$MBOX $MIXLOG\"" | tee $MIXDIR/inst
+      if [ -f ~/.forward ]
+      then
+        readln "Overwrite?" n
+      else
+        readln "Do that now?" y
+      fi
+      if [ "$ans" = y ]
+      then
+        echo "Please make sure that your mail is delivered properly."
+        cat $MIXDIR/inst >~/.forward
+      fi
+    fi
+  fi
+else # update
+  if [ -f mix.key -a ! -f mix.key.ori ]
+  then
+    echo "Renaming \`mix.key' to \`mix.key.ori' (can be deleted later)."
+    mv mix.key mix.key.ori
+  fi
+  if [ -f mix.key.ori -a ! -f keyinfo.txt ]
+  then
+    sed '1,/=-=-=-=-=-=-=-=-=-=-=-=/p;d' <mix.key.ori >keyinfo.txt
+    KEYINFO=1
+  fi
+  if grep Subject keyinfo.txt >/dev/null
+  then
+    if [ "$KEYINFO" = 1 ]
+    then
+      echo "Creating file \`keyinfo.txt' from \`mix.key.ori'."
+    fi
+  else
+    _RMN=`grep '^REMAILERNAME' <mixmaster.conf | sed 's/^REMAILERNAME[ 	]*//'`
+    conf_file keyinfo.txt
+    echo "Creating file \`keyinfo.txt'."
+  fi
+  chmod 600 secring.mix
+  MIXPATH=. ./mixmaster -K
+  mix_test
+fi
+
+umask 000
+chmod 711 $MIXDEST
+chmod 4711 $MIXDEST/mixmaster
+if [ ! -d $MIXSRC -a ! -f $MIXDEST/mix-bin ]
+then
+  mv $MIXDEST/mixmaster $MIXDEST/mix-bin
+  echo "#!/bin/sh
+MIXPATH=$MIXDEST $MIXDEST/mix-bin $*" >$MIXDEST/mixmaster
+  chmod 711 $MIXDEST/mixmaster
+fi
+
+echo "Mixmaster installation complete."

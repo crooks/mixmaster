@@ -1,0 +1,55 @@
+Mixmaster Version 2.0.5
+=============
+
+Mixmaster 2.0.5 is intended to be the final release of the Mixmaster 2.0.x
+source tree. It has been superceeded by an entirely rewritten version of 
+Mixmaster, which uses the same (Type II) message format. At the time of 
+this release, Mixmaster 2.9.1 is the current stable release, and 
+Mixmaster 3.0b2 is the current beta release. Please consider using a 
+modern version of Mixmaster unless you specifically need the 2.0.x 
+version.
+
+
+See the file CHANGES for detailed version history of this source tree.
+
+
+Changes in version 2.0.5:
+=============
+
+The remailer drops messages without timestamps, and messages with future
+timestamps.  The timestamp extension introduced in version 2.0.4 is now
+nearly universally used, and thus requiring it protects against
+partitioning attacks. Likewise, dropping future timestamps protects users
+who have skewed clocks from being partitioned.
+
+The precompiled binary version of Mixmaster 2.0.5 was compiled with 
+OpenSSL version 0.9.6m.
+
+
+New features in version 2.0.4:
+=============
+
+* Format extension for better protection against replay attacks: 
+  Messages contain a fuzzy timestamp, and are discarded after they
+  reach a certain age.
+* new Install script - easy installation.
+* several bug fixes.
+* support for the list of reliable Mixmaster remailers.
+* improved chain selection, can send message via multiple paths to
+  increase reliablity.
+* new remailer features: "middle only" remailer, exponential pool,
+  filter for unwanted header lines, anti-spam From address.
+* improved randomness handling, support for /dev/random.
+* message compression.
+* can be compiled under DOS/Windows.
+* updated documentation.
+
+Changes from version 2.0.3:
+===========================
+
+* New mixmaster.conf entries, with reasonable default values.
+* The blocking lines are interpreted as regular expressions unless
+  -DUSE_RX is deleted in the Makefile.
+* The disclaimer is added when messages are sent from the pool.
+
+$Id: README.205,v 1.1 2002/08/28 20:06:49 rabbi Exp $

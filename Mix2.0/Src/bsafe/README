@@ -1,0 +1,98 @@
+Modified for Mixmaster. $Id: README,v 1.1 2002/08/28 20:06:50 rabbi Exp $
+
+BSAFEeay alpha 1
+===========================================================
+
+BSAFEeay is a free, public domain implementation of RSA Data
+Security's BSAFE API, using the SSLeay crypto library. 
+BSAFEeay was developed based on the BSAFE API spec as found 
+in public domain code such as SETREF. 
+
+NOTE: If you want to legally use BSAFEeay in the US, you must
+license RSA from RSA Data Security, Inc. BSAFEeay is NOT a
+product of RSA Data Security and conveys no license for the
+algorithms within.
+
+BSAFEeay requires the SSLeay crypto library, visit
+	http://www.psy.uq.oz.au/~ftp/Crypto/
+for details on SSLeay, where to get it, etc.
+
+BSAFEeay also needs a patch to SSLeay 0.8.1 to enable RSA_NO_PADDING 
+support. You can get the patch at:
+	ftp://ftp.psy.uq.oz.au/pub/Crypto/SSL/nopadding.patch
+
+NOTE: this is ONLY for SSLeay 0.8.1. When 0.8.2 is released,   
+it will support RSA_NO_PADDING without the patch. To use BSAFEeay 
+with SSLeay 0.8.1, you must have this patch. To install the patch, 
+cd to the the SSLeay-0.8.1 directory, and type:
+	cat /path/to/the/patch | patch -p0 
+where /path/to/the/patch is the path to the patchfile you downloaded.
+Do this BEFORE running Configure and make.
+
+BSAFEeay is meant for developers and people who like to get
+their hands dirty in code. It is NOT an end-user product and
+the authors will ignore any questions not directly related
+to BSAFEeay.
+
+The authors can be reached at bsafeeay@cypherpunks.to
+Visit the https://www.cypherpunks.to/ web site for updates
+and other information.
+
+The authors' public key is:
+
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+Version: PGP 5.0i
+
+mQCNAzRmehMAAAEEAKgPlIibft+x0Vm7uF0IJ3YPl2XZLOHJJ3nN+XivjCV7rvCX
+8mZcOEznBSYj7LCr3kTZ645ZSjCyc8k8DFMYScClQKqeA3aRuXJBeFW7JTJ+rQpj
+CsxREXWnl41Pkd9uNiVHw/qBm6c0+werrnMf3c4R+PVRMpY7V5M0Bmsl+tm9AAUR
+tC1CU0FGRSBJbnRlcm5hdGlvbmFsIDxic2FmZWVheUBjeXBoZXJwdW5rcy50bz6J
+AJUDBRA0a0b0kzQGayX62b0BAYBEA/0XNI7jbNTgU4TV1xYPnkB/6xUC+mgV2eAk
+9JOkVOoOobwqoypPR+k5AOkmPKj/GLpv/30YD34pYgXgzGa3p3wLfdMrj0itoEjQ
+IwV71+bxErcr8zv4wKem2tSltSfVPgnaqXIfKk+cI3gnfu88R50wrQmegLNYjvho
+VinPqkxTIA==
+=su8Q
+-----END PGP PUBLIC KEY BLOCK-----
+
+(this is a 2.6.x compatible key)
+
+===========================================================
+
+THE BSAFEEAY DISTRIBUTION:
+
+  BSAFEeay includes the following files:
+
+  bsafeeay.c
+  bsafeeay.h
+  Makefile
+  README (this file)
+  COPYRIGHT (your license, our copyright)
+  atypes.h (0 length placeholder so #includes don't break)
+  aglobal.h (0 length placeholder so #includes don't break)
+  bsafe.h (simply includes bsafeeay.h)
+
+
+BUILDING BSAFEEAY:
+
+  BSAFEeay will untar into its own directory, called bsafeeay.
+  cd to BSAFEeay and edit the Makefile to point to the correct SSLeay
+  include directory, then type 'make'. You may want to edit CFLAGS in the
+  Makefile to provide for optimization or debugging, etc.
+
+
+LINKING BSAFEEAY INTO APPLICATIONS:
+
+  Simply add -LBSAFEEAY_DIR -LSSLEAY_DIR -lbsafe -lcrypto to your
+  link line in your Makefile, where BSAFEEAY_DIR is the location
+  of libbsafe.a, and SSLEAY_DIR is the location of libcrypto.a
+
+
+PACKAGES AND APPLICATIONS WHICH WORK WITH BSAFEEAY:
+
+  BSAFEeay is a work in progress. Currently (as of alpha 1) SETREF
+  is the only package known to work. However, anything that uses
+  only the implemented parts of BSAFEeay should work as well.
+  Check https://www.cypherpunks.to/ for updates.
+
+===========================================================
+

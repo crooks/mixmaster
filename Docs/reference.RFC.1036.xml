@@ -1,0 +1,14 @@
+<?xml version='1.0'?>
+
+<reference anchor='RFC1036'>
+
+<front>
+<title abbrev='Standard for USENET Messages'>Standard for interchange of USENET messages</title>
+<author initials='M.' surname='Horton' fullname='M. Horton'>
+<organization>AT&amp;T Bell Laboratories</organization></author>
+<author initials='R.' surname='Adams' fullname='R. Adams'>
+<organization>Center for Seismic Studies</organization></author>
+<date month='December' day='1' year='1987' /></front>
+
+<seriesInfo name='RFC' value='1036' />
+</reference>

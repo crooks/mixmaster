@@ -1,0 +1,44 @@
+#!/bin/sh
+# $Id: getlist,v 1.2 2002/09/10 05:25:50 rabbi Exp $
+#
+# this script has to be started in the directory containing
+# your remailer file mix.list, type2.list and pubring.mix
+#
+
+
+echo "Getting mixmaster list. Please wait ..."
+
+for LIST in mix.list type2.list pubring.mix
+do
+ rm -f $LIST.tmp
+ for URL in `grep "^$LIST " urls | sed 's/^.* //'`
+ do
+  if [ ! -f $LIST.tmp ]
+  then
+  if echo $URL | grep '^finger:' >/dev/null
+  then
+   finger `echo $URL | sed 's/finger://'` | grep -v '^\[.*\]' >$LIST.tmp
+  else
+   lynx -dump $URL >$LIST.tmp
+  fi
+  if [ "$LIST" = "mix.list" ]
+  then
+   PATTERN="^--------------------------------------------$"
+  else
+   PATTERN=" [0-9a-f]* 2"
+  fi
+  if grep "$PATTERN" $LIST.tmp >/dev/null
+  then
+   echo "Got $LIST from $URL."
+  else
+   rm -f $LIST.tmp
+  fi 
+  fi
+ done
+ if [ -f $LIST.tmp ]
+ then
+  mv $LIST.tmp $LIST
+ else
+  echo "Could not get $LIST."
+ fi
+done

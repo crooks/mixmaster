@@ -1,0 +1,495 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+  <head>
+    <title>Official Mixmaster Remailer FAQ</title>
+    <!--#include virtual="head.htinc"-->
+  </head>
+
+  <body>
+    <!--#include virtual="header.htinc"-->
+
+<h1><div align="center">Official Mixmaster Remailer FAQ</div></h1>
+<br><br>
+
+This FAQ is maintained by Alex Kirk <a href="mailto:alex@schnarff.com">< alex@schnarff.com ></a>. It is currently (1/7/03) being written for the first time. If you find an error, have a further question, or wish to make modifications/updates/additions, please notify him.<br><br>
+First Pieces Posted: 11/26/02<br>
+Last Update: 1/7/03
+<br>
+<h2>Table of Contents</h2><br>
+<a href=#1>1. Introduction<br></a>
+<a href=#1.1>1.1 Document Audience<br></a>
+<a href=#1.2>1.2 What's an anonymous remailer?<br></a>
+<a href=#1.3>1.3 Why should I run an anonymous remailer?<br></a>
+<a href=#1.4>1.4 History of remailers/cryptography<br></a>
+<a href=#1.5>1.5 Newsgroups/Mailing Lists<br></a>
+<a href=#1.6>1.6 Important Reading<br></a>
+<br>
+<a href=#2>2. Planning<br></a>
+<a href=#2.1>2.1 Requirements<br></a>
+<a href=#2.1.1>2.1.1 Hardware<br></a>
+<a href=#2.1.2>2.1.2 Internet Connectivity<br></a>
+<a href=#2.1.3>2.1.3 Operating System<br></a>
+<a href=#2.1.4>2.1.4 Software<br></a>
+<a href=#2.1.5>2.1.5 Filesystem/Drive Space<br></a>
+<a href=#2.2>2.2 Decisions<br></a>
+<a href=#2.2.1>2.2.1 Uptime<br></a>
+<a href=#2.2.2>2.2.2 Middleman<br></a>
+<a href=#2.2.3>2.2.3 Nyms<br></a>
+<a href=#2.2.4>2.2.4 Name<br></a>
+<a href=#2.2.5>2.2.5 Policy<br></a>
+<br>
+3. Software Configuration<br>
+3.1 MTA (Mail Transport Agent)<br>
+3.1.1 MS Exchange<br>
+3.1.2 Postfix<br>
+3.1.3 Qmail<br>
+3.1.4 Sendmail<br>
+3.1.5 Add-Ons<br>
+<a href=#3.1.5.1>3.1.5.1 TLS-SSL</a><br>
+3.1.5.2 RBLs<br>
+<a href=#3.2>3.2 Downloading Software<br></a>
+<a href=#3.2.1>3.2.1 Remailers<br></a>
+<a href=#3.2.1.1>3.2.1.1 UNIX/Linux/BSD<br></a>
+<a href=#3.2.1.2>3.2.1.2 Web Frontends<br></a>
+<a href=#3.2.2>3.2.2 mail2news Gateway<br></a>
+<a href=#3.2.2.1>3.2.2.1 UNIX/Linux/BSD<br></a>
+<a href=#3.2.3>3.2.3 Pingers<br></a>
+<a href=#3.2.3.1>3.2.3 UNIX/Linux/BSD<br></a>
+<a href=#3.3>3.3 Installing Software</a><br>
+<a href=#3.3.1>3.3.1 Mixmaster Remailer</a><br>
+3.3.2 Pinger<br>
+3.4 Useful System Tools<br>
+<a href=#3.5>3.5 Bounce Re-Inject Script</a>
+<br>
+4. Security<br>
+<a href=#4.1>4.1 Host System Security<br></a>
+4.1.1 Philosophy<br>
+4.1.2 Firewalls<br>
+<a href=#4.1.3>4.1.3 Minimalism/Unnecessary Software<br></a>
+4.1.4 Local Attacks<br>
+4.1.5 Patches/Updates/Upgrades<br>
+4.2 Key Security<br>
+<a href=#4.3>4.3 Logging<br></a>
+<a href=#4.4>4.4 Floods & Spam</a><br>
+4.4.1 MTA<br>
+<a href=#4.4.2>4.4.2 Asian ISPs & Subnet Filtering<br></a>
+<a href=#4.4.3>4.4.3 Prevent Massive Crossposting</a><br>
+<a href=#4.4.4>4.4.4 Flood Detection</a><br>
+4.4.5 Duplicate Detection<br>
+<a href=#4.4.6>4.4.6 Blocking Obnoxious Hosts</a><br>
+<br>
+<a href=#5>5. Policy</a><br>
+<a href=#5.1>5.1 Always Have A Posted Policy!</a><br>
+<a href=#5.2>5.2 Responding to Abuse Complaints<br></a>
+5.3 To Monitor Or Not To Monitor?<br>
+<a href=#5.4>5.4 Cryptographically Signing Posts & E-mail<br></a>
+<a href=#5.4.1>5.4.1 How To<br></a>
+5.5 Changing Remailer Keys<br>
+<a href=#5.6>5.6 Legal Links<br></a>
+<br>
+6. Announcing Your Remailer<br>
+<br>
+7. I'm Being Blocked!<br>
+7.1 Static IP<br>
+7.2 Dynamic IP<br>
+7.3 Dial-Up/POP<br>
+
+
+<a name="1"></a>
+<h2>1. Introduction</h2>
+<a name="1.1"></a>
+<h3>1.1 Document Audience</h3>
+This document is intended for those who run or are thinking about running an anonymous remailer, mail2news gateway, or remail statistics pinger. It might answer some questions for those who want to know what these are, but the primary audience is administrators, potential or current.<br><br>
+<a name="1.2"></a>
+<h3>1.2 What's an anonymous remailer?</h3>
+From the <a href=http://www.andrebacard.com/remail.html>Anonymous Remailer FAQ</a>:
+
+<blockquote>
+<i>
+"A remailer is a computer service which privatizes your e-mail. A remailer is in sharp contrast to the average Internet Service Providers [ISP] which is terribly anti-private. In fact, ISP could equally stand for "Internet Surveillance Point". <a href=http://www.andrebacard.com/email.html>[Click here to Learn About Email Privacy]</a>.
+<p>
+"Traditionally, a remailer allowed you to send electronic mail to a Usenet news group, or to a person, without revealing your true name or e-mail address to the recipient. Today, new web-based remailers permit you to send mail using your real name (if you wish), while protecting your email records from the snooping eyes of your Internet Service Provider.
+<p>
+
+"In the first version of this FAQ (published in 1995), all popular remailers were free-of-charge. Today, a number of services either charge user fees, or support themselves via advertisers.
+</i>
+</blockquote>
+<a name="1.3"></a>
+<h3>1.3 Why should I run an anonymous remailer?</h3>
+There are several good reasons for running an anonymous remailer. You might be interested if you want to:
+<ul>
+<li>Promote of free speech
+<li>Work against oppresive governments
+<li>Help whistleblowers escape retribution
+<li>Promote cryptography and anonymity on the Internet
+<li>Learn more about running a mail server
+</ul>
+<a name="1.4"></a>
+<h3>1.4 History of remailers/cryptography</h3>
+<a name="1.5"></a>
+<h3>1.5 Newsgroups/Mailing Lists</h3>
+Those interested in running an anonymous remailer or mail2news gateway should subscribe to <a href="mailto:remailer-operators@anon.lcs.mit.edu?body=subscribe">remailer-operators@anon.lcs.mit.edu</a> (or its mirror, <a href="http://lexx.shinn.net/mailman/listinfo/remops">remops@freedom.gmsociety.org</a>). You should also frequent <a href="news://alt.privacy.anon-server">alt.privacy.anon-server</a> and <a href="news://alt.privacy">alt.privacy</a>.
+<a name="1.6"></a>
+<h3>1.6 Important Reading</h3>
+Papers of note include:<br>
+<a href=http://lexx.shinn.net/chaum-acm-1981.html>Chaums digital mixes</a><br>
+<a href=http://obscura.com/~loki/remailer/mixmaster-faq.html>Mixmaster FAQ</a> by Lance Cottrell.<br>
+<a href=http://obscura.com/~loki/remailer-essay.html>Mixmaster and remailer attacks</a>. An essay by Lance Cottrell, which motivates the original design of Mixmaster<br>
+<a href=http://www.andrebacard.com/remail.html>Anonymous Remailer FAQ</a> by Andre Bacard.
+<a name=2></a>
+<h3>2. Planning</h3>
+<a name=2.1></a>
+<h3>2.1 Requirements</h3>
+<a name=2.1.1></a>
+<h3>2.1.1 Hardware</h3>
+With the right operating system, you can run an anonymous remailer on the most paltry of hardware: some large remailers run on 486 DX 33MHz boxes. Of course, this can only be done if you're running a UNIX-style operating system and if the machine is dedicated to its task. More realistically, especially if you intend to use your hardware for anything else, you should have at least a Pentium 75MHz, with 16MB of RAM.<br><br>
+Windows users will need a bit more system resources: at least a Pentium II 200MHz with 64MB of RAM. This is due, of course, to the large overhead of keeping a GUI running.
+<a name=2.1.2></a>
+<h3>2.1.2 Internet Connectivity</h3>
+It is possible to run a remailer without a dedicated connection, as long as you have POP access and an account with a decent quota that won't bounce messages all over the place. This setup is not recommended, however, because it requires constant administrator intervention. Any form of broadband is preferable. Note that, on average, Type II remailers consume anywhere from 84-140 MB per day in bandwidth (3,500-5,000 messages * 28125 bytes/message). Type I remailers typically consume less bandwidth, as they are lower traffic, though this can change if you allow binaries to move through your remailer.
+<a name=2.1.3></a>
+<h3>2.1.3 Operating System</h3>
+Your best bet is probably UNIX, Linux, or a BSD, as these systems are generally free, stable, and relatively secure. Chances are, if you have a well configured machine running this type of operating system, it will be exremely low maintenance. The personal recommendation of the author of this document (though not that of the Mixmaster team at large, as some of them have complaints about OpenBSD's disclosure & advisory policy) is <a href=http://www.openbsd.org>OpenBSD</a>, whose claim to fame -- six years with only one remotely exploitable hole in the default install -- is a good indicator of its security track record.<br><br>
+It is possible to run a remailer on a Windows system, but due to the massive security holes and general lack of stability, this is not recommended. If you do choose to run Windows, you will probably have the most success with Windows 2000, as it is the most stable and secure of the Windows operating systems.
+<a name=2.1.4></a>
+<h3>2.1.4 Software</h3>
+Remailers:
+<ul>
+<li>For Type I and Type II Mixmaster, if you've got a C/C++ compiler, simply grab the <a href=http://sourceforge.net/project/showfiles.php?group_id=37891>source code</a> off of <a href=http://sourceforge.net/projects/mixmaster/>SourceForge</a> and compile away. This will work on any platform.
+<li>Nym remailers are available only in <a href=http://www.skuz.net/potatoware/reli/UserMan.htm>source code form</a>.
+<li>For those who really don't want to get their hands dirty, web frontends exist:
+  <ul>
+  <li><a href=ftp://ftp.shinn.net/pub/freedom-remailer>Freedom</a>, a modified version of the original cypherpunk web frontend (used by the <a href=http://freedom.gmsociety.org>GMS/GILC remailer</a>).
+  <li><a href=http://www.cotse.com>COTSE</a>
+  </ul>
+</ul>
+mail2news Gateway:
+<ul>
+<li><a href=ftp://ftp.shinn.net/pub/remailer/mail2news_gateway>Multipost</a>
+</ul>
+Pingers for Remailer Statistics:
+<ul>
+<li>UNIX:
+  <ul>
+  <li><a href=http://www.palfrader.org/echolot/>Echolot</a>
+  <li><a href=http://lexx.shinn.net/cmeclax/pingstats.html>Pingstats</a>: Requires the least of the three, including no database. 
+  <li><a href=http://www.tahina.priv.at/~cm/hacks/>remlist</a>
+  <li><a href=ftp://ftp.shinn.net/pub/remailer/rlist-plus-pinger-1.0.tar.gz>rlist</a>
+  </ul>
+</ul>
+<a name=2.1.5></a>
+<h3>2.1.5 Filesystem/Drive Space</h3>
+Actual drive space is probably less of a consideration now than it was in the past, due to the proliferation of extremely large drives. However, it is still good to know how much drive space you should set aside, especially for those running on older systems.<br><br>
+Remailers:
+<ul>
+<li>Type I
+  <ul>
+  <li>Program Software: 17 MB
+  <li>Pool: 10-20 MB
+  <li>Database Tables: 2-10 MB
+  <li>Outgoing Mail Spool/Queue: 20-300 MB
+  <li><b>Grand Total: 49-347 MB</b>
+  <li>Note that it's probably best to have flex room above the large end of the grand total, because you don't want to get caught with a full drive during a surge in message traffic.
+  </ul>
+</ul>
+<a name=2.2></a>
+<h3>2.2 Decisions</h3>
+There are many decisions you will have to make about how to set up your remailer which will impact its ease of administration and performance. Note that you can successfully run a remailer no matter what you decide here; the only thing these considerations are relevant to are your level of involvement in administration.
+<a name=2.2.1></a>
+<h3>2.2.1 Uptime</h3>
+Contrary to what one might first think, it is <b>not</b> necessary to have a box up 24/7 to run a remailer. While an always-on setup is obviously preferable, it is possible to run a remailer on a box without guaranteed uptime, so long as mail is POP'd through at least four times per day. If you cannot send mail through at this minimum rate -- including times when you are away on holiday or otherwise out of your daily -- you should not run a remailer. Doing so would cause unnecessary bottlenecks in the network, causing problems for everyone.
+<a name=2.2.2></a>
+<h3>2.2.2 Middleman</h3>
+In order for the remailer network to function properly, there is a need for "middleman" remailers -- boxes that don't actually send e-mails to recipients or posts to Usenet, but instead simply function as additional hops along the chain (remember, the more hops a message traverses, the more secure it is). These systems are also useful in nym reply blocks.
+<br>
+If you want to run a remailer, but are afraid of potential consequences from user complaints (i.e. your ISP cutting you off, your friendly neighborhood government getting upset with you), you should run a middleman remailer. Since you will never send messages to anyone but other remailers, you should never get any official complaints, and thus will avoid all of the unpleasantness of dealing with the general public.
+<a name=2.2.3></a>
+<h3>2.2.3 Nyms</h3>
+<a name=2.2.4></a>
+<h3>2.2.4 Name</h3>
+All remamilers must have a name to identify themselves within the network. This name must not exceed eight characters. Preferably, it should be something easily associated with the remailer, even something humorous, so that it can be easily remembered.
+<a name=2.2.5></a>
+<h3>2.2.5 Policy</h3>
+Before putting your remailer into action, you need to have a clearly articulated policy governing use and abuse of your system (even if you are a middleman, this is a good idea). It should be posted on your web site and be included in autoresponses to non-remailer generated messages (i.e. in abuse.txt). You should probably read <a href=http://mixmaster.shinn.net/abuse.txt>an example</a> before finalizing your own.<br>
+Reasons for doing this include: keeping unhappy end-users from escalating complaints by giving them an easy way to resolve problems; being a good netizen; making sure you really know what you're doing and why you're doing it before you start.
+<h3>3. Software Configuration</h3>
+<h3>3.1 MTA (Mail Transport Agent)</h3>
+<h3>3.1.1 MS Exchange</h3>
+<h3>3.1.2 Postfix</h3>
+<h3>3.1.3 Qmail</h3>
+<h3>3.1.4 Sendmail</h3>
+<h3>3.1.5 Add-Ons</h3>
+<a name=3.1.5.1></a>
+<h3>3.1.5.1 TLS-SSL</h3>
+TLS-SSL stands for Transport Layer Security-Secure Socket Layer, and it is intended to add an extra layer of security to your mail server's communications. It does so by encrypting all header information when sending mail between MTAs that support it. As any extra level of security is generally a good thing when running a remailer, you are strongly encouraged to install TLS-SSL on your MTA.<br><br>
+For those running Qmail, the procedure is rather straightforwrad. Download the <a href=http://inoa.net/qmail/qmail-1.03-tls.patch>patch</a>, apply it to your source tree with <tt>patch < tls.patch</tt>, make your server certificates as mentioned in the patch instructions, and re-run <tt>make setup check</tt> to install the updated binaries. Make certain you have run <tt>make clean</tt> first, and that Qmail is shut down during the recompilation (and of course turned back on once successful ;-).
+<h3>3.1.5.2 RBLs</h3>
+<a name=3.2></a>
+<h3>3.2 Downloading Software</h3>
+<a name=3.2.1></a>
+<h3>3.2.1 Remailers</h3>
+<a name=3.2.1.1></a>
+<h3>3.2.1.1 UNIX/Linux/BSD</h3>
+<a href=http://sourceforge.net/project/showfiles.php?group_id=37891&release_id=129918>Mixmaster</a> -- Type I & II remailer (http://sourceforge.net/project/showfiles.php?group_id=37891&release_id=129918)<br>
+(Mirror) <a href=ftp://ftp.shinn.net/pub/remailer/mixmaster>Mixmaster</a> -- Type I & II remailer (ftp://ftp.shinn.net/pub/remailer/mixmaster)<br>
+<a href=ftp://ftp.shinn.net/pub/remailer/nymserv>Nymserv</a> -- Nym remailer (ftp://ftp.shinn.net/pub/remailer/nymserv)
+<a name=3.2.1.2></a>
+<h3>3.2.1.2 Web Frontends</h3>
+<a href=ftp://ftp.shinn.net/pub/freedom-remailer>Freedom</a> -- modified version of the original cypherpunk web frontend, used by <a href=http://freedom.gmsociety.org>the GMS/GILC remailer</a> (ftp://ftp.shinn.net/pub/freedom-remailer)<br>
+<a href=http://www.cotse.com/privres.htm>COTSE</a> -- Church Of The Swimming Elephant -- Many resources available here
+<a name=3.2.2></a>
+<h3>3.2.2 mail2news Gateway</h3>
+<a name=3.2.2.1></a>
+<h3>3.2.2.1 UNIX/Linux/BSD</h3>
+<a href=ftp://ftp.shinn.net/pub/remailer/mail2news_gateway>Multipost</a> (ftp://ftp.shinn.net/pub/remailer/mail2news_gateway)
+<a name=3.2.3></a>
+<h3>3.2.3 Pingers</h3>
+<a name=3.2.3.1></a>
+<h3>3.2.3.1 UNIX/Linux/BSD</h3>
+<a href=ftp://ftp.shinn.net/pub/remailer/rlist-plus-pinger-1.0.tar.gz>rlist</a> (ftp://ftp.shinn.net/pub/remailer/rlist-plus-pinger-1.0.tar.gz)<br>
+<a href=http://www.tahina.priv.at/~cm/hacks/>remlist</a> (http://www.tahina.priv.at/~cm/hacks/)<br>
+<a href=http://lexx.shinn.net/cmeclax/pingstats.html>Pingstats</a> -- This pinger needs only a Unix account with gpg, Mix 2.9, a mail server, procmail, and a random device; it does not need a database or premail. Capstrings and keyrings are automatically updated and (if tmpwatch is installed) expired. It generates stats in both formats for both Mixmaster and Cypherpunk remailers (but no nymservers yet). To get the source, send a message with subject "get-pingstats" to cmeclax@ixazon.dynip.com. Please allow for the latency of this remailer for delivery (it may take a day or more on a busy day). (http://lexx.shinn.net/cmeclax/pingstats.html)
+<a name=3.3></a>
+<h3>3.3 Installing Software</h3>
+Getting Mixmaster software to function on your system is a straightforward task, much like installing any other piece of open-source software for your box. Making sure that you're set up to have a properly behaving remailer is another task altogether.
+<a name=3.3.1></a>
+<h3>3.3.1 Mixmaster Remailer</h3>
+Follow these steps to make sure you've set up your remailer properly:
+<ul>
+<li>Ensure that you have a user <tt>mix</tt> on your system, or some other user that the remailer will run as. You'll want to make sure that this account is particularly difficult to compromise, as any breaches here can lead to serious problems with your remailer. It is suggested that you have either a particularly difficult password or no login capability at all for this account (obviously, the latter would be implemented after installation).</li>
+<li>Download the latest sources from <a href=http://sourceforge.net/project/showfiles.php?group_id=37891&release_id=129918>the SourceForge download section</a>. You'll wan to verify that you didn't get a Trojan horse by grabbing the release-signing key from <a href=http://mixmaster.sourceforge.net>mixmaster.sourceforge.net</a>, adding it to your keyring, and using GPG to verify the file's signature (which you should have downloaded at the same time as the source distribution). Doing this check is as simple as <tt>gpg --verify mixmaster-2.x.tar.gz.sig</tt>; note that this will only work if your signature file is named <checkfile.sig>, otherwise you'll have to specify the file you're checking. (Note to Lynx users: make sure that Lynx doesn't append a .gz to your sigfile -- it did to mine, and caused me quite a bit of consternation.)</li>
+<li>Unpack them somewhere handy, and then cd over to that directory. (Note that you will want to do the following either as root, to make sure you have proper permissions.) To build the binaries, type <tt>./Install</tt> in the directory you unpacked to and follow the prompts:
+<ul>
+<li><tt>Mixmaster directory?</tt>: Where you want all of the Mixmaster files, along with your remailing pool, to live. Probably /home/mix/Mix; make sure that this directory lives on a partition with space as discussed <a href=#2.1.5>above</a>, and that any parent directories are created (i.e. don't put it in /home/mix if you've not created the mix user).</li>
+<li><tt>Do you want to set up a remailer?</tt>: If you're reading this document, the answer is yes.</li>
+<li><tt>Do you want to compile the passphrase into the binary?</tt>: As the prompt that accompanies this question states, it doesn't make a lot of sense to compile in the passphrase; not only is doing so not more secure than putting it in a configuration file, it causes you to have to recompile Mixmaster if you ever need to change the passphrase. While this is your decision, I would recommend against it.</li>
+<li><tt>Use source?</tt>: If this is your first time installing on this particular system, always answer no; it's best to use pre-installed helper programs. If you've already encountered errors during a previous install (which is much more likely to happen on an odd platform, such as my NetBSD/Dreamcast remailer), select yes and point Mixmaster to the appropriate directory containing the sources you want to use.</li>
+<li><tt>Install as middleman?</tt>: See the <a href=#2.2.2>middleman section</a> to determine your answer to this question.</li>
+<li><tt>The e-mail address of your remailer</tt>: Self-explanatory.</li>
+<li><tt>Do you want Mixmaster to send auto-replies to messages it does not understand?</tt>: As stated by the propmt, answer No if a human will use the same address as the remailer, Yes otherwise.</li>
+<li><tt>An address to appear in the `From:' line of anonymous messages</tt>: This can be set to any value @your.domain, since mail should never be sent to this address. It is suggested that you use anonymous@, remailer@, nobody@, or some other non-offensive value.</li>
+<li><tt>Address for complaints to be sent to</tt>: This address, on the other hand, <b>must</b> exist, and should be monitored very frequently by a human (or, optimally, forwarded to your primary address).</li>
+<li><tt>Long name</tt>: Simply a descriptive name for your remailer, to appear in log and status messages.</li>
+<li><tt>Anon long name</tt>: The name that appears as the "human" part of the From: in messages from your remailer.</li>
+<li><tt>A short name to appear in lists</tt>: The eight-character-maximum name of your remailer for official lists, such as your mlist.txt, which will be used by other remailers to communicate with you.</li>
+<li><tt>Accept Mixmaster (Type II) messages?</tt>: Unless you have a specific reason otherwise, answer Yes here.</li>
+<li><tt>Accept PGP (Type I) remailer messages?</tt>: This is mainly for backwards compatibility; it is up to you whether to accept old-style messages.</li>
+<li><tt>Mixmaster will log error messages and warnings. Do you want to log informational messages about normal operation as well?</tt>: The answer here is probably yes, particularly if you don't plan on having logs for your MTA, as it is good to have some insight into the operations of your remailer, and these messages will not compromise security.</li>
+<li><tt>Filter binary attachments?</tt>: This is, for the most part, a matter of personal philosophy. Some binary attachments, such as videos, sound files, etc., are good; others, such as malicious executables, are bad. The question you as a remailer operator face is whether you want to attempt to police your service, at the risk of being overly restrictive, or run a free and open service, at the risk of letting harm be done through you. This question is moot if you run a middleman-only remailer, however, as you should then always allow binary attachments, so as not to infringe on those remailers who have chosen to allow them.</li>
+<li><tt>Allow users to add themselves to the list of blocked addresses?</tt>: It is almost always a good idea to answer Yes here, as this allows you to handle abuse complaints more easily and with a greater measure of self-protection (as you can say, "If you don't like my service, simply block yourself from it.").</li>
+<li><tt>Allow posting to Usenet?</tt>: Whether or not you allow newsgroup posting is up to you. Answering "y" causes your remailer to do the posting; "m" sends messages through a mail-to-news gateway; and "n" blocks all newsgroup posting through your remailer.</li>
+<li><tt>Pool size</tt>: As a remailer administrator, you need to decide if you want to lean towards ultra-high-security or speedy service; if you feel like doing neither, simply accept the default of 20. Thankfully, you can change this later to suit your experiences. Note that, in reality, your pool will often exceed the size you specify here; this is not a cause for concern, as long as it does not exceed it greatly (i.e. you do not have 100 messages when you specified 20) such a mismatch might signal a malfunction in your remailer.</li>
+<li><tt>Mailbox for non-remailer messages</tt>: This needs to be set according to the demands of your MTA.</li>
+<li><tt>Set .forward to the following line: "|/home/alex/Mix/mix -RM" Do that now?</tt>: If you are running an MTA which uses the .forward file, answer Yes unless you need to do manual tweaking. If you are running Qmail, set the appropriate .qmail file to this value.</li>
+<li>Installation should be complete at this point.</li>
+</ul>
+</li>
+<li>Configure your remailer through the mix.cfg file. Most options should be left alone, as they are the result of what you answered while running the Install script. If you do need to tweak these options, they are documented in the <a href=mix.manpage>mix(1)</a> manpage. NOTE: On some systems, your manpage may not install properly. If <tt>man mix</tt> cannot find a manpage, go to the directory with your source distribution, and use <tt>nroff -mandoc mix.1 | more</tt> to view the manpage. To install it permanently, copy the mix.1 file to your system's manpage directory (typically <tt>/usr/local/man/</tt>).
+<li>Customize your *.txt files. Go to the directory you installed Mixmaster in and individually edit abuse.txt, blocked.txt, help.txt, reply.txt, and usage.txt to your liking; you probably won't need to do much, as the standard files are very good. Next, sign all of these files, to prove to any recipients of these messages that you are the one who sent them. The typical command is <tt>gpg --sign abuse.txt</tt>; make sure you replace the unsigned file with the signed one after you've done this.
+<li>Sign your remailer's public key, the adminkey.txt file, using the same procedure as above.</li>
+<li>Setup your remailing strategy. This is controlle through your SENDPOOLTIME, POOLSIZE, RATE, IDEXP, and PACKETEXP values in mix.cfg. The first two values should be set higher for greater latency in your remailer. RATE can be lowered if you are worried about floods; since this determines the percent of messages that go out each mailing, setting a lower number here slows output of messages that have flooded into your remailer. PACKETEXP determines how long you hold onto partial messages while waiting for their other pieces to come in; a long value here is probably good. IDEXP determines how long a list of message IDs is kept, to help prevent replay attacks; while this cannot be set below 5 days, it is probably a good idea to have a low value here, since legitimate messages should have almost no ID duplication.<li>
+<li>How to allow full from: line forging</li>
+<li>How to just configure mix to allow from: nick names (not full from line: forging)</li>
+<li>How to add in a disclaimer to the body of the message if allowing user defined from: lines</li>
+<li>How to prevent any mucking around of the from lines</li>
+<li>How to block headers </li>
+</ul>
+<h3>3.3.2 Pinger</h3>
+<h3>3.4 Useful System Tools</h3>
+<a name=3.5></a>
+<h3>3.5 Bounce Re-Inject Script</h3>
+cmeclax po'u le cmevi'u ke'umrs written <a href=http://ixazon.dynip.com/~cmeclax/resend>a script</a> (http://ixazon.dynip.com/~cmeclax/resend) which automates the process of re-sending valid messages that have been bounced because of problems with a particular remailer, such as an over-quota account or misconfiguration.
+<br><br>
+To use it, you need to first put the entireity of the bounced messages into one big file. Alex Kirk has <a href=http://www.schnarff.com/mixmaster/combine>a script</a> (http://www.schnarff.com/mixmaster/combine) which will do this automatically for those running Maildirs.
+<br><br>
+Once you have your messages in this file, simply run <tt>resend <filename> <remailer@domain></tt>, prefereably as the <tt>mix</tt> user (since, if you were to run this as example_user, messages appear to be coming from example_user@yourdomain). You should probably pick a remailer besides the one that has ben bouncing messages to you, and probably go with one that has a good uptime/statistics history.<br><br>
+Keep in mind that this procedure should be repeated regularly, so that a) messages actually get through with some sense of timeliness, and b) you don't end up shooting out hundreds of messages to a particular remailer in one go.
+<h3>4. Security</h3>
+<a name=4.1></a>
+<h3>4.1 Host System Security</h3>
+Ensuring that the system your remailer runs on is secure is of the highest priority. After all, if the host you are using is cracked, the intruder could do any manner of horrible things, including abusing your mailer and getting your IP blacklisted, shutting down your mailer, compromising your private key, etc. There are several things you can do to protect your host, many of which are one-time-only, policy-oriented fixes.
+<h3>4.1.1 Philosophy</h3>
+<h3>4.1.2 Firewalls</h3>
+<a name=4.1.3></a>
+<h3>4.1.3 Minimalism/Unnecessary Software</h3>
+Most operating systems come with a great deal of programs and services enabled that you, the administrator, are unaware of and will never use. The number of such programs varies greatly, with Windows in all its forms being the worst offender down to <a href=http://www.openbsd.org>OpenBSD</a>, which ships with almost everything turned off.<br><br>
+The reason these programs are relevant to security is simple: if you have a service running that you know nothing about, you're not likely to keep up on exploits related to it. Thus, you're likely to end up with any number of remotely exploitable holes on your system that you're completely unaware of.<br><br>
+Your best bet in solving this problem -- besides picking an O/S that isn't a major offender here -- is to scan your box and to find out what services it's running, and then shut down those that aren't relevant to your operations (including, for the most part, those that you have no idea what they do). For UNIX-based systems, first use the <tt>ps</tt> command to check for actively running programs; you can usually turn them off permanently by editing a file like /etc/rc.conf and commenting them out. <br><br>
+More importantly, no matter what your O/S is, you should run a port scan from a remote machine, and then go about shutting down ports that offer unnecessary services. A good free web-based port scanner is at <a href=http://crypto.yashy.com/nmap.php>crypto.yashy.com/nmap.php</a>; hitting this URL will tell you what ports you have open and what's running on them.
+<h3>4.1.4 Local Attacks</h3>
+<h3>4.1.5 Patches/Updates/Upgrades</h3>
+<h3>4.2 Key Security</h3>
+<a name=4.3></a>
+<h3>4.3 Logging</h3>
+To log or not to log? That is every remailer's question. ;-)<br><br>
+Seriously, though, whether or not you keep your mail server logs is an important decision. The information contained in them could be valuable to any number of malicious entities -- crackers, someone seeking to track down an anonymous message sender, even government entities (which have been known to use subpoenas and other, more devious tactics to obtain logs).<br><br>
+If you are serious about protecting the identities of those who mail through you -- particularly if you're not just a middleman remailer, and your server interacts with real users regularly -- you should take precautions regarding your mail server logs. The simplest of these, of course, would be to simply turn your logs off altogether; that way no one can possibly break into them, and even if your records are subpoenaed, you can truthfully and legally say, "But I have none." If you're one of those people who simply can't function without running logs, you should at least use CFS or some other filesystem encryption scheme to protect your logs. Keep in mind that, if you do have logs that you need to erase, no standard O/S delete function will really delete them -- the data will remain recoverable on your hard drive unless you use special data-wiping software (and even then, it may still be recoverable given the proper amount of effort/resources on the attacker's part). Note that some UNIX systems have a flag to rm that will attempt to fully delete a file; so far, none of these perform the necessary steps (with the exception of OpenBSD 3.3 when it is released in April, as a patch was recently added to perform full overwriting). For more info on secure deletion, see <a href=http://www.cs.auckland.nz/~pgut001/pubs/secure_del.html>Peter Guttman's 1996 USENIX paper</a> Note that some UNIX systems have a flag to rm that will attempt to fully delete a file; so far, none of these perform the necessary steps (with the exception of OpenBSD 3.3 when it is released in April, as a patch was recently added to perform full overwriting). For more info on secure deletion, see <a href=http://www.cs.auckland.nz/~pgut001/pubs/secure_del.html>Peter Guttman's 1996 USENIX paper</a>, "Secure Deletion of Data from Magnetic and Solid-State Memory."
+<a name=4.4></a>
+<h3>4.4 Floods & Spam</h3>
+<h3>4.4.1 MTA</h3>
+<a name=4.4.2></a>
+<h3>4.4.2 Asian ISPs & Subnet Filtering</h3>
+Many systems administrators of late have noted that a the vast majority of spam being sent these days comes from severs in Asia. A good number of them have taken to blocking off the entire continent at their firewalls in an effort to stop this flood of spam.<br><br>
+While reading <a href=http://slashdot.org>Slashdot</a> recently, I came across an <a href=http://slashdot.org/articles/02/11/13/2312228.shtml>article</a> referencing Andy McFadden's <a href=http://www.fadden.com/techmisc/asian-spam.htm>proposal</a> of a slightly less drastic way of slowing this sort of spam. After conducting a study of spam he received, he compiled a list of particularly bad subnets in Asia -- ones whose owners eitehr were not competent to stop spam or simply did not care about it. He suggested that administrators use <a href=http://okean.com/asianspamblocks.html>the lists he compiled</a> to slow spam instead of blocking off an entire continent.<br><br>
+Eager to receive less spam, I tried this myself. I am please to report that blocking off these subnets drastically reduced the flow of spam into my inbox, though without measurements from before installing the list I have no scientific evidence of such.
+<a name=4.4.3></a>
+<h3>4.4.3 Prevent Massive Crossposting</h3>
+To prevent cross-posting to an unreasonably large number of lists, add these lines to your header.blk file:<br>
+/^Newsgroups:([^,]*,){X,}/q<br>
+/^Followup-To:([^,]*,){X,}/q<br>
+where X is the maximum number of groups a message can be cross-posted to. A reasonable limit here is probably about 5. This comes by default in current versions of Mixmaster.
+<a name=4.4.4></a>
+<h3>4.4.4 Flood Detection</h3>
+You can use Michael Shinn's <a href=ftp://ftp.shinn.net/pub/spamshield/output/spamshield.tar.gz>Spamshield</a> (ftp://ftp.shinn.net/pub/spamshield/output/spamshield.tar.gz) to help detect and deter floods on your box.
+<h3>4.4.5 Duplicate Detection</h3>
+<a name=4.4.6></a>
+<h3>4.4.6 Blocking Obnoxious Hosts</h3>
+While it is probably best to block abusive hosts at the firewall, in that this method uses up the smallest amount of system resources, there are cases where this is not possible -- when one does not have access to modify the firewall, or when an abusive address lives at a domain so widely used that it cannot be blocked (i.e. yahoo.com, hotmail.com). In these cases, you should add the abusive address(es) to your source.blk file. If this file does not exist, simply create a textfile of that name, listing addresses one per line. Regular expressions are permitted, so if you want to block off an entire domain, you could use *@domain.com.
+<a name=5></a>
+<h3>5. Policy</h3>
+<a name=5.1></a>
+<h3>5.1 Always Have A Posted Policy!</h3>
+Putting together and posting a well-thought-out abuse policy is a simple task that yields enormous dividends. If someone who has received abusive mailings through your remailer can see that you're doing your best to stop abuse, and that they have methods of recourse, they are infinitely less likely to complain to your ISP, try to crack your box, or otherwise harm you. Besides, making sure you're a good netizen by not tolerating abuse of your remailer is just good sense (not to mention good karma, if you belive in that sort of thing ;-).
+<a name=5.2></a>
+<h3>5.2 Responding to Abuse Complaints</h3>
+Making sure that you pay attention to abuse complaints is a key part of running a remailer. Not only is it good Netizenship, it's good PR for the cause: if someone experiences problems with you as a remop, chances are good they're going to think all remops and the whole concept of anonymous remailers are bad; if you're nice to them, then they'll think well of it all.<br><br>
+Responding to complaints from private citizens or companies is a rather simple process: unless there's some extreme reason not to, block them if they ask, and otherwise try to be accommodating of their wishes. Of course, if that includes "help me track down this SOB sending me these messages", well, you'll have to tell them the whole point of the service is that it's anonymous, and they're out of luck.<br><br>
+If a government entity asks you to block their address, you should probably point out that they have a legitimate requirement to listen to citizen concerns/complaints, and should probably only block an address if there are good supporting details -- i.e. it's someone's private address and complaints would be better received at a general mailbox, or if there was particularly pointless/offensive/etc. abuse or harrassment going on.<br><br>
+It makes your life much easier if you use the appropriate files to insert disclaimers throughout messages sent by your remailer. The file <tt>disclaim.txt</tt> will insert a string into the headers of all your messages; <tt>fromdscl.txt</tt> inserts a disclaimer at the start of the message body if there is a user-supplied From: string in the message; and <tt>footer.txt</tt> inserts a message at the bottom of the body. If you've put clearly stated disclaimers explaining your lack of responisiblity for the message's origin/content, the nature of your service, etc. in these places, and you're still getting complaints...well, you've probably got some really whiny people on your hands. ;-)<br><br>
+Most important of all, though, you need to have a clear policy already posted, so you can point to it and say, "Just follow my policy on this one." It should probably include when you will and won't block an address, what your philosophy is, why you're running the service, and have many good ways to contact you. Here's <a href=http://mixmaster.shinn.net/abuse.txt>an example</a>.
+<h3>5.3 To Monitor Or Not To Monitor?</h3>
+<a name=5.4></a>
+<h3>5.4 Cryptographically Signing Posts & E-mail</h3>
+If you're running a remailer, you probably have at least the basic concepts of cryptography down -- at least enough to know that it's possible to cryptographically sign mail messages and Usenet posts, and that doing so helps verify your identity in the message. What you may not realize is that there have been (and will probably continue to be) extremely good forgeries of messages from remailer operators on the official mailing lists. Since someone forging a message could do really nasty things, such as issue bogus keys for your remailer, it is of the utmost importance that you *always* sign your messages, so that a forgery will be obvious (and if a forger has access to your keys to sign your messages, well, you've got bigger problems). Remember, if you only sign messages some of the time, it will be very easy for someone to sneak in and act as you (thought the occasional unsigned post followed two minutes later with a "Crap! Forgot to sign that last one!" post will be understood. ;-).<br><br>
+It is even worth your while to sign things like your abuse autoresponse, as forgeries have been known to occur in them as well (particularly when people are accusing you of abuse, and are trying to claim that your abuse policy is not strong enough).
+<a name=5.4.1></a>
+<h3>5.4.1 How To</h3>
+The first thing you'll need to do is have <a href=http://www.pgpi.com>PGP</a> or <a href=http://www.gnupg.org>GPG</a>installed. Chances are, if you're here, you've already done this.<br><br>
+Once this is done, you'll want to establish a key seperate from your remailer keys as your administrator key. If you've already got a keyset you're officially using, simply use it; if not, generate a new keyset, preferably RSA (as this is stronger than DSS), and at least 1024 bits (thought 2048 wouldn't be bad at all, especially for the paranoid amongst us).<br><br>
+As far as getting your mail client to work with PGP/GPG, well, it all depends. For many Windows systems, such as Outlook (Express), Eudora, etc., you can simply use the PGP plug-in. For Mozilla, you'll want to use <a href=http://enigmail.mozdev.org/>Enigmail</a>, which is freely available for all major operating systems. If you use a webmail system, you'll need to check its documentation.<br><br>
+For those who are running a *NIX, particularly with the X Windows system, your range of choices is much larger (list from http://www.mandrakeuser.org/docs/secure/sgpg2.html):
+<ul>
+<li><a href=http://www.newplanetsoftware.com/arrow/>Arrow</a>, a lightweight mail client for X. </li>
+<li><a href=http://www.beedub.com/exmh/>Exmh</a>, X front end for the MH mailing system. </li>
+<li><a href=http://devel-home.kde.org/~kmail/>KMail</a>, KDE's standard mail client. </li>
+<li><a href=http://www.mew.org/index.html>Mew</a>, a MIME mail reader for (X)Emacs. </li>
+<li><a href=http://www.mutt.org/>Mutt</a>, a very popular console based mail reader. </li>
+<li><a href=http://www.washington.edu/pine/>Pine</a>, another popular console based mail reader. You will need an add-on like <a href=http://pgp4pine.flatline.de>pgp4pine</a>. </li>
+<li><a href=http://www.postilion.org/>Postilion</a>, a next-ish mail application for X. </li>
+<li><a href=http://spruce.sourceforge.net/>Spruce</a>, a GTK+ mail client. </li>
+<li><a href=http://xfmail.slappy.org/>XFMail</a>, a very powerful MUA for X.</li>
+</ul>
+<h3>5.5 Changing Remailer Keys</h3>
+<a name=5.6></a>
+<h3>5.6 Legal Links</h3>
+Legal information about online anonymity:
+  <a href=http://www.epic.org/free_speech/talley_v_california.html>http://www.epic.org/free_speech/talley_v_california.html</a> -- US Supreme Court Case 362 U.S. 60, Talley v. California (1960), in which the Court ruled that an address of an organization printed on a political leaflet was sufficient for distribution.<br>
+  <a href=http://www.epic.org/free_speech/mcintyre.html>http://www.epic.org/free_speech/mcintyre.html</a> -- US Supreme Court Case No. 93-986, McIntyre v. Ohio Elections Commission (1995), in which the Court ruled that anonymous leaflets of a political nature were protected by the first amendment. The Talley case was used to support the Court's decision here.<br>
+  <a href=http://www.law.miami.edu/~froomkin/articles/ocean.htm>http://www.law.miami.edu/~froomkin/articles/ocean.htm</a> -- Discussion by A. Michael Froomkin in the University of Pennsylvania Law Journal on the subjects of Anonymous Electronic Speech, Anonymous Digital Cash, and Anonymity as a Privacy-Enhancing Response to Profiling.<br>
+<br>
+Legal information about liability of ISPs for the content of
+e-mail and bulletin board postings by their users (such as this
+remailer): <br>
+  <a href=http://www.wired.com/news/politics/0,1283,36012,00.html>http://www.wired.com/news/politics/0,1283,36012,00.html</a> -- Wired Article discussing US Supreme Court's dismissal of a suit against Prodigy for vulgar/obscene messages posted by someone who had cracked into another user's account and posted as that user.<br>
+<br>
+Legal information about use of "offensive" speech:<br>
+  <a href=http://www.epic.org/free_speech/cohen.html>http://www.epic.org/free_speech/cohen.html</a> -- US Supreme Court Case No. 299, Cohen v. California (1971), in which the Court overturned the California Supreme Court's decision that wearing a jacket with the words "Fuck the Draft" in the Los Angeles Courthouse was offensive enough to be disallowed speech.
+<br><br>
+Relevant Legal Citations or Historical Quotes:
+ <br><br> 
+  ``The public would not be well served by compelling an
+    (internet service provider) to examine and screen millions
+    of e-mail communications, on pain of liability for defamation.''
+ <br><br> 
+	-  Ruling in Lunney vs. Prodigy Services Co., 99-1430. 
+		as affirmed by the US Supreme Court
+ <br><br> 
+   ``Under our Constitution, anonymous pamphleteering is not a
+     pernicious, fraudulent practice, but an honorable tradition
+     of advocacy and of dissent. Anonymity is a shield from the
+     tyranny of the majority.''
+ <br><br> 
+        -  Justice Stevens: McIntyre v Ohio Election Commission
+           majority opinion
+ <br><br> 
+   ``Anonymous pamphlets, leaflets, brochures and even books have
+     played an important role in the progress of mankind. 
+     Persecuted groups and sects from time to time throughout 
+     history have been able to criticize oppressive practices and
+     laws either anonymously or not at all.
+ <br><br> 
+   ``Even the Federalist Papers, written in favor of the adoption 
+     of our Constitution, were published under fictitious names. 
+     It is plain that anonymity has sometimes been assumed for the
+     most constructive purposes.''
+ <br><br> 
+	- Talley v. State of California, 362 U.S. 60, 64-65, 
+          80 S.Ct.  536, 538-539 (1960)  
+ <br><br> 
+    ``Consequently, actions resulting in the restriction of
+      free speech, such as prohibiting persons from engaging
+      in anonymous speech, are unconstitutional. American 
+      Knights of the Ku Klux Klan v. City of Goshen, 50 F.
+      Supp.2d 835 (N.D. Ind. 1999) (holding ordinance 
+      prohibiting KKK from wearing masks to conceal identity
+      from the public unconstitutional because of its tendency
+      to restrict freedom to distribute information).''
+ <br><br> 
+	-  McIntyre v. Ohio Elections Comm'n, 514 U.S. 334 (1995).
+ <br><br> 
+    ``After reviewing the weight of the historical evidence, it
+      seems that the Framers understood the First Amendment to
+      protect an author's right to express his thoughts on political
+      candidates or issues in an anonymous fashion.''
+ <br><br> 
+	-  Justice Thomas, US Supreme Court
+ <br><br> 
+    ``Anonymity is a shield from the tyranny of the majority... It
+      thus exemplifies the purpose behind the Bill of Rights, and of
+      the First Amendment in particular: to protect unpopular
+      individuals from retaliation -- and their ideas from
+      suppression -- at the hand of an intolerant society.''
+ <br><br> 
+        -  Justice Stevens, US Supreme Court
+ <br><br> 
+    ``Anonymity is important to Internet users who seek
+      to access sensitive information, such as users of the Critical
+      Path AIDS Project's Web site, the users, particularly gay youth,
+      of Queer Resources Directory, and users of Stop Prisoner Rape
+      (SPR).  Many members of SPR's mailing list have asked to remain
+      anonymous due to the stigma of prisoner rape.''
+ <br><br> 
+	-  AMERICAN CIVIL LIBERTIES UNION vs JANET RENO, 
+	   Attorney General of the United States
+	   (<a href=http://www.vtw.org/speech/decision.html>http://www.vtw.org/speech/decision.html</a>)
+ <br><br> 
+    ``Printer's ink has been running a race against gunpowder these 
+      many, many years. Ink is handicapped, in a way, because you can
+      blow up a man with gunpowder in half a second, while it may take
+      twenty years to blow him up with a book. But the gunpowder destroys
+      itself along with its victim, while a book can keep on exploding
+      for centuries.''
+ <br><br> 
+                        --Chistopher Morley, ``The Haunted Bookshop'' 
+ <br><br> 
+<h3>6. Announcing Your Remailer</h3>
+<h3>7. I'm Being Blocked!</h3>
+<h3>7.1 Static IP</h3>
+<h3>7.2 Dynamic IP</h3>
+<h3>7.3 Dial-Up/POP</h3>
+<br>
+<h3>Contributors and Contacts</h3>
+      This document would not have been possible without all the information contributed by other people.<br><br>
+
+      Additional Authors:<br>
+      Michael T. Shinn (faq AT shinn DOT net)<br>
+      trek AT trek DOT eu DOT or<br>
+      cmeclax Admin (cmeclax AT ixazon DOT dynip DOT com)<br>
+      christian mock (cm AT tahina DOT priv DOT at)<br>
+      Editors:<br>
+      Comments and revisions provided by:<br>
+      cmeclax Admin (cmeclax AT ixazon DOT dynip DOT com)<br>
+      Peter Palfrader (peter AT palfrader DOT org)<br>
+      Others that I haven't had a chance to add to these credits (but I will!)<br>
+<h3>Acknowledgments</h3>
+The authors of mixmaster, nymserv, multipost, reliable, rlist, PGP, premail, My Private Idaho, ghio, freedom and all other remailer, mail2news, crypto and pinger software.

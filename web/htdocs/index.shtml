@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+  <head>
+    <!--#include virtual="head.htinc"-->
+  </head>
+
+  <body>
+    <!--#include virtual="header.htinc"-->
+
+<h2>Description</h2>
+      
+<p>
+Mixmaster is the type II remailer protocol and the most popular implementation of it.
+
+<p>
+Remailers provide protection against traffic analysis and allow sending email
+anonymously or pseudonymously. Mixmaster consists of both client and
+server installations and is designed to run on several operation systems
+including but not limited to *BSD, Linux and Microsoft Windows.
+
+<p>
+The current 2.9.x versions are stable and widely deployed.  The 3.0beta*
+releases are betas for the upcoming Mixmaster 3.0.
+
+<p>
+To download Mixmaster visit Sourceforge's
+<a href="http://sourceforge.net/project/showfiles.php?group_id=37891">download center</a>.
+Packages for the Debian GNU/Linux distribution can be found in the testing and unstable
+distributions on a mirror near you. Also see
+<a href="http://packages.debian.org/mixmaster">http://packages.debian.org/mixmaster</a>.
+
+<p>
+For pingers and other remailer implementations see <a href="related.shtml">related Software</a>.
+
+<h2>Signing Releases</h2>
+
+<p>
+<!-- 2004 -->
+Releases of Mixmaster are signed by Len Sassaman using the <em>Mixmaster Code
+Release Signing Key 2004</em> (<a href="keys/8A277312.asc"><code>8A277312</code></a>).
+
+<pre>
+pub  1024D/8A277312 2004-01-01 Mixmaster Code Release Signing Key 2004
+     Key fingerprint = 1252 1706 B89B F4DF 3001  32A6 328A 8C3B 8A27 7312
+</pre>
+
+This key is signed by Len Sassaman's key <a href="keys/5DE480FC.asc"><code>5DE480FC</code></a>
+(<code>B115 73A8 91A8 05DC B26D  CBEB 4A0A 8149 5DE4 80FC</code>), Lance Cottrell's key
+<a href="keys/4F68DD91.asc"><code>4F68DD91</code></a>
+(<code>5327 8E77 666A 91F3 7007  B357 844B 9659 4F68 DD91</code>) and several other people.
+
+<p>
+For a full list of signatures see <a href="http://keyserver.noreply.org/pks/lookup?search=0x8A277312&fingerprint=on&op=vindex">0x8A277312 on keyserver.noreply.org</a> or any other keyserver.
+
+
+<!-- 2003 -->
+<h3>Releases in 2003</h3>
+Releases of Mixmaster in 2003 were signed by Len Sassaman using the <em>Mixmaster Code
+Release Signing Key 2003</em> (<a href="keys/9260849A.asc"><code>9260849A</code></a>).
+
+<pre>
+pub  1024D/9260849A 2003-01-01 Mixmaster Code Release Signing Key 2003
+     Key fingerprint = 8238 9577 4E47 CC1B 1C55  79A7 5EF0 F030 9260 849A
+</pre>
+
+This key is signed by Len Sassaman's key <a href="keys/5DE480FC.asc"><code>5DE480FC</code></a>
+(<code>B115 73A8 91A8 05DC B26D  CBEB 4A0A 8149 5DE4 80FC</code>), Lance Cottrell's key
+<a href="keys/4F68DD91.asc"><code>4F68DD91</code></a>
+(<code>5327 8E77 666A 91F3 7007  B357 844B 9659 4F68 DD91</code>) and several other people.
+
+<p>
+<em>Note: This key expired on January 1st 2004</em>
+
+
+<!-- 2002 -->
+<h3>Releases in 2002</h3>
+Releases of Mixmaster in 2002 were signed by Len Sassaman using the <em>Mixmaster Code
+Release Signing Key 2002</em> (<a href="keys/E99872D3.asc"><code>E99872D3</code></a>).
+
+<pre>
+pub  1024D/E99872D3 2002-07-01 Mixmaster Code Release Signing Key 2002
+     Key fingerprint = E73A 7757 7540 8BF1 D977  CACD 473D D317 E998 72D3
+</pre>
+
+which is signed by Len Sassaman's key <a href="keys/5DE480FC.asc"><code>5DE480FC</code></a>
+(<code>B115 73A8 91A8 05DC B26D  CBEB 4A0A 8149 5DE4 80FC</code>) and Lance Cottrell's key
+<a href="keys/4F68DD91.asc"><code>4F68DD91</code></a>
+(<code>5327 8E77 666A 91F3 7007  B357 844B 9659 4F68 DD91</code>).
+
+<p>
+<em>Note: This key expired on January 1st 2003</em>
+
+
+<h2>Current developers</h2>
+<ul>
+<li>Len Sassaman (Project Manager) &lt;<a href="mailto:rabbi@users.sourceforge.net">rabbi@users.sourceforge.net</a>&gt;</li>
+<li>Ulf Möller (Advisor) &lt;<a href="mailto:ulfm@users.sourceforge.net">ulfm@users.sourceforge.net</a>&gt;</li>
+<li>Colin Tuckley (Porter/Cross Platform Developer) &lt;<a href="mailto:colintu@users.sourceforge.net">colintu@users.sourceforge.net</a>&gt;</li>
+<!--<li>Disastry (Developer) &lt;<a href="mailto:disastry@users.sourceforge.net">disastry@users.sourceforge.net</a>&gt;</li>-->
+<li>Erik Arneson (Developer) &lt;<a href="mailto:dybbuk@users.sourceforge.net">dybbuk@users.sourceforge.net</a>&gt;</li>
+<li>Alex Kirk (Doc Writer) &lt;<a href="mailto:schnarff@users.sourceforge.net">schnarff@users.sourceforge.net</a>&gt;</li>
+<!--<li>Scott Renfro (Developer) &lt;<a href="mailto:sgr@users.sourceforge.net">sgr@users.sourceforge.net</a>&gt;</li>-->
+<li>Peter Palfrader (Developer) &lt;<a href="mailto:weaselp@users.sourceforge.net">weaselp@users.sourceforge.net</a>&gt;</li>
+</ul>
+
+On October 31st 2002 we lost a dear friend and developer: Janis Jagars aka Disastry.  Read <a href="disastry.txt">Len's Obituary for Disastry</a>.
+
+<p>
+Thanks to <a href="http://www.anonymizer.com/">Anonymizer Inc.</a> and <a href="mailto:loki@anonymizer.com">Lance M. Cottrell</a> for making this project possible.
+    <hr>
+    <!--#include virtual="banners.htinc"-->
+    Last modified: <!--#echo var="LAST_MODIFIED" -->
+  </body>
+</html>

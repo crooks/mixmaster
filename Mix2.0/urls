@@ -1,0 +1,9 @@
+mix.list http://stats.melontraffickers.com/mlist.txt
+mix.list http://mixmaster.shinn.net/stats/mlist
+mix.list http://www.noreply.org/echolot/mlist.txt
+type2.list http://stats.melontraffickers.com/type2.list
+type2.list http://mixmaster.shinn.net/stats/type2.list
+type2.list http://www.noreply.org/echolot/type2.list
+pubring.mix http://stats.melontraffickers.com/pubring.mix
+pubring.mix http://mixmaster.shinn.net/stats/pubring.mix
+pubring.mix http://www.noreply.org/echolot/pubring.mix

@@ -1,0 +1,988 @@
+
+<?xml version="1.0"?>
+<!-- vim: set et sw=2 wm=5 fdm=syntax nofen: -->
+<!-- $Id$ -->
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?rfc toc="yes"?>
+<!-- change this to no to create a document with lots of whitespace -->
+<?rfc compact="yes"?>
+
+<rfc ipr="full2026" docName="draft-sassaman-mixmaster-02.txt">
+
+<front>
+
+  <title abbrev="Mixmaster">Mixmaster Protocol Version 2</title>
+  <workgroup>The Mixmaster Project</workgroup>
+
+  <author initials="U." surname="Moeller" fullname="Ulf Moeller">
+    <organization>Secardeo GmbH</organization>
+    <address>
+      <postal>
+        <street>Betastr. 9a</street>
+        <city>85774 Unterfoehring</city>
+        <country>Germany</country>
+      </postal>
+      <email>ulf.moeller@secardeo.com</email>
+    </address>
+  </author>
+
+  <author initials="L." surname="Cottrell" fullname="Lance Cottrell">
+    <organization>Anonymizer, Inc.</organization>
+    <address>
+      <postal>
+        <street>5694 Mission Center Road #426</street>
+        <city>San Diego</city> <region>CA</region> <code>92108-4380</code>
+        <country>USA</country>
+      </postal>
+      <email>loki@infonex.com</email>
+    </address>
+  </author>
+
+  <author initials="P." surname="Palfrader" fullname="Peter Palfrader">
+    <organization>Debian Project</organization>
+    <address>
+      <postal>
+        <street>Hoettinger Auffahrt 1</street>
+        <city>6020 Innsbruck</city>
+        <country>Austria</country>
+      </postal>
+      <email>peter@palfrader.org</email>
+      <uri>http://www.palfrader.org/</uri>
+    </address>
+  </author>
+
+  <author initials="L." surname="Sassaman" fullname="Len Sassaman">
+    <organization>Nomen Abditum Services</organization>
+    <address>
+      <postal>
+        <street>P.O. Box 900481</street>
+        <city>San Diego</city> <region>CA</region> <code>92190-0481</code>
+        <country>USA</country>
+      </postal>
+      <email>rabbi@abditum.com</email>
+    </address>
+  </author>
+
+  <date month="May" year="2004"/>
+
+  <abstract>
+    <t>Most e-mail security protocols only protect the message body, leaving
+      useful information such as the identities of the conversing parties,
+      sizes of messages and frequency of message exchange open to
+      adversaries. This document describes Mixmaster version 2, a mail
+      transfer protocol designed to protect electronic mail against traffic
+      analysis.</t>
+
+    <t>Mixmaster is based on Dr. David Chaum's mix-net concept. A mix 
+      (remailer) is a service that forwards messages, using public key
+      cryptography to hide
+      the correlation between its inputs and outputs. Sending messages
+      through sequences of remailers achieves anonymity and unobservability
+      of communications against a powerful adversary.</t>
+  </abstract>
+
+</front>
+
+<middle>
+
+  <section anchor="introduction" title="Introduction">
+
+    <t>This document describes a mail transfer protocol designed to protect
+      electronic mail against traffic analysis. Most e-mail security
+      protocols only protect the message body, leaving useful information
+      such as the identities of the conversing parties, sizes of messages and
+      frequency of message exchange open to adversaries.</t>
+
+    <t>Message transmission can be protected against traffic analysis by the
+      mix-net protocol. A mix (remailer) is a service that forwards messages,
+      using public key cryptography to hide the correlation between its
+      inputs and outputs. If a message is sent through a sequence of mixes,
+      one trusted mix is sufficient to provide anonymity and unobservability
+      of communications against a powerful adversary. Mixmaster is a mix-net
+      implementation for electronic mail.</t>
+
+    <t>This memo describes version 2 of the Mixmaster message format, as used
+      on the Internet since 1995.</t>
+
+  </section>
+
+  <section anchor="protocol" title="The Mix-Net Protocol">
+
+    <t>The mix-net protocol <xref target="Chaum81"/> allows one to send
+      messages while hiding the relation of sender and recipient from
+      observers (unobservability). It also allows the sender of a message to
+      remain anonymous to the recipient (sender anonymity). If anonymity is
+      not desired, authenticity and unobservability can be achieved at the
+      same time by transmitting digitally signed messages.</t>
+
+    <t>This section gives an overview of the protocol and messaging
+      pattern.
+      The mixing algorithm is specified in <xref target="pool-behavior"/>,
+      and the message format is specified in
+      <xref target="message-format"/>.</t>
+
+    <t>Viewed from a high level, Mixmaster is like a packet network,
+      where each node in the network is known as a "remailer."
+      The original content is split into pieces, and an independent
+      path is determined for each piece, with the only requirement
+      that all paths must end at the same remailer.  Each piece
+      is multiply encrypted so that any intermediate remailer can
+      only decrypt enough information to determine the next hop
+      in the path.  When all pieces have arrived at the final
+      remailer, the original content is re-created and sent to its
+      final destination.</t>
+
+    <section anchor="message-creation" title="Message Creation">
+
+      <t>In this section the terms "sender" and "user agent" are
+        used informally.</t>
+
+      <t>The user agent splits the original content into chunks
+        of 10236 bytes; if the last chunk is shorter, random padding
+        is added. Each chunk has a four-byte length prepended,
+        and the result is called the packet body. 
+        If sender anonymity is desired, care should be taken to not
+        include any identifying information (such as headers or unique
+        content from the original plaintext message) in the packets.
+        The content may be compressed before splitting.</t>
+
+      <t>The sender next chooses a chain of up to 20 remailers
+        for each packet. Each path is independent, and can be of
+        a different length, but all paths must end at the same
+        remailer.  This final remailer is responsible for detecting and
+        discarding duplicate packets, reconstructing the message,
+        and doing the final delivery.</t>
+
+      <t>Each packet is next prepared as follows (the full details
+        are in <xref target="header-section"/>).  For a chain
+        of "n" remailers, headers "n + 1" through 20 are filled
+        with random data.  For headers "n" down to one, the sender
+        generates a symmetric encryption key. This key is used to
+        encrypt the packet body and all the following headers. The
+        key, and other control information, is then encrypted with
+        the public key of the "n"'th remailer in the chain.</t>
+
+      <t>The process is repeated, working backward through the chain
+        until the first packet has header information encrypted for the
+        first remailer, and the packet body has been encrypted "n" times.
+        The packet is then sent to the first remailer on its
+        chain.</t>
+
+    </section>
+
+    <section anchor="remailing" title="Remailing">
+
+      <t>When a remailer receives a message, it uses its private key to
+        decrypt the first header section. The Packet ID (see
+        <xref target="header-section"/>) can be used to detect
+        duplicates. The integrity of the message is verified by
+        checking the packet length and verifying the message digest
+        in the packet header.</t>
+
+      <t>All header sections, as well as the packet body, are decrypted with
+        the symmetric key found in the header. This reveals a public
+        key-encrypted header section for the next remailer.</t>
+
+      <t>The first header section is now removed, the others are shifted
+        up, and the last section is replaced with random bytes. Transport
+        encoding is applied to the new message as described in <xref
+          target="transport-encoding"/>.</t>
+
+      <t>In order to prevent an adversary from determining the relationship
+        between incoming and outgoing messages (i.e., traffic analysis), the
+        remailer must collect several encrypted messages before sending the
+        message it has just created; see <xref target="timed-pool"/>.</t>
+
+    </section>
+
+    <section anchor="message-reassembly" title="Message Reassembly">
+
+      <t>When a packet is sent to the final remailer, it contains an
+        indication that the chain ends at that remailer, and whether the
+        packet contains the complete message or if it is part of a multi-part
+        message. If the packet contains the entire message, the packet body
+        is decrypted and after reordering messages, the plain text is
+        delivered to the recipient. For partial messages, a message ID is
+        used to identify the other parts as they arrive. When all parts have
+        arrived, the message is reassembled, decompressed if necessary, and
+        delivered. A final remailer may discard partial messages if all
+        packets have not been received within a local time limit.</t>
+
+      <t>Note that only the final remailer can determine whether packets
+        are part of a specific message. To all of other remailers, the
+        packets appear to be completely independent.</t>
+
+    </section>
+
+  </section>
+
+  <section anchor="pool-behavior" title="Pool Behavior">
+
+    <section anchor="timed-pool" title="Timed Dynamic Pool Mix Algorithm">
+
+      <t>To obfuscate the link between incoming and outgoing messages,
+        Mixmaster uses a pooling scheme. Messages to be forwarded are
+        stored in a pool. At regular intervals the remailer
+        sends some random messages from the pool to either the next hop or
+        their final recipients.</t>
+
+      <t>The pooling scheme is a "Timed Dynamic Pool
+        Mix" <xref target="trickle02"/>, which has the following three parameters:
+        <texttable>
+          <ttcol align='left' width='20%'>Name</ttcol>
+          <ttcol align='left'>Description</ttcol>
+          <c>t</c><c>Mixing interval</c>
+          <c>min</c><c>Minimum number of messages in the pool</c>
+          <c>rate</c><c>Percentage of messages to be send in one round</c>
+        </texttable>
+        The following steps are implemented every "t" seconds:
+        <list style="numbers">
+          <t>Let "n" be the number of messages currently in the pool.</t>
+          <t>Let "count" be the smaller of "n - min" and "n * rate", or
+            zero if "n - min" is negative.</t>
+          <t>Select "count" messages from the pool at random and send
+            them.</t>
+        </list>
+      </t>
+      <t>
+        In its default configuration, Mixmaster has a mixing interval of
+        15 minutes, a minimum pool size of 45 messages, and permits a
+        maximum of 65% of the pool to be sent in one round.
+      </t>
+
+      <!-- XXX: give the default Mix 3.0 parameters here for reference?
+                - weasel -->
+
+    </section>
+
+    <section anchor="dummy-traffic" title="Dummy Traffic">
+
+      <t>Dummy messages (see <xref target="payload-format"/>) are multi-hop
+        messages with four randomly selected remailers as the chain. The
+        chain must be selected such that no remailer will appear twice 
+        unless two other remailers separate them.</t>
+
+      <t>Every time a message is placed in the pool, the remailer chooses
+        a random number from a geometric distribution and creates that
+        many dummy messages which are also placed in the pool.</t>
+
+      <t>Similarly, prior to each execution of the mixing algorithm
+        described in <xref target="timed-pool"/>, the remailer selects a
+        random number from a different geometric distribution and adds
+        that many dummy messages to the pool as well.</t>
+
+      <t>The parameters should be chosen so that on average the remailer
+        creates one dummy for every 32 inbound messages and one every
+        nine mixing rounds.</t>
+
+    </section>
+
+  </section>
+
+  <section anchor="message-format" title="Message Format">
+
+    <section anchor="payload-format" title="Payload Format">
+
+      <t>The message payload can be an e-mail message <xref
+          target="RFC2822"/>, a Usenet message <xref target="RFC1036"/>, or a
+        dummy message.</t>
+
+      <t>Mail and Usenet messages are prefixed with data specifying the
+        payload type. An additional, more restricted method of specifying
+        message header lines is defined for reasons of backward
+        compatibility.</t>
+
+      <t>The payload format is as follows:<figure><artwork>
+Number of destination fields   [                    1 byte]
+Destination fields             [             80 bytes each]
+Number of header line fields   [                    1 byte]
+Header lines fields            [             80 bytes each]
+User data section              [ 2549K -  previous fields ]</artwork></figure>
+      </t>
+
+      <t>Each destination field consists of a string of up to 80 ASCII
+        characters, padded with null-bytes to a total size of 80 bytes. The
+        following strings are defined:
+        <list style="hanging">
+          <t hangText="null:">Dummy message.  The remailer will discard the
+            message.</t>
+          <t hangText="post:">Usenet message.  The remailer will post the
+            message to Usenet.</t>
+          <t hangText="post: [newsgroup]">Usenet message. The remailer will
+            add a "Newsgroups" header with the specified content, and post
+            the message to Usenet.</t>
+          <t hangText="[address]">E-mail message. The remailer will add a
+            "To" header with the specified content, and send the message as
+            e-mail.</t>
+        </list>
+      </t>
+
+      <t>If no destination field is given, the payload is an e-mail
+        message.</t>
+
+      <t>Message headers can be specified in header line fields. Each header
+        line field consists of a string of up to 80 ASCII characters, padded
+        with null-bytes to a total size of 80 bytes.</t>
+
+      <t>There are three types of user data sections:
+        <list style="symbols">
+          <t>A compressed user data section begins with the GZIP identification
+            header (31, 139). This header contains an additional user data
+            section. The data are compressed using GZIP [RFC 1952]. The GZIP
+            operating system field must be set to Unix, and file names must not
+            be given. Compression may be used if the capabilities attribute of
+            the final remailer contains the flag "C".</t>
+          <t>An RFC 2822 user data section begins with the three bytes
+            "##[CR]" (35, 35, 13). It contains an e-mail message or a
+            Usenet message.</t>
+          <t>A user data section not beginning with one of the above
+            identification strings contains only the body of the message. When
+            this type of user data section is used, the message header fields
+            must be included in destination and header line fields.</t>
+        </list>
+      </t>
+
+      <t>The payload is limited to a maximum size of 2610180 bytes.
+        Individual remailers may use a smaller limit.</t>
+
+      <t>Remailer operators can choose to remove header fields supplied by
+        the sender and insert additional header fields, according to local
+        policy; see <xref target="key-format"/>.</t>
+
+    </section>
+
+    <section anchor="crypto-algorithms" title="Cryptographic Algorithms">
+
+      <t>The asymmetric encryption mechanism is RSA with 1024 bit RSA keys
+        and the PKCS #1 v1.5 (RSAES-PKCS1-v1_5) padding format <xref
+          target="RFC2437"/>. The symmetric encryption mechanism is EDE
+        3DES with cipher block chaining (24-byte key, 8-byte initialization
+        vector) <xref target="MENEZES"/>. MD5 <xref target="RFC1321"/>
+        is used as the message digest algorithm.</t>
+    </section>
+
+    <section anchor="packet-format" title="Packet Format">
+
+      <t>A Mixmaster packet consists of a header containing information for
+        the remailers, and a body containing payload data. To ensure that
+        packets are indistinguishable, the fields are all of fixed
+        size.</t>
+
+      <t>The packet header consists of 20 header sections (specified in
+        <xref target="header-section"/>) of 512 bytes each, resulting in a
+        total header size of 10240 bytes. The header sections (except for
+        the first one) and the packet body are encrypted with symmetric
+        session keys specified in the first header section.<figure><artwork>
++-------------------+
+| Header section 1  |
++- - - - - - - - - -+
+| Header section 2  |
++- - - - - - - - - -+
++ ...               +
++- - - - - - - - - -+
+| Header section 20 |
++-------------------+
+|                   |
+| Payload           |
+|                   |
+|                   |
+|                   |
+|                   |
+|                   |
++-------------------+</artwork></figure>
+      </t>
+
+      <section anchor="header-section" title="Header Section Format">
+
+        <t>Packet layout<figure><artwork>
+[ Public key ID                 16 bytes ]
+[ Length of RSA-encrypted data   1 byte  ]
+[ RSA-encrypted session key    128 bytes ]
+[ Initialization vector          8 bytes ]
+[ Encrypted header part        328 bytes ]
+[ Random padding                31 bytes ]</artwork></figure>
+         Total size: 512 bytes
+        </t>
+
+        <t>To generate the RSA-encrypted session key, a 24-byte
+          Triple-DES key is encrypted with RSAES-PKCS1-v1_5, resulting in
+          128 bytes (1024 bits) of encrypted data. This Triple-DES key and
+          the initialization vector provided in clear are used to decrypt
+          the encrypted header part. They are not used at other stages of
+          message processing.</t>
+
+        <t>The 328 bytes of data encrypted to form the encrypted header
+          part are as follows:<figure><artwork>
+[ Packet ID                            16 bytes ]
+[ Triple-DES key                       24 bytes ]
+[ Packet type identifier                1 byte  ]
+[ Packet information     depends on packet type ]
+[ Timestamp                             7 bytes ]
+[ Message digest                       16 bytes ]
+[ Random padding                      as needed ]</artwork></figure>
+         Total size: 328 bytes
+        </t>
+
+        <t>The fields are defined as follows:
+          <list style="hanging">
+            <t hangText="Packet ID:">randomly generated packet identifier.</t>
+            <t hangText="Triple-DES key:">used to encrypt the following
+              header sections and the packet body.</t>
+            <t hangText="Packet type identifier:">The type identifiers
+              are:
+              <texttable>
+                <ttcol align='left' width='20%'>Value</ttcol>
+                <ttcol align='left'>Type</ttcol>
+                <c>0</c><c>Intermediate hop</c>
+                <c>1</c><c>Final hop, complete message</c>
+                <c>2</c><c>Final hop, partial message</c>
+              </texttable>
+            </t>
+            <t hangText="Timestamp:">A timestamp is introduced with the byte
+              sequence (48, 48, 48, 48, 0). The following two bytes specify
+              the number of days since January 1, 1970 (00:00 UTC), in
+              little-endian byte order. A random number between one and
+              three, inclusive, may be subtracted from the number of days
+              in order to obscure the origin of the message.</t>
+            <t hangText="Message digest:">MD5 digest computed over the
+              preceding elements of the encrypted header part.</t>
+          </list>
+        </t>
+
+        <t>The packet information depends on the packet type identifier,
+          as follows:<figure><artwork>
+Packet type 0 (intermediate hop):
+  [ 19 Initialization vectors  152 bytes ]
+  [ Remailer address            80 bytes ]
+
+Packet type 1 (final hop):
+  [ Message ID                  16 bytes ]
+  [ Initialization vector        8 bytes ]
+
+Packet type 2 (final hop, partial message):
+  [ Chunk number                 1 byte  ]
+  [ Number of chunks             1 byte  ]
+  [ Message ID                  16 bytes ]
+  [ Initialization vector        8 bytes ]</artwork></figure>
+
+          <list style="hanging">
+            <t hangText="Initialization vectors:"> For packet type 1 and 2,
+              the IV is used to symmetrically encrypt the packet body. For
+              packet type 0, there is one IV for each of the 19 following
+              header sections. The IV for the last header section is also
+              used for the packet body.</t>
+            <t hangText="Remailer address:">E-mail address of next hop.</t>
+            <t hangText="Message ID:">Identifier unique to
+              (all chunks of) this message.</t>
+            <t hangText="Chunk number:">Sequence number used in multi-part
+              messages, starting with one.</t>
+            <t hangText="Number of chunks:">Total number of chunks.</t>
+          </list>
+        </t>
+
+        <t>In the case of packet type zero, header sections two through
+          twenty, and the packet body, each are decrypted
+          separately using the respective initialization
+          vectors. In the case of packet types one and two, header
+          sections two through twenty are ignored, and the packet body
+          is decrypted using the given initialization vector.</t>
+
+      </section>
+
+      <section anchor="body-format" title="Body Format">
+
+        <t>The message payload <xref target="payload-format"/> is split
+          into chunks of 10236 bytes. Random padding is added to the last
+          chunk if necessary. The length of each chunk (not counting the
+          padding), is prepended to the chunk as a four-byte little-endian
+          number. This forms the body of a Mixmaster packet.</t>
+
+        <t>A message may consist of up to 255 packets.</t>
+
+      </section>
+
+    </section>
+
+    <section anchor="transport-encoding" title="Mail Transport Encoding">
+
+      <t>Mixmaster packets are sent as standard email messages <xref
+          target="RFC2822"/>. The message body has the following format:
+        <figure><artwork>
+##
+Remailer-Type: Mixmaster [version number]
+
+-----BEGIN REMAILER MESSAGE-----
+[packet length ]
+[message digest]
+[encoded packet]
+-----END REMAILER MESSAGE-----
+      </artwork></figure></t>
+
+      <t>The length field always contains the decimal number "20480", since
+        the size of Mixmaster packets is constant. An MD5 message digest
+        <xref target="RFC1321"/> of the packet prior to Base-64 encoding is 
+        encoded in Base-64.</t>
+
+      <t>The packet itself is encoded in Base-64 encoding <xref
+          target="RFC1421"/>, with line-breaks every 40 characters.</t>
+
+    </section>
+
+  </section>
+
+  <section anchor="key-format" title="Key Format">
+
+    <t>Remailer public key files consist of a list of attributes and a public
+      RSA key:<figure><artwork>
+[attributes list]
+
+-----Begin Mix Key-----
+[key ID]
+[length]
+[encoded key]
+-----End Mix Key-----</artwork></figure>
+    </t>
+
+    <t>The attributes are listed in one line separated by spaces. Individual
+      attributes must not contain whitespace, and are defined as follows:</t>
+    <t>
+      <list style="hanging">
+        <t hangText="identifier:">A human readable string identifying the
+          remailer</t>
+        <t hangText="address:">The remailer's Internet mail address</t>
+        <t hangText="key ID:">Public key ID</t>
+        <t hangText="version:">Software version number</t>
+        <t hangText="capabilities:">Flags indicating additional remailer
+          capabilities</t>
+        <t hangText="validity date:">Date from which the key is valid</t>
+        <t hangText="expiration date:">Date of the key's expiration</t>
+      </list>
+    </t>
+
+    <t>The identifier consists of lowercase alphanumeric characters,
+      beginning with an alphabetic character. The identifier should be
+      no more than eight characters in length.</t>
+
+    <t>The key ID is the MD5 message digest of the representation of the RSA
+      public key (not including the length bytes). It is encoded as a
+      hexadecimal string.</t>
+
+    <t>The version field consists of the protocol version number followed by
+      a colon and the software version information, limited to the ASCII
+      alphanumeric characters, plus dot (.) and dash (-). All implementations
+      of the protocol specified here should prepend the software
+      version with "2:". Existing implementations lacking
+      a protocol version number imply protocol version 2.</t>
+
+    <t>The capabilities field is optional. It is a list of flags represented
+      by a string of ASCII characters. Clients should ignore unknown flags.
+      The following flags are defined:
+      <texttable>
+        <ttcol align='left' width='20%'>Flag</ttcol>
+        <ttcol align='left'>Meaning</ttcol>
+        <c>C</c><c>Accepts compressed messages</c>
+        <c>M</c><c>Will forward messages to another mix when used as final hop</c>
+        <c>Nm</c><c>Supports posting to Usenet through a mail-to-news gateway</c>
+        <c>Np</c><c>Supports direct posting to Usenet</c>
+      </texttable>
+    </t>
+
+    <t>The date fields are optional. They are ASCII date stamps in the format
+      YYYY-MM-DD. The first date indicates the date from which the key is
+      first valid; the second date indicates its expiration. If only one date
+      is present, it is treated as the key creation date. (The date stamp
+      implies 00:00 UTC).</t>
+
+    <t>The version, capabilities, and date fields must each be no longer than
+      125 characters.</t>
+
+    <t>The encoded key part consists of two bytes specifying the key length
+      (1024 bits) in little-endian byte order, and of the RSA modulus and the
+      public exponent in big-endian form using 128 bytes each, with preceding
+      null bytes for the exponent if necessary. The packet is encoded in
+      Base-64 <xref target="RFC1421"/>, with line-breaks every 40 characters.
+      Its length (258 bytes) is given as a decimal number.</t>
+
+    <t>Digital signatures <xref target="RFC2440"/> should be used to ensure
+      the authenticity of the key files.</t>
+
+  </section>
+
+
+  <section anchor="implementation" title="Implementation Notes">
+
+    <t>This section discusses various implementation issues.</t>
+
+    <section anchor="remixing" title="Remixing">
+
+      <t>Some remailers may understand multiple remailer protocols. In the
+        interest of creating a unified anonymity set, remailers which speak
+        multiple remailer protocols should attempt to remix messages that use
+        the older protocols whenever possible.</t>
+
+      <t>When a remailer receives a message in the older protocol format, it
+        should determine if the message destination is another remailer which
+        also speaks the Mixmaster protocol. If the remailer knows the
+        Mixmaster public key for the next hop, it should process the message
+        normally, but instead of sending the message to its next hop, treat
+        the processed message as opaque data which will comprise the body of
+        a Mixmaster message. The remailer should then create a Mixmaster
+        message with this body to be delivered to the next hop remailer.</t>
+
+     <t>Ensuring that a remailer's keyring contains up to date copies of 
+        the public keys for other remailers is the responsibility of the 
+        given remailer's operator. Utilities such as Echolot <xref 
+        target="Palfrader03"/> can be used to assist in automating this task.
+        </t>
+
+
+      <t>If the remailer receives a Mixmaster message that, when decrypted,
+        contains a message in an alternate protocol supported by the
+        remailer, it should process the message as though it had initially 
+        been delivered in the alternate protocol format.</t>
+
+    </section>
+
+    <section anchor="admin-commands" title="Administrative Commands">
+
+      <t>The existing remailer software understands a number of specific 
+        administrative commands. These commands are sent via the Subject: 
+        line of an e-mail to the email address of the remailer:
+        <list style="hanging">
+          <t hangText="remailer-help:">Returns information about using the
+            remailer. The remailer may support a suffix consisting of a
+            dash and a two-letter ISO 639 country code. For example,
+            remailer-help-ar will return a help file in Arabic, if
+            available.  Supported languages should be listed at the
+            beginning of the "remailer-help" response.</t>
+          <t hangText="remailer-key:">Returns the remailer's public key as
+            described in <xref target="key-format"/>. It may also return the keys and attributes
+            of other remailers it knows about.</t>
+          <t hangText="remailer-stats:">Returns information about the number
+            of messages the remailer has processed per day (again, a day
+            starts at 00:00 UTC).</t>
+          <t hangText="remailer-conf:">Returns local configuration
+            information such as software version, supported protocols,
+            filtered headers, blocked newsgroups and domains, and the
+            attribute strings for other remailers the remailer knows
+            about.</t>
+          <t hangText="remailer-adminkey:">Returns the OpenPGP <xref target="RFC2440"/>
+            key of the remailer's operator.</t>
+        </list>
+      </t>
+
+    </section>
+
+    <section anchor='impl-dummy-traffic' title="Dummy Traffic">
+
+      <t>Older versions of Mixmaster (2.0.4 through 2.9.0) allowed for the
+        creation of dummy message cover traffic, but provided no automated
+        means for introducing this dummy traffic into the system. Beginning
+        in version 3.0, Mixmaster employs an internal dummy policy.</t>
+
+    </section>
+
+    <section anchor="key-rotation" title="Key Rotation">
+
+      <t>Beginning with version 3.0, Mixmaster offers automatic key rotation.
+        Care must be taken to minimize the possibility for partitioning
+        attacks during the key rotation window.</t>
+
+      <t>Keys are generated with a validity date and an expiration date.
+        User agents should only display valid keys which have not
+        expired.</t>
+
+      <t>Keys are valid for a 13 month period. A remailer must generate
+        a new key when the existing key's expiration date is one month or
+        less in the future. When queried, a remailer must report the most
+        recently generated key as its key, effectively giving each key a 12
+        month service period.</t>
+
+      <t>Remailers must continue to decrypt and process mail encrypted to
+        expired keys for one week past the expiration date on the key.
+        One week after expiration, an expired remailer key should be
+        securely destroyed.</t>
+
+    </section>
+
+    <section anchor="anon-delivery" title="Delivery of Anonymous Messages">
+
+      <t>When anonymous messages are forwarded to third parties, remailer
+        operators should be aware that senders might try to supply header
+        fields that indicate a false identity or to send unauthorized Usenet 
+        control messages. This is a problem because many news servers
+        accept control messages automatically without any authentication.</t>
+
+      <t>For these reasons, remailer software should allow the operator to
+        disable certain types of message headers, and to insert headers
+        automatically.</t>
+
+      <t>Remailers usually add a "From:" field containing an address controlled
+        by the remailer operator to anonymous messages. Using the word
+        "Anonymous" in the name field allows recipients to apply scoring
+        mechanisms and filters to anonymous messages. Appropriate additional
+        information about the origin of the message can be inserted in the
+        "Comments:" header field of the anonymous messages.</t>
+
+      <t>Anonymous remailers are sometimes used to send harassing e-mail. To
+        prevent this abuse, remailer software should allow operators to block
+        destination addresses on request. Real-life abuse and attacks on
+        anonymous remailers are discussed in <xref target="Mazieres98"/>.</t>
+
+    </section>
+
+  </section>
+
+  <section anchor="security-consideration" title="Security Considerations">
+
+    <t>The security of the mix-net relies on the assumption that the
+      underlying cryptographic primitives are secure. In addition, specific
+      attacks on the mix-net need to be considered; <xref
+        target="Moeller98"/> contains a more detailed analysis of these
+      attacks.</t>
+
+    <t>Passive adversaries can observe some or all of the messages sent to
+      mixes. The users' anonymity comes from the fact that a large number of
+      messages are collected and sent in random order. For that reason
+      remailers should collect as many messages as possible while keeping the
+      delay acceptable.</t>
+
+    <t>Statistical traffic analysis is possible even if single messages are
+      anonymized in a perfectly secure way: an eavesdropper may correlate the
+      times of Mixmaster packets being sent and anonymized messages being
+      received. This is a powerful attack if several anonymous messages can
+      be linked together (by their contents or because they are sent under a
+      pseudonym). To protect themselves, senders must mail Mixmaster packets
+      stochastically independent of the actual messages they want to send.
+      This can be done by sending packets at regular intervals, using a dummy
+      message whenever appropriate. To avoid leaking information, the
+      intervals should not be smaller than the randomness in the delay caused
+      by trusted remailers.</t>
+
+    <t>There is no anonymity if all remailers in a given chain collude with
+      the adversary, or if they are compromised during the lifetime of their
+      keys. Using a longer chain increases the assurance that the user's
+      privacy will be preserved, but at the same time causes lower
+      reliability and higher latency. Sending redundant copies of a message
+      increases reliability but may also facilitate attacks. An optimum must
+      be found according to the individual security needs and trust in the
+      remailers.</t>
+
+    <t>Active adversaries can also create, suppress or modify messages.
+      Remailers must check the packet IDs to prevent replay attacks. To
+      minimize the number of packet IDs that the remailer must retain,
+      packets which bear a timestamp more than a reasonable number of days in
+      the past may be discarded. Implementors should consider that packets
+      maybe up to three days younger than indicated by the timestamp, and
+      select an expiration value which allows sufficient time for legitimate
+      messages to pass through the network. The number of packet IDs that the
+      remailer must retain can be further minimized by discarding packet IDs
+      for packets encrypted to a key which has expired more than a week in
+      the past.</t>
+
+    <t>The use of a link-level encryption protocol with an ephemeral key,
+      such as STARTTLS with SMTP <xref target="RFC2487"/>, provides for 
+      forward secrecy and further aids against replay attacks. Remailer 
+      operators should be encouraged to deploy such solutions at the MTA 
+      level whenever possible.</t>
+
+    <t>Early implementations of Mixmaster did not generate a timestamp
+      packet. Implementors should be aware of the partitioning attack
+      implications if they chose to permit processing of packets without
+      timestamps. Mixmaster versions 2.0.5 and greater in the 2.0.x tree 
+      as well as Mixmaster 3.0 in the 3.x tree do not permit processing of
+      such packets.</t>
+
+    <t>Message integrity must be verified to prevent the adversary from
+      performing chosen ciphertext attacks or replay attacks with modified
+      packet IDs, and from encoding information in an intercepted message in
+      a way not affected by decryption (e.g. by modifying the message length
+      or inducing errors). This version of the protocol does not provide
+      integrity for the packet body. Because the padding for header section
+      is random, in this version of the protocol it is impossible for a
+      remailer to check the integrity of the encrypted header sections that
+      will be decrypted by the following remailers. Chosen ciphertext attacks
+      and replay attacks are detected by verifying the message digest
+      included in the header section.</t>
+
+    <t>The adversary can trace a message if he knows the decryption of all
+      other messages that pass through the remailer at the same time. To make
+      it less practical for an attacker to flood a mix with known messages,
+      remailers can store received messages in a reordering pool that grows
+      in size while more than average messages are received, and periodically
+      choose at random a fixed fraction of the messages in the pool for
+      processing. There is no complete protection against flooding attacks in
+      an open system, but if the number of messages required is high, an
+      attack is less likely to go unnoticed. Additional work has been done in 
+      the field of active flooding attack protection; future mix-net protocols
+      may wish to take advantage of this work <xref target="Danezis03"/>.</t>
+
+    <t>If the adversary suppresses all Mixmaster messages from one particular
+      sender and observes that anonymous messages of a certain kind are
+      discontinued at the same time, that sender's anonymity is compromised
+      with high probability. There is no practical cryptographic protection
+      against this attack in large-scale networks. The effect of a more
+      powerful attack that combines suppressing messages and re-injecting
+      them at a later time is reduced by using timestamps.</t>
+
+    <t>Manipulation of the distribution of remailer keys, capabilities, and
+      statistics can lead to powerful attacks against a remailer network.
+      Sensitive information such as this should be distributed in a secure
+      manner.</t>
+
+    <t>The lack of accountability that comes with anonymity may have
+      implications for the security of a network. For example, many news
+      servers accept control messages automatically without any cryptographic
+      authentication. Possible countermeasures are discussed in <xref
+        target="anon-delivery"/>.</t>
+
+  </section>
+
+  <section anchor="acknowledgments" title="Acknowledgments">
+
+    <t>Several people contributed ideas and source code to the Mixmaster v2
+      software.</t>
+
+    <t>"Antonomasia" &lt;ant@notatla.org.uk&gt;,
+      Adam Back &lt;adam@cypherspace.org&gt;,
+      Marco A. Calamari &lt;marcoc@dada.it&gt;,
+      Colin Tuckley &lt;colin@tuckley.org&gt;,
+      Bodo Moeller &lt;bmoeller@acm.org&gt;, and
+      Jon Orbeton &lt;jono@networkcommand.com&gt;
+      suggested improvements to this document.
+      Rich Salz &lt;rsalz@datapower.com&gt; contributed
+      significantly to this document by XMLifying it and rewording
+      many ambiguous sections. Myles Conley &lt;miles@tenhand.com&gt; 
+      also reworded many ambiguous sections and contributed important 
+      suggestions for improving clarity.</t>
+
+  </section>
+
+</middle>
+
+<back>
+
+  <references title="References">
+
+    <reference anchor="Chaum81">
+      <front>
+        <title>Untraceable Electronic Mail, Return Addresses, and Digital
+          Pseudonyms</title>
+        <author initials="D." surname="Chaum" fullname="David Chaum">
+          <organization/><address/>
+        </author>
+        <date year="1981"/>
+      </front>
+      <seriesInfo name="Communications of the ACM" value="24:2"/>
+    </reference>
+
+    <reference anchor="Palfrader03"
+      target="http://http://www.palfrader.org/echolot/">
+      <front>
+        <title>Echolot: A Pinger for Anonymous Remailers</title>
+        <author initials="P." surname="Palfrader" fullname="Peter Palfrader">
+          <organization/><address/>
+        </author>
+        <date year="2003"/>
+      </front>
+    </reference>
+
+    <reference anchor="Mazieres98"
+      target="ftp://cag.lcs.mit.edu/pub/dm/papers/mazieres:pnym.ps.gz">
+      <front>
+        <title>The Design, Implementation and Operation of an Email Pseudonym
+          Server</title>
+        <author initials="D." surname="Mazieres" fullname="D. Mazieres">
+          <organization/><address/>
+        </author>
+        <author initials="F." surname="Kaashoek" fullname="F. Kaashoek">
+          <organization>5th ACM Conference on Computer and Communications
+            Security</organization>
+          <address/>
+        </author>
+        <date month="November" year="1998"/>
+      </front>
+      <seriesInfo name="In the Proceedings of the 5th ACM Conference on Computer and Communications Security (CCS 1998)" value=""/>
+    </reference>
+
+    <reference anchor="Danezis03"
+      target="http://www.cl.cam.ac.uk/users/gd216/p125_danezis.pdf">
+      <front>
+        <title>Heartbeat Traffic to Counter (n-1) Attacks</title>
+        <author initials="G." surname="Danezis" fullname="George Danezis">
+          <organization/><address/>
+        </author>
+        <author initials="L." surname="Sassaman" fullname="Len Sassaman">
+          <organization>Workshop on Privacy in the Electronic Society
+          </organization>
+          <address/>
+        </author>
+        <date month="October" year="2003"/>
+      </front>
+      <seriesInfo name="In the Proceedings of the Workshop on Privacy in the Electronic Society (WPES 2003), Washington, DC, USA" value=""/>
+    </reference>
+
+    <reference anchor="Moeller98"
+      target="http://agn-www.informatik.uni-hamburg.de/people/3umoelle/st.ps">
+      <front>
+        <title>Anonymisierung von Internet-Diensten</title>
+        <author initials="U." surname="Moeller" fullname="Ulf Moeller">
+          <organization>Studienarbeit, University of Hamburg</organization>
+          <address/>
+        </author>
+        <date month="January" year="1998"/>
+      </front>
+    </reference>
+
+    <reference anchor="trickle02"
+      target="http://freehaven.net/doc/batching-taxonomy/taxonomy.pdf">
+      <front>
+        <title>From a Trickle to a Flood: Active Attacks on Several Mix Types</title>
+        <author initials="A." surname="Serjantov" fullname="Andrei Serjantov">
+          <organization/><address/>
+        </author>
+        <author initials="R." surname="Dingledine" fullname="Roger Dingledine">
+          <organization/><address/>
+        </author>
+        <author initials="P." surname="Syverson" fullname="Paul Syverson">
+          <organization>Proceedings of Information Hiding Workshop (IH 2002)</organization>
+          <address/>
+        </author>
+        <date month="October" year="2002"/>
+      </front>
+      <seriesInfo name="In the Proceedings of Information Hiding Workshop (IH 2002)" value=""/>
+    </reference>
+
+
+    <reference anchor="MENEZES">
+      <front>
+        <title>"Handbook of Applied Cryptography", CRC Press</title>
+        <author initials="A." surname="Menezes" fullname="Alfred Menezes">
+          <organization/><address/>
+        </author>
+        <author initials="P." surname="van Oorschot" fullname="Paul van Oorschot">
+          <organization/><address/>
+        </author>
+        <author initials="S." surname="Vanstone" fullname="Scott Vanstone">
+          <organization/><address/>
+        </author>
+        <date year="1996"/>
+      </front>
+    </reference>
+
+    <?rfc include="reference.RFC.1036.xml" ?>
+    <?rfc include="reference.RFC.1321.xml" ?>
+    <?rfc include="reference.RFC.1421.xml" ?>
+    <?rfc include="reference.RFC.1952.xml" ?>
+    <?rfc include="reference.RFC.2311.xml" ?>
+    <?rfc include="reference.RFC.2437.xml" ?>
+    <?rfc include="reference.RFC.2440.xml" ?>
+    <?rfc include="reference.RFC.2487.xml" ?>
+    <?rfc include="reference.RFC.2822.xml" ?>
+
+  </references>
+
+</back>
+
+</rfc>
+

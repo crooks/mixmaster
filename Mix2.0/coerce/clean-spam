@@ -1,0 +1,16 @@
+#!/usr/bin/python
+
+import sys, shelve, md5, string
+from binascii import b2a_base64
+from os import popen
+from time import time
+
+spam_expire = 7*24*60*60 # when do ids expire
+
+id_log = shelve.open("/home/anon/Mix/spam-can")
+for id in id_log.keys():
+    when = id_log[id]
+    if time()-when > spam_expire: del id_log[id]
+try: id_log.dict.reorganize() # might fail if no gdbm module
+except: pass
+id_log.close()

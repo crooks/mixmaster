@@ -1,0 +1,14 @@
+Some notes on building version 2.0.5 for DOS/Windows:
+
+Download the DJGPP packages bnu215b, djdev203, fil41b, gcc333b, mak3791b
+(or newer) from SimTel (see http://www.delorie.com/djgpp/getting.html)
+and unzip them. Suggested directory: c:\GNU.
+
+Put the OpenSSL source in Src/ssleay
+
+Edit and run gccenv.bat, then run make in the library directories
+(for OpenSSL, you only need to build libcrypto.a, libssl.a is not used;
+however with a complete DJGPP build environment it should be possible to
+build OpenSSL 0.9.7 as described in the OpenSSL docs), then in
+the mixmaster source directory.
+

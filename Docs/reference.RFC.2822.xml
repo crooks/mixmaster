@@ -1,0 +1,13 @@
+<?xml version='1.0'?>
+
+<reference anchor='RFC2822'>
+
+<front>
+<title>Internet Message Format</title>
+<author initials='P.' surname='Resnick' fullname='P. Resnick'>
+<organization /></author>
+<date month='April' year='2001' /></front>
+
+<seriesInfo name='RFC' value='2822' />
+<format type='TXT' octets='110695' target='ftp://ftp.isi.edu/in-notes/rfc2822.txt' />
+</reference>

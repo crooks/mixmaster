@@ -1,0 +1,66 @@
+# $Id: mixmaster.conf.in,v 1.1 2002/08/28 20:06:49 rabbi Exp $
+
+# Name and path of sendmail program.  The -t flag is required.
+SENDMAIL	%MAIL
+
+# Default chain for your remailer messages (0 means random remailer):
+#CHAIN 0 0 0 0
+
+MINREL 98
+MAXLAT 24
+DISTANCE 2
+
+# Set if you want to see information about the selected chain:
+#VERBOSE         1
+
+# Remailer configuration - not relevant to client users
+#######################################################
+
+# Email address of the remailer.
+REMAILERADDR	%RMA
+
+# Bogus email address in the `From:' header.
+ANONADDR	%RAA
+
+# Complaints address
+COMPLAINTS	%CA
+
+# Long name of the remailer.
+REMAILERNAME	%RMN
+
+# Long name to be used in remailed messages.
+ANONNAME	%RAN
+
+# Short name of remailer. Used in lists.
+SHORTNAME	%SRMN
+
+# Size of the reordering pool. Zero means no reordering.
+POOLSIZE	%PS
+
+# Fraction of messages to send each time the pool is processed (in %).
+RATE            %PP
+
+# News posting software. Leave commented out if you do not want
+# to allow posting. Set to "mail-to-news" if you want to use a
+# gateway (see below).
+NEWS            %NEWS
+
+# Organization line for anonymous Usenet posts.
+ORGANIZATION	%ORG
+
+# Address of a mail to news gateway to use to deliver news messages.
+MAILtoNEWS	%M2N
+
+# If you want to support cypherpunk remailer format messages, uncomment
+# the following line, changing it for your own system.
+#TYPE1		/home/bob/remail/remailer
+
+# Uncomment if you want to accept encrypted Type1 messages only.
+#T1PGPONLY	1
+
+# Where to forward messages that do not match destination.allow if
+# configured as "middle only" (0 means random remailer).
+FORWARDTO	0
+
+# Mode for middleman remailer
+MIDDLEMAN	%MM

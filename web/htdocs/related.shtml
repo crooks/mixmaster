@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+  <head>
+    <!--#include virtual="head.htinc"-->
+  </head>
+
+  <body>
+    <!--#include virtual="header.htinc"-->
+      
+<h1>Related Software/Resources</h1>
+
+<h2>Remailer Clients</h2>
+
+<p>
+<a href="http://www.mutt.org/">The Mutt E-Mail Client</a> has an interface to
+call the Mixmaster binary.  For <a href="http://www.gnu.org/software/emacs/emacs.html">Emacs</a>
+Erik wrote an <a href="http://erik.arneson.org/elisp.html">interface</a>:
+<a href="http://erik.arneson.org/mixmaster.el">mixmaster.el</a>.
+
+<p>
+The <a href="http://sourceforge.net/projects/jbn">JBN</a> project on
+sourceforge was just started in order to maintain JBN again and bring it up to
+date. (<a href="http://www.theinternet.cc/potatoware/jbn2">old versions</a>)
+
+<p>
+<a href="http://sourceforge.net/projects/mixlet">Mixlet</a> is a Mix Client in
+Java.  It does not rely on Mixmaster itself to build the messages but rather
+implements the required procedures itself.
+
+<p>
+Deacon is developing a <a href="http://sourceforge.net/projects/nymproxy">Nym-Proxy</a>
+which lets you use your usual Mail and News clients while still using a Nym.
+This is for Unixes.
+
+<p>
+<a href="http://quicksilver.skuz.net/">QuickSilver</a> is an actively
+maintained and developed client for Win32.  It doesn't call the Mixmaster
+binary but instead links against the mix.dll build from Mixmaster's sources.
+
+<p>
+<a href="http://www.eskimo.com/~turing/remailer/FAQ/faq.6.html">Section 6 of the alt.privacy.anon-server FAQ</a>
+perhaps has a list of more remailer clients.
+
+
+<h2>Other Remailers</h2>
+
+<p>
+<a href="http://www.bigfoot.com/~potatoware/reli">Reliable</a> is
+a popular piece of remailer software for Microsoft Windows. It is type I
+(cypherpunk) only but has type II callbacks. So if you additionally install
+Mix2 or Mix3 on your system it can also do type II. 
+
+<p>
+Deacon also created the <a href="http://sourceforge.net/projects/reliable2">Reliable2</a>
+project here on SourceForge in order to bring it up to current standards.
+
+<p>
+<a href="http://www.mixminion.net/">Mixminion</a> will become the next
+generation remailing network (Type III).  It's not yet ready to provide you
+with anonymity but it's well on its way.
+
+<p>
+Free Haven's <a href="http://freehaven.net/anonbib/">Anonymity Bibliography</a>
+has pointers to all the important papers in the anonymity field. It includes
+recommended reading lists to get new developers up to speed on remailer designs
+and related systems.
+
+<h2>Nymservers</h2>
+
+<p>
+The source for the original newnym style nymserver that runs nym.alias.net can be
+dowloaded via finger from
+<a href="finger:source@nym.alias.net"><code>finger:source@nym.alias.net</code></a>
+(you can also send an email to <a href="mailto:source@nym.alias.net">source@nym.alias.net</a>).
+
+<p>
+There also is a project that makes the nym.alias.net source work with newer PGP
+and GnuPG versions. The project web site is at
+<a href="http://sourceforge.net/projects/nymserv">http://sourceforge.net/projects/nymserv</a>.
+
+<h2>Pingers</h2>
+
+For remailers to work in a reliable way it is imperative that remailers and users have
+the latest keys and reliability statistics of other remailers. Such data is collected by
+programs called Pingers. Either you operate your own or fetch the data from one
+of the many existing pingers.
+
+<p>
+<small>Sorted alphabetically:</small>
+<ul>
+<li><a href="http://www.palfrader.org/echolot/">echolot</a> by Peter Palfrader</li>
+<li><a href="http://lexx.shinn.net/cmeclax/pingstats.html">pingstats</a> by cmeclax</li>
+<li><a href="http://www.tahina.priv.at/~cm/hacks/">remlist</a> by Christian Mock</li>
+<li><a href="ftp://ftp.zedz.net/pub/crypto/remailer/">rlist</a> by Raph Levien</li>
+</ul>
+
+    <hr>
+    <!--#include virtual="banners.htinc"-->
+    Last modified: <!--#echo var="LAST_MODIFIED" -->
+  </body>
+</html>

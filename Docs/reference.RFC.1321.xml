@@ -1,0 +1,22 @@
+<?xml version='1.0'?>
+
+<reference anchor='RFC1321'>
+
+<front>
+<title abbrev='MD5 Message-Digest Algorithm'>The MD5 Message-Digest Algorithm</title>
+<author initials='R.' surname='Rivest' fullname='Ronald L. Rivest'>
+<organization>Massachusetts Institute of Technology, (MIT) Laboratory for Computer Science</organization>
+<address>
+<postal>
+<street>545 Technology Square</street>
+<street>NE43-324</street>
+<city>Cambridge</city>
+<region>MA</region>
+<code>02139-1986</code>
+<country>US</country></postal>
+<phone>+1 617 253 5880</phone>
+<email>rivest@theory.lcs.mit.edu</email></address></author>
+<date month='April' year='1992' /></front>
+
+<seriesInfo name='RFC' value='1321' />
+</reference>

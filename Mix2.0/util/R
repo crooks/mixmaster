@@ -1,0 +1,87 @@
+#!/bin/sh
+# send anonymous reply
+# $Id: R,v 1.1 2002/08/28 20:06:52 rabbi Exp $
+
+header()
+{
+  header=`cat "$2" | sed '/^$/,$d' | grep -i "^$1:" | sed 's/^[a-zA-Z-]*: //'`
+}
+
+mixmaster=""
+for i in $HOME/Mix/mixmaster mixmaster `which mixmaster 2>&1` $MIXPATH/mixmaster
+do
+  if [ -f "$i" -a -x "$i" ]
+  then
+    mixmaster=$i
+  fi
+done
+if [ "$mixmaster" = "" ]
+then
+  echo "Please put the mixmaster binary somewhere in your PATH."
+  exit 1
+fi
+
+TMP=/tmp/tmp.$$
+MSG=/tmp/msg.$$
+
+cat >$TMP
+
+header Reply-To $TMP
+TO=$header
+
+if [ "$TO" = "" ]
+then
+ header From $TMP
+ TO=$header
+fi
+
+header Message-ID $TMP
+if echo "$header" | grep ulf >/dev/null
+then
+ header=`echo "$header" | sed 's/%/@/;s/%ulf.*/>/'`
+fi
+REF=$header
+
+header Subject $TMP
+SUBJECT=$header
+
+(
+echo To: $TO
+echo In-Reply-To: $REF
+echo Subject: Re: `echo $SUBJECT | sed 's/^Re: //'`
+echo Chain: 0 0 0
+
+echo
+echo "In $REF, you write:"
+echo
+
+sed '1,/^$/d;s/^/> /g' $TMP
+
+echo
+
+if [ -f ~/.anonsig ]
+then
+ echo "-- "
+ cat ~/.anonsig
+fi
+
+) >$MSG
+rm $TMP
+
+$EDITOR $MSG </dev/tty
+
+echo -n "Send message (y/n)? "
+read ans </dev/tty
+
+if [ "$ans" = "y" ]
+then
+  header Chain $MSG
+  if [ "$header" = "" ]
+  then
+    CHAIN=""
+  else
+    CHAIN="-l $header"
+  fi
+  cat $MSG | grep -v '^Chain:' | $mixmaster -m $CHAIN
+fi
+rm $MSG

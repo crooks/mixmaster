@@ -1,0 +1,85 @@
+Mixmaster Version 3.0 beta
+
+Many people have helped with the development of Mixmaster over the past
+nine years. Lance Cottrell wrote the original 1.x and 2.0.x versions. Ulf
+Möller contributed significantly to the 2.0.x versions, and wrote the core
+code for 2.9 from scratch. I'd like to give special thanks to Janis Jagars
+for his valuable code contributions, and to Peter Palfrader, whose 
+tireless efforts have made this release possible.
+
+Mixmaster uses Jean-loup Gailly and Mark Adler's compression library zlib,
+Philip Hazel's Perl Compatible Regular Expressions library, the ncurses
+library (originally written by Zeyd Ben-Halim and Eric Raymond), and
+OpenSSL (based on work by Eric Young and Tim Hudson.)
+
+I have compiled below a partial list of people who have contributed to
+Mixmaster's success, through suggestions, bug reports, patches, or other
+contributions. Please report any omissions to me.
+
+There have been numerous anonymous contributions to this project as well.
+While we obviously can't thank the contributor(s) by name, they are still
+very much appreciated.
+
+Thanks also to all the remailer operators, who give their time and service
+(and perform what is too often a thankless job) to ensure that our right
+to anonymous speech is preserved.
+
+
+Len Sassaman
+08 November 2003
+San Diego, California
+http://www.abditum.com/~rabbi/
+
+
+Credits:
+
+Antonomasia
+Erik Arneson
+Adam Back
+Kevin Bennett
+Gerd Beuster
+Jim Castleberry
+cmeclax
+Bram Cohen
+Lance Cottrell
+Richard Christman
+Todd Cutter
+Dingo Admin
+Andy Dustman
+Sami Farin
+John B. Fleming
+Bryan Fordham
+Laurent Fousse
+Ron Fritz
+goblin
+Mark Grant
+Lucky Green
+Mark Hahn
+Janis Jagars
+Richard Johnson
+Alex de Joode
+Katherine
+Johannes Kroeger
+Hauke Lampe
+Ben Laurie
+Patrick J. LoPresti
+L. McCarthy
+Medusa
+Christian Mock
+Bodo Möller
+Ulf Möller
+noise
+Bill O'Hanlon
+Peter Palfrader
+John A. Perry
+Scott Renfro
+RProcess
+Len Sassaman
+Senshi-Admin
+Markus Stöger
+Nikolay Sturm
+Trek
+Rodney Thayer
+Colin Tuckley
+André M. VanKlaveren
+Michael Young

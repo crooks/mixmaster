@@ -1,0 +1,120 @@
+SIMPLE INSTRUCTIONS TO PORT MIXMASTER DOS SOURCE CODE TO OS/2 (MIXMASTER/2).
+
+N.B.  This zipfile does not contain PGP or any other encryption software.
+
+N.B.  Use an editor that inserts and preserves real tab characters.
+
+1.  Get and install GNU EMX 0.9c for OS/2, available from Hobbes, etc.
+
+2.  Get and install GNU MAKE for OS/2, available from Hobbes, etc.
+
+3.  Rename the GNU MAKE executable "gmake.exe" and place in \emx\bin.
+
+4.  Get and unzip the source for the _DOS_ version of Mixmaster.
+    Get the source for the RSAREF library and unzip it in the \mix...\src
+    directory.
+
+5.  Copy build.cmd to \mix...\build directory.
+
+6.  Edit build.cmd to supply drive\path\directory information.
+
+7.  Copy ranlib.cmd to \emx\bin directory.
+
+8.  Copy Makefile to \mix...\src directory, overwriting default.
+
+9.  Run build.cmd to create "mixmaster" file in destination directory.
+
+10. Copy make-mixmast-exe.cmd to destination, edit accordingly, and run.
+
+11. Copy files in \mix...\ directory to destination directory.
+
+12. REN mixmaste.con mixmaster.conf.
+
+13. Edit mixmaster.conf to set REMAILERLIST to type2.list (not .lis).
+
+14. REN mixmaste.htm mixmaster.html.
+
+15. Edit mixmaster.conf to set RELLIST to mixmaster.html (not .htm).
+
+
+You may use the "-o outfile" option to create a mixmaster file which
+you can then import into your regular email program and send to the
+first remailer to which you chose to send the output file when you
+created it.
+
+Alternatively, IF YOU DO NOT USE UTLIMAIL, you may configure
+sendmail.exe to send the remailer file to the first remailer
+automatically, without using your regular email program.  (N.B.  Do
+not follow this alternative if you want to continue using Ultimail/2,
+unless you are a sendmail wizard.)
+
+- Omit the "-o outfile" option from the mixmaster command line.
+
+- Add "SENDMAIL [tab] [drive]:/tcpip/bin/sendmail.exe -t" to
+mixmaster.conf.
+
+- Find and open the TCP/IP Internet (LAN) folder.
+
+- Double-click on the TCP/IP Configuration (LAN) icon.
+
+- Go to sendmail settings page 1; click on radio button for "When
+using another mail package"; set your Mqueue and Mail directories to
+your installed Mixmaster directory; identify Mixmaster as your
+mailer, using the full directory, path, and program name; fill in
+your reply domain; and fill in the complete address of your SMTP mail
+gateway.
+
+- You probably may ignore sendmail settings page 2.
+
+- Got to mail settings page 1; for your "mail environment," check the
+radio button for "internet only"; "LAN and internet" should also
+work.
+
+- You probably may ignore mail settings page 2.
+
+- Close the TCPIP Configuration settings, saving all changes, and
+reboot.  If you have deleted Ultimail/2, you will get an error
+message or two, which you may ignore.
+
+- To send Mixmaster output automatically, use the following command
+line:
+
+     mixmaster -f infile -to userid@domain -s "subject" -l [# # # #]
+
+- You should see something like this on your screen:
+
+     IBM OS/2 SENDMAIL VERSION 2.0
+     Using Sendmail Configuration File [drive]:\TCPIP\ETC\sendmail.cf
+
+- If you have problems, check your sendmail.cf file for the
+following:
+
+> Mlocal, P=d:\mix\mixmaster.exe, F=lsmDFP,  S=10, R=0, A=d:\mix $u
+> Mprog,  P=c:\os2\cmd.exe, F=lsDFM, A= /C $u
+
+These lines should match the information you provided on sendmail
+settings page 1 of the TCP/IP Configuration (LAN) icon.  It should be
+unnecessary to change these lines manually if you made your Mqueue
+and Mail directories the same as your mixmaster directories.  Do not
+change the rest of sendmail.cf alone unless you are a sendmail
+wizard.
+
+DISCLAIMER OF WARRANTY: These instructions and the included files are provided
+"as is" and with no warranty whatsoever.  No warranties of merchantability or
+fitness for a particular purpose are made.  Rather, these instructions and the
+included batch files were prepared by a non-programmer who does not even know
+how to debug or search for problems, defects, security holes, etc.  In short,
+you are a fool if you rely on this file or the included batch files without at
+least examining them very closely, running this stuff past a real programmer,
+and performing a lot of tests before you do anything important with this stuff.
+
+DISCLAIMER OF LEGALITY: Governments are getting increasingly paranoid as signs
+of the times point more and more to the return of the Lord Jesus Christ and His
+final victory over evil, including evil governments.  The chances are that you
+live in a country that has imposed or will impose serious restrictions on your
+right of access to or use of encryption software and anonymous remailers.  Due
+to these circumstances and the uncertaintly of what politicians will do in the
+future, nothing is warranted, represented, or implied about whether and how it
+would be legal or illegal for you to get the various software packages needed
+to compile the OS/2 version of Mixmaster, nor is anything implied, warranted,
+or represented as to the legality or illegality of your using Mixmaster/2.

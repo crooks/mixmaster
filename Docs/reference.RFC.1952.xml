@@ -1,0 +1,40 @@
+<?xml version='1.0'?>
+
+<reference anchor='RFC1952'>
+
+<front>
+<title>GZIP file format specification version 4.3</title>
+<author initials='P.' surname='Deutsch' fullname='L. Peter Deutsch'>
+<organization>Aladdin Enterprises</organization>
+<address>
+<postal>
+<street>203 Santa Margarita Ave.</street>
+<city>Menlo Park</city>
+<region>CA</region>
+<code>94025</code>
+<country>US</country></postal>
+<phone>+1 415 322 0103</phone>
+<facsimile>+1 415 322 1734</facsimile>
+<email>ghost@aladdin.com</email></address></author>
+<author initials='J-L.' surname='Gailly' fullname='Jean-Loup Gailly'>
+<organization />
+<address>
+<email>gzip@prep.ai.mit.edu</email></address></author>
+<author initials='M.' surname='Adler' fullname='Mark Adler'>
+<organization />
+<address>
+<email>madler@alumni.caltech.edu</email></address></author>
+<author initials='L.P.' surname='Deutsch' fullname='L. Peter Deutsch'>
+<organization />
+<address>
+<email>ghost@aladdin.com</email></address></author>
+<author initials='G.' surname='Randers-Pehrson' fullname='Glenn Randers-Pehrson'>
+<organization />
+<address>
+<email>randeg@alumni.rpi.edu</email></address></author>
+<date month='May' year='1996' />
+<abstract>
+<t>This specification defines a lossless compressed data format that is compatible with the widely used GZIP utility.  The format includes a cyclic redundancy check value for detecting data corruption.  The format presently uses the DEFLATE method of compression but can be easily extended to use other compression methods.  The format can be implemented readily in a manner not covered by patents.</t></abstract></front>
+
+<seriesInfo name='RFC' value='1952' />
+</reference>

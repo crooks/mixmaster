@@ -1,0 +1,720 @@
+Testing Perl-Compatible Regular Expressions
+PCRE version 1.09 28-Apr-1998
+
+/(a)b|/
+Identifying subpattern count = 1
+No options
+No first char
+
+/(a*)*/
+Failed: operand of unlimited repeat could match the empty string at offset 4
+
+/(abc|)+/
+Failed: operand of unlimited repeat could match the empty string at offset 6
+
+/abc/
+Identifying subpattern count = 0
+No options
+First char = 'a'
+    abc
+ 0: abc
+    defabc
+ 0: abc
+    \Aabc
+ 0: abc
+    \IABC
+ 0: ABC
+    *** Failers
+No match
+    \Adefabc
+No match
+    ABC
+No match
+
+/^abc/
+Identifying subpattern count = 0
+Options: anchored
+No first char
+    abc
+ 0: abc
+    \Aabc
+ 0: abc
+    *** Failers
+No match
+    defabc
+No match
+    \Adefabc
+No match
+
+/a+bc/
+Identifying subpattern count = 0
+No options
+First char = 'a'
+
+/a*bc/
+Identifying subpattern count = 0
+No options
+No first char
+
+/a{3}bc/
+Identifying subpattern count = 0
+No options
+First char = 'a'
+
+/(abc|a+z)/
+Identifying subpattern count = 1
+No options
+First char = 'a'
+
+/^abc$/
+Identifying subpattern count = 0
+Options: anchored
+No first char
+    abc
+ 0: abc
+    \Mdef\nabc
+ 0: abc
+    *** Failers
+No match
+    def\nabc
+No match
+
+/abc\/
+Failed: \ at end of pattern at offset 4
+
+/ab\gdef/X
+Failed: unrecognized character follows \ at offset 3
+
+/(?X)ab\gdef/X
+Failed: unrecognized character follows \ at offset 7
+
+/x{5,4}/
+Failed: numbers out of order in {} quantifier at offset 5
+
+/z{65536}/
+Failed: number too big in {} quantifier at offset 7
+
+/[abcd/
+Failed: missing terminating ] for character class at offset 5
+
+/[\B]/
+Failed: invalid escape sequence in character class at offset 2
+
+/[a-\w]/
+Failed: invalid escape sequence in character class at offset 4
+
+/[z-a]/
+Failed: range out of order in character class at offset 3
+
+/^*/
+Failed: nothing to repeat at offset 1
+
+/(abc/
+Failed: missing ) at offset 4
+
+/(?# abc/
+Failed: missing ) after comment at offset 7
+
+/(?z)abc/
+Failed: unrecognized character after (? at offset 2
+
+/.*b/
+Identifying subpattern count = 0
+Options: anchored
+No first char
+
+/.*?b/
+Identifying subpattern count = 0
+Options: anchored
+No first char
+
+/cat|dog|elephant/
+Identifying subpattern count = 0
+No options
+No first char
+    this sentence eventually mentions a cat
+ 0: cat
+    this sentences rambles on and on for a while and then reaches elephant
+ 0: elephant
+
+/cat|dog|elephant/S
+Identifying subpattern count = 0
+No options
+No first char
+Starting character set: c d e 
+    this sentence eventually mentions a cat
+ 0: cat
+    this sentences rambles on and on for a while and then reaches elephant
+ 0: elephant
+
+/cat|dog|elephant/iS
+Identifying subpattern count = 0
+Options: caseless
+No first char
+Starting character set: C D E c d e 
+    this sentence eventually mentions a CAT cat
+ 0: CAT
+    this sentences rambles on and on for a while to elephant ElePhant
+ 0: elephant
+
+/cat|dog|elephant/IS
+Identifying subpattern count = 0
+No options
+No first char
+Starting character set: C D E c d e 
+    this sentence eventually mentions a CAT cat
+ 0: cat
+    this sentences rambles on and on for a while to elephant ElePhant
+ 0: elephant
+
+/cat|dog|elephant/IS
+Identifying subpattern count = 0
+No options
+No first char
+Starting character set: C D E c d e 
+    \Ithis sentence eventually mentions a CAT cat
+ 0: CAT
+    \Ithis sentences rambles on and on for a while to elephant ElePhant
+ 0: elephant
+
+/a|[bcd]/S
+Identifying subpattern count = 0
+No options
+No first char
+Starting character set: a b c d 
+
+/(a|[^\dZ])/S
+Identifying subpattern count = 1
+No options
+No first char
+Starting character set: \x00 \x01 \x02 \x03 \x04 \x05 \x06 \x07 \x08 \x09 \x0a 
+  \x0b \x0c \x0d \x0e \x0f \x10 \x11 \x12 \x13 \x14 \x15 \x16 \x17 \x18 \x19 
+  \x1a \x1b \x1c \x1d \x1e \x1f \x20 ! " # $ % & ' ( ) * + , - . / : ; < = > 
+  ? @ A B C D E F G H I J K L M N O P Q R S T U V W X Y [ \ ] ^ _ ` a b c d 
+  e f g h i j k l m n o p q r s t u v w x y z { | } ~ \x7f \x80 \x81 \x82 \x83 
+  \x84 \x85 \x86 \x87 \x88 \x89 \x8a \x8b \x8c \x8d \x8e \x8f \x90 \x91 \x92 
+  \x93 \x94 \x95 \x96 \x97 \x98 \x99 \x9a \x9b \x9c \x9d \x9e \x9f \xa0 \xa1 
+  \xa2 \xa3 \xa4 \xa5 \xa6 \xa7 \xa8 \xa9 \xaa \xab \xac \xad \xae \xaf \xb0 
+  \xb1 \xb2 \xb3 \xb4 \xb5 \xb6 \xb7 \xb8 \xb9 \xba \xbb \xbc \xbd \xbe \xbf 
+  \xc0 \xc1 \xc2 \xc3 \xc4 \xc5 \xc6 \xc7 \xc8 \xc9 \xca \xcb \xcc \xcd \xce 
+  \xcf \xd0 \xd1 \xd2 \xd3 \xd4 \xd5 \xd6 \xd7 \xd8 \xd9 \xda \xdb \xdc \xdd 
+  \xde \xdf \xe0 \xe1 \xe2 \xe3 \xe4 \xe5 \xe6 \xe7 \xe8 \xe9 \xea \xeb \xec 
+  \xed \xee \xef \xf0 \xf1 \xf2 \xf3 \xf4 \xf5 \xf6 \xf7 \xf8 \xf9 \xfa \xfb 
+  \xfc \xfd \xfe \xff 
+
+/(a|b)*[\s]/S
+Identifying subpattern count = 1
+No options
+No first char
+Starting character set: \x09 \x0a \x0b \x0c \x0d \x20 a b 
+
+/(ab\2)/
+Failed: back reference to non-existent subpattern at offset 4
+
+/{4,5}abc/
+Failed: nothing to repeat at offset 4
+
+/(a)(b)(c)\2/
+Identifying subpattern count = 3
+No options
+First char = 'a'
+    abcb
+ 0: abcb
+ 1: a
+ 2: b
+ 3: c
+    \O0abcb
+Matched, but too many substrings
+    \O2abcb
+Matched, but too many substrings
+ 0: abcb
+    \O4abcb
+Matched, but too many substrings
+ 0: abcb
+ 1: a
+    \O6abcb
+Matched, but too many substrings
+ 0: abcb
+ 1: a
+ 2: b
+    \O8abcb
+ 0: abcb
+ 1: a
+ 2: b
+ 3: c
+
+/(a)bc|(a)(b)\2/
+Identifying subpattern count = 3
+No options
+First char = 'a'
+    abc
+ 0: abc
+ 1: a
+    \O0abc
+Matched, but too many substrings
+    \O2abc
+Matched, but too many substrings
+ 0: abc
+    \O4abc
+ 0: abc
+ 1: a
+    aba
+ 0: aba
+ 1: <unset>
+ 2: a
+ 3: b
+    \O0aba
+Matched, but too many substrings
+    \O2aba
+Matched, but too many substrings
+ 0: aba
+    \O4aba
+Matched, but too many substrings
+ 0: aba
+ 1: <unset>
+    \O6aba
+Matched, but too many substrings
+ 0: aba
+ 1: <unset>
+ 2: a
+    \O8aba
+ 0: aba
+ 1: <unset>
+ 2: a
+ 3: b
+
+/^a.b/
+Identifying subpattern count = 0
+Options: anchored
+No first char
+    \Sa\nb
+ 0: a\x0ab
+
+/abc$/E
+Identifying subpattern count = 0
+Options: dollar_endonly
+First char = 'a'
+    abc
+ 0: abc
+    *** Failers
+No match
+    abc\n
+No match
+    abc\ndef
+No match
+
+/abc$/
+Identifying subpattern count = 0
+No options
+First char = 'a'
+    *** Failers
+No match
+    \Eabc\n
+No match
+    \Eabc\ndef
+No match
+
+/abc$/m
+Identifying subpattern count = 0
+Options: multiline
+First char = 'a'
+    \Eabc\n
+ 0: abc
+    \Eabc\ndef
+ 0: abc
+
+/(a)(b)(c)(d)(e)\6/
+Failed: back reference to non-existent subpattern at offset 16
+
+/the quick brown fox/
+Identifying subpattern count = 0
+No options
+First char = 't'
+    the quick brown fox
+ 0: the quick brown fox
+    this is a line with the quick brown fox
+ 0: the quick brown fox
+
+/the quick brown fox/A
+Identifying subpattern count = 0
+Options: anchored
+No first char
+    the quick brown fox
+ 0: the quick brown fox
+    *** Failers
+No match
+    this is a line with the quick brown fox
+No match
+
+/ab(?z)cd/
+Failed: unrecognized character after (? at offset 4
+
+".*/\Xfoo"X
+Identifying subpattern count = 0
+Options: anchored extra
+No first char
+    /this/is/a/very/long/line/in/deed/with/very/many/slashes/in/it/you/see/
+No match
+
+"(?X).*/\Xfoo"
+Identifying subpattern count = 0
+Options: anchored extra
+No first char
+    /this/is/a/very/long/line/in/deed/with/very/many/slashes/in/it/you/see/
+No match
+
+".*/\Xfoo"X
+Identifying subpattern count = 0
+Options: anchored extra
+No first char
+    /this/is/a/very/long/line/in/deed/with/very/many/slashes/in/and/foo
+ 0: /this/is/a/very/long/line/in/deed/with/very/many/slashes/in/and/foo
+
+"(?X).*/\Xfoo"
+Identifying subpattern count = 0
+Options: anchored extra
+No first char
+    /this/is/a/very/long/line/in/deed/with/very/many/slashes/in/and/foo
+ 0: /this/is/a/very/long/line/in/deed/with/very/many/slashes/in/and/foo
+
+/(\.\d\d[1-9]?)\d+/
+Identifying subpattern count = 1
+No options
+First char = '.'
+    1.230003938
+ 0: .230003938
+ 1: .23
+    1.875000282
+ 0: .875000282
+ 1: .875
+    1.235 
+ 0: .235
+ 1: .23
+
+/(\.\d\d[1-9]?)\X\d+/X
+Identifying subpattern count = 1
+Options: extra
+First char = '.'
+    1.230003938
+ 0: .230003938
+ 1: .23
+    1.875000282
+ 0: .875000282
+ 1: .875
+    *** Failers 
+No match
+    1.235 
+No match
+
+/(\.\d\d((?=0)|\d(?=\d)))/
+Identifying subpattern count = 2
+No options
+First char = '.'
+    1.230003938
+ 0: .23
+ 1: .23
+ 2: 
+    1.875000282
+ 0: .875
+ 1: .875
+ 2: 5
+    *** Failers 
+No match
+    1.235 
+No match
+
+/^(\w+\X|\s+\X)*$/X
+Identifying subpattern count = 1
+Options: anchored extra
+No first char
+    now is the time for all good men to come to the aid of the party
+ 0: now is the time for all good men to come to the aid of the party
+ 1: party
+    *** Failers
+No match
+    this is not a line with only words and spaces!
+No match
+    
+/^abc|def/
+Identifying subpattern count = 0
+No options
+No first char
+    abcdef
+ 0: abc
+    abcdef\B
+ 0: def
+
+/.*((abc)$|(def))/
+Identifying subpattern count = 3
+Options: anchored
+No first char
+    defabc
+ 0: defabc
+ 1: abc
+ 2: abc
+    \Zdefabc
+ 0: def
+ 1: def
+ 2: <unset>
+ 3: def
+
+/abc/P
+    abc
+ 0: abc
+    *** Failers
+No match: POSIX code 17: match failed
+    
+/^abc|def/P
+    abcdef
+ 0: abc
+    abcdef\B
+ 0: def
+
+/.*((abc)$|(def))/P
+    defabc
+ 0: defabc
+ 1: abc
+ 2: abc
+    \Zdefabc
+ 0: def
+ 1: def
+ 3: def
+  
+/the quick brown fox/P
+    the quick brown fox
+ 0: the quick brown fox
+    *** Failers 
+No match: POSIX code 17: match failed
+    The Quick Brown Fox 
+No match: POSIX code 17: match failed
+
+/the quick brown fox/Pi
+    the quick brown fox
+ 0: the quick brown fox
+    The Quick Brown Fox 
+ 0: The Quick Brown Fox
+
+/abc.def/P
+    *** Failers
+No match: POSIX code 17: match failed
+    abc\ndef
+No match: POSIX code 17: match failed
+    
+/abc$/P
+    abc
+ 0: abc
+    abc\n 
+ 0: abc
+
+/abc\/P
+Failed: POSIX code 9: bad escape sequence at offset 4     
+
+/(abc)\2/P
+Failed: POSIX code 15: bad back reference at offset 6     
+
+/(abc\1)/P
+    abc
+No match: POSIX code 15: bad back reference
+
+"(?>.*/)foo"X
+Identifying subpattern count = 0
+Options: anchored extra
+No first char
+    /this/is/a/very/long/line/in/deed/with/very/many/slashes/in/it/you/see/
+No match
+
+"(?>.*/)foo"X
+Identifying subpattern count = 0
+Options: anchored extra
+No first char
+    /this/is/a/very/long/line/in/deed/with/very/many/slashes/in/and/foo
+ 0: /this/is/a/very/long/line/in/deed/with/very/many/slashes/in/and/foo
+
+/(?>(\.\d\d[1-9]?))\d+/X
+Identifying subpattern count = 1
+Options: extra
+No first char
+    1.230003938
+ 0: .230003938
+ 1: .23
+    1.875000282
+ 0: .875000282
+ 1: .875
+    *** Failers 
+No match
+    1.235 
+No match
+
+/^((?>\w+)|(?>\s+))*$/X
+Identifying subpattern count = 1
+Options: anchored extra
+No first char
+    now is the time for all good men to come to the aid of the party
+ 0: now is the time for all good men to come to the aid of the party
+ 1: party
+    *** Failers
+No match
+    this is not a line with only words and spaces!
+No match
+    
+/(\d+)(\w)/X
+Identifying subpattern count = 2
+Options: extra
+No first char
+    12345a
+ 0: 12345a
+ 1: 12345
+ 2: a
+    12345+ 
+ 0: 12345
+ 1: 1234
+ 2: 5
+
+/((?>\d+))(\w)/X
+Identifying subpattern count = 2
+Options: extra
+No first char
+    12345a
+ 0: 12345a
+ 1: 12345
+ 2: a
+    *** Failers
+No match
+    12345+ 
+No match
+
+/([a]*)*/
+Failed: operand of unlimited repeat could match the empty string at offset 6
+
+/([ab]*)*/
+Failed: operand of unlimited repeat could match the empty string at offset 7
+
+/([^a]*)*/
+Failed: operand of unlimited repeat could match the empty string at offset 7
+
+/([^ab]*)*/
+Failed: operand of unlimited repeat could match the empty string at offset 8
+
+/([a]*?)*/
+Failed: operand of unlimited repeat could match the empty string at offset 7
+
+/([ab]*?)*/
+Failed: operand of unlimited repeat could match the empty string at offset 8
+
+/([^a]*?)*/
+Failed: operand of unlimited repeat could match the empty string at offset 8
+
+/([^ab]*?)*/
+Failed: operand of unlimited repeat could match the empty string at offset 9
+
+/(?>a*)*/X
+Failed: nothing to repeat at offset 6
+
+/((?>a*))*/X
+Failed: operand of unlimited repeat could match the empty string at offset 8
+
+/((?>a*?))*/X
+Failed: operand of unlimited repeat could match the empty string at offset 9
+
+/)/
+Failed: unmatched brackets at offset 0
+
+/a[]b/
+Failed: missing terminating ] for character class at offset 4
+
+/[^a]/
+Identifying subpattern count = 0
+No options
+No first char
+    \Iaaaabcd
+ 0: b
+    \IaaAabcd 
+ 0: b
+
+/[^az]/
+Identifying subpattern count = 0
+No options
+No first char
+    \Iaaaabcd
+ 0: b
+    \IaaAabcd 
+ 0: b
+
+/[^az]/
+Identifying subpattern count = 0
+No options
+No first char
+    \Izazabcd
+ 0: b
+    \IAaZabcd 
+ 0: b
+    
+/[^aeiou ]{3,}/
+Identifying subpattern count = 0
+No options
+No first char
+    co-processors, and for 
+ 0: -pr
+    \Ico-processors, and for 
+ 0: -pr
+    
+/((a)*)*/
+Failed: operand of unlimited repeat could match the empty string at offset 6
+
+/((a|b|c)*)*/
+Failed: operand of unlimited repeat could match the empty string at offset 10
+
+/<.*>/
+Identifying subpattern count = 0
+No options
+First char = '<'
+    abc<def>ghi<klm>nop
+ 0: <def>ghi<klm>
+
+/<.*?>/
+Identifying subpattern count = 0
+No options
+First char = '<'
+    abc<def>ghi<klm>nop
+ 0: <def>
+
+/<.*>/U
+Identifying subpattern count = 0
+Options: ungreedy
+First char = '<'
+    abc<def>ghi<klm>nop
+ 0: <def>
+    
+/<.*>(?U)/
+Identifying subpattern count = 0
+Options: ungreedy
+First char = '<'
+    abc<def>ghi<klm>nop
+ 0: <def>
+
+/<.*?>/U
+Identifying subpattern count = 0
+Options: ungreedy
+First char = '<'
+    abc<def>ghi<klm>nop
+ 0: <def>ghi<klm>
+    
+/={3,}/U
+Identifying subpattern count = 0
+Options: ungreedy
+First char = '='
+    abc========def
+ 0: ===
+    
+/(?U)={3,}?/
+Identifying subpattern count = 0
+Options: ungreedy
+First char = '='
+    abc========def
+ 0: ========
+
+/ End of test input /
+Identifying subpattern count = 0
+No options
+First char = ' '
+

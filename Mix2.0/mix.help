@@ -1,0 +1,186 @@
+Subject: Instructions for using anonymous remailer
+
+This message is being sent to you automatically in response to the message
+you sent to remailer@nately.ucsd.edu with subject "remailer-help".
+This help file is a barely modified version of the help file written by
+Matthew Ghio.
+
+This file describes how to use this remailer as a type 1 remailer.
+It is capable of providing a much higher level of security if
+you use the correct software to produce the messages.
+This software is available from ftp://nately.ucsd.edu/pub/remail
+Read the README file for instructions. This file is export restricted,
+so it can not be retrieved directly.
+
+I have an automated mail handling program installed on my account
+mixmaster@nately.ucsd.edu which will take any message with the proper headers
+and automatically re-send it anonymously.  You can use this by sending a message
+to mixmaster@nately.ucsd.edu, with the header Anon-To: <address>, the address
+that you want to send anonymously to.  If you can't add headers to your mail,
+you can place two colons on the first line of your message, and then the Anon-To
+line.  Follow that with a blank line, and then begin your message.
+For Example:
+
+> From: joe@site.com
+> To: mixmaster@nately.ucsd.edu
+> Subject: Anonymous Mail
+>
+> ::
+> Anon-To: beth@univ.edu
+>
+> This is some anonymous mail.
+
+The above would be delivered to beth@univ.edu anonymously.  All headers in
+the original message are removed, with the exception of the Subject (and
+Content-Type, if present).  She would not know that it came from Joe, nor
+would she be able to reply to the message.  However, there are a few ways
+that the true identity of the sender could be found.  First, if many
+anonymous messages were sent, someone could compare the times that the
+messages were sent with the times that 'joe' was logged in.  However, this
+can be prevented by instructing the remailer to delay the message, by using
+the Latent-Time header:
+
+> From: joe@site.com
+> To: mixmaster@nately.ucsd.edu
+> Subject: Anonymous Mail
+>
+> ::
+> Anon-To: beth@univ.edu
+> Latent-Time: +1:00
+>
+> This is some anonymous mail.
+
+The message would be delayed one hour from when it is sent.
+
+This remailer also holds all incoming messages in a pool. Once every 10  min,
+the remailer checks to see if new messages have arrived. If so, random
+messages are selected from the pool and sent on, leaving the pool the origonal
+size (at this time, five messages). This provides reordering, generaly thought
+to be more reliable than latency alone.
+
+Another problem is that some mailers automatically insert a signature file.
+Of course, this usually contains the senders email address, and so would
+reveal their identity.  The remailer software can be instructed to remove
+a signature file with the header "Cutmarks".  Any line beginning with the
+same text at in the cutmarks header, and any lines following it will be
+removed.
+
+> From: sender@origin.com
+> To: mixmaster@nately.ucsd.edu
+> Subject: Anonymous Mail
+>
+> ::
+> Anon-To: recipient@destination.com
+> Cutmarks: --
+>
+> This line of text will be in the anonymous message.
+> --
+> This line of text will not be in the anonymous message.
+
+The remailer can also be used to make posts to usenet.  To do this, use
+Anon-Post-To.  Non-Anonymous posts can be made by using Post-To.
+
+
+> From: poster@origin.com
+> To: mixmaster@nately.ucsd.edu
+> Subject: Anonymous Post
+>
+> ::
+> Anon-Post-To: alt.test
+>
+> This is an anonymous message
+
+You can add additional headers to the output message by preceeding them
+with ##
+
+> From: chris@nifty.org
+> To: mixmaster@nately.ucsd.edu
+> Subject: Nifty Anon Msg
+>
+> ::
+> Anon-To: andrew@where-ever.org
+>
+> ##
+> Reply-To: acs-314159@chop.ucsd.edu
+>
+> A Message with a reply address.
+
+For added security, you can encrypt your messages to the remailer with PGP.
+The remailer software will decrypt the message and send it on.  Here is the
+remailer's public key:
+
+
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+Version: 2.6
+
+mQBNAy7MYUgAAAECAKennY9a57JPJZMFpD0G90iXaZRPNNxgtbKcJR//KByvyI/7
+hIGI8WMpReHIu6diP4FxsCXjzE+5idqkz6eP42EABRG0Lk1peG1hc3RlciByZW1h
+aWxlciA8bWl4bWFzdGVyQG5hdGVseS51Y3NkLmVkdT4=
+=KlNO
+-----END PGP PUBLIC KEY BLOCK-----
+
+To utilize this feature, create a message with two colons on the first line,
+then the Anon-To line, then any other headers, such as cutmarks or latency,
+then a blank line, and then the message.  Encrypt this with the remailer's
+public key.  Then send it to the remailer, adding the header "Encrypted: PGP".
+If you forget this, the remailer won't know that it needs to be decrypted.
+
+> To: mixmaster@nately.ucsd.edu
+> From: me@mysite.org
+>
+> ::
+> Encrypted: PGP
+>
+> -----BEGIN PGP MESSAGE-----
+> Version: 2.3a
+>
+> hIkCuMeAjnwmCTUBA+dfWcFk/fLRpm4ZM7A23iONxkOGDL6D0FyRi/r0P8+pH2gf
+> HAi4+1BHUhXDCW2LfLfay5JwHBNMtcdbgXiQVXIm0cHM0zgf9hBroIM9W+B2Z07i
+> 6UN3BDhiTSJBCTZUGQ7DrkltbgoyRhNTgrzQRR8FSQQXSo/cf4po0vCezKYAAABP
+> smG6rgPhdtWlynKSZR6Gd2W3S/5pa+Qd+OD2nN1TWepINgjXVHrCt0kLOY6nVFNQ
+> U7lPLDihXw/+PPJclxwvUeCSygmP+peB1lPrhSiAVA==
+> =da+F
+> -----END PGP MESSAGE-----
+
+Any unencrypted text after the PGP message is also remailed.  This is to allow
+sending to someone who is anonymous.  If you create a PGP-encrypted message to
+yourself via my remailer, and then you give it to someone, they can send you a
+message by sending the encrypted message to the remailer.  The remailer will
+then decrypt it and send it to you.  The message gets anonymized in the
+process, so the sender will need to include a return address if he wants a
+reply.
+
+Remailers can be chained together for additional security.
+If you have PGP installed on your machine, you can use my remailer
+chaining script (which you can get from http://nately.ucsd.edu/~loki/Welcome.html)
+to rout your mail through several remailers, encrypting the message to each one
+on the way (if it supports PGP).
+
+Traffic is important to the security of remailers.  To make traffic analysis
+more difficult, this remailer will accept messages to be trashed. Any
+message asking to be remailed to null will be trashed.
+
+> From: chris@nifty.org
+> To: mixmaster@nately.ucsd.edu
+> Subject: Trash this
+>
+> ::
+> Anon-To: null
+>
+> Random junk
+
+This can (and probably should) be sent encrypted with PGP. Using the 
+"Encrpyted: PGP" command
+
+Abuse Policy:
+I consider the following to be inappropriate use of this anonymous remailer,
+and will take steps to prevent anyone from doing any of the following:
+- Sending messages intended primarilly to be harassing or annoying.
+- Use of the remailer for any illegal purpose.
+If you don't want to receive anonymous mail, send me a message, and I will
+add your email address to the block list.
+
+You can get a list of statistics on remailer usage by sending mail to
+mixmaster@nately.ucsd.edu with Subject: remailer-stats
+
+

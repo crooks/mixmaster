@@ -1,0 +1,11 @@
+$Id: TODO,v 1.2 2002/09/10 19:08:50 rabbi Exp $
+
+* Why does SunOS `read' read 4 characters at a time?
+* free() allocated memory at various places
+* collect entropy from system resources
+
+--
+
+Note: 2.0.5 is intended to be the last release of Mixmaster 2.0.x.
+Interested parties should work on current versions of Mixmaster instead.
+

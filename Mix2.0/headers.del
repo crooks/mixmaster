@@ -1,0 +1,19 @@
+# Header lines to be filtered out.
+
+^From:
+^Sender:
+^X-Sender:
+^Resent-
+^Approved:
+^Errors-To:
+^Comments: Authenticated sender is
+^Received:
+^Control: rmgroup
+^Control: newgroup
+^Control: sendsys
+^Control: checkgroups
+^Control: version
+
+# Excessive crossposting:
+^Newsgroups: .*,.*,.*,.*,.*,.*,.*,
+

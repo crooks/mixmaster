@@ -1,0 +1,91 @@
+This software is being distributed under the GNU Public License, see
+the file LICENSE.GNU for more details.
+
+Mixmaster contains OpenSSL and BSAFEeay. See the file LICENSE.EAY for
+details. For use in the US, an RSA patent license must be obtained
+seperately.
+
+Installation:
+-------------
+
+Mixmaster uses the same source and binary for the remailer program and
+the client program. Setting up a client, however, is significantly
+easier.
+
+Mixmaster is best used with Private Idaho or Potato.
+See README.PI and README.POT for details.
+
+However, it is also possible to run Mixmaster directly from the command
+line.
+
+Mixmaster as a command line program
+-----------------------------------
+
+You will need a directory to put your Mixmaster files, e.g. C:\MIX.
+Set the environment variable MIXPATH to be the full path to the directory
+with Mixmaster's files. If MIXPATH is not set, Mixmaster will use the
+current directory.
+
+If you are not running Windows, you need the CWSDPMI driver from
+<ftp://ftp.coast.net/SimTel/vendors/djgpp/v2misc/csdpmi3b.zip>.
+
+Put a list of Mixmaster remailers (TYPE2.LIS) and their public keys
+(PUBRING.MIX) into your Mixmaster directory. You can get a list of
+remailers and their keys from WWW page <http://anon.efga.org/anon/>
+Or if you're paranoid, get them directly from the remailers and slap
+them into the proper files yourself with your favorite editor.
+
+See MANUAL.TXT for instructions on using Mixmaster to create
+remailer messages.
+
+The source code package contains information on compiling Mixmaster
+in the file DOS\BUILD\README.
+
+======================
+Credit where credit is due:
+   I have had help on this project from many people.
+   Many uncredited ideas, and pieces of code were provided by the Mixmaster
+   beta test team. They were:
+      John A. Perry <perry@jpunix.com>
+      L. McCarthy <lmccarth@opine.cs.umass.edu>
+      John B. Fleming <jfleming@kether.alias.net>
+      Andre' M. VanKlaveren vanklava@eniac.ac.siue.edu
+      rfritz@spiff.ccs.carleton.ca (Ron Fritz)
+
+   For asistance after the release of version 2.0:
+      Patrick J. LoPresti <patl@lcs.mit.edu>
+      Mark Hahn <hahn@neurocog.lrdc.pitt.edu>
+
+   For significant contributions to release 2.0.3
+      Jim Castleberry <jcastle@in-system.com>
+
+   Finally, I thank my wife Barbara for supporting me through all those nights
+   in front of the computer.
+
+Lance Cottrell     1 Oct 1995
+<loki@obscura.com>
+
+======================
+
+Modified by <um@idril.shnet.org>, 1997-11-01.
+Modified by Len Sassaman <rabbi@abditum.com>.
+Please report problems to <rabbi@abditum.com> and 
+<mixmaster-users@lists.mixmaster.anonymizer.com>.
+
+Thanks for help and valuable suggestions to:
+  Antonomasia <ant@notatla.demon.co.uk>
+  Lance Cottrell <loki@infonex.com>
+  Todd Cutter <todd.cutter@usa.net>
+  Andy Dustman <andy@CCMSD.chem.uga.edu>
+  Mark Grant <mark@unicorn.com>
+  Johannes Kroeger <jkroeger@squirrel.owl.de>
+  Medusa <medusa-admin@weasel.owl.de>
+  Dave Del Torto <ddt@pgp.com>
+  RProcess <rprocess@nym.alias.net>
+  Nikolay Sturm <sturm@sec.informatik.tu-darmstadt.de>
+  Rodney Thayer <rodney@tillerman.to>
+  Dingo Admin <dingoadmin@dingoremailer.com>
+  Peter Palfrader <peter@palfrader.org>
+
+  Mixmaster uses Jean-loup Gailly and Mark Adler's compression library
+  zlib.

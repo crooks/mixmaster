@@ -1,0 +1,858 @@
+.TH MIXMASTER 1 "Mixmaster Version 2.0.5"
+.\" $Id: mixmaster.1,v 1.1 2002/08/28 20:06:49 rabbi Exp $
+.SH NAME
+mixmaster
+\- anonymizing remailer
+.SH SYNOPSIS
+.B mixmaster
+[
+.B \-c
+] [
+.I filename
+] [
+.B \-f
+] [
+.B \-m
+] [
+.B \-d
+] [
+.B \-s
+.I "subject"
+] [
+.B \-v
+.I "'Header: text'"
+[
+.B \-v
+\ ... ] ] [
+.B \-n
+.I numcopies
+] [ 
+.B \-o
+.I outfile
+|
+.B \-O
+.I outfile
+] [
+.B \-to
+.I who@where
+] [
+.B \-l
+.I 1 2 3
+\ ... ]
+.PP
+.B mixmaster
+[
+.B \-P
+] [
+.B \-T
+]
+.PP
+.B mixmaster
+[
+.B \-G
+] [
+.B \-K
+] [
+.B \-R
+] [
+.B \-S
+] [
+.B \-L
+] [
+.B \-Q
+] [
+.B \-D
+] [
+.B \-X
+]
+.SH DESCRIPTION
+The purpose of anonymous remailers (hereafter simply remailers) is to
+provide protection against traffic analysis. Traffic analysis is the study
+of who you are communicating with, when, and how often. This reveals more
+than you might expect about your activities. It will indicate who your
+friends and colleagues are (and they can be told apart by looking at the
+times you contact them). What your interests are, from which catalog
+companies you contact, and which ftp and WWW sites you visit. Traffic
+analysis can even reveal business secrets, e.g. your frequent contact with
+a rival could give hints of an impending merger.
+.PP
+Remailers protect your e-mail from traffic analysis. The original remailers
+did this by removing all headers, except the subject line, from any message
+you sent to them and then forwarding them a destination of your choice. The
+recipient of such a message would not know who had sent it.
+.PP
+The addition of encryption to this scheme gave significant protection from
+attackers who simply look at passing messages for to and from fields.
+Passing a message through several remailers in a row is much better, but
+still vulnerable to an attacker who can watch messages go into and out of
+each remailer.
+.PP
+Two more elements are required: messages must be reordered within the
+remailer before being forwarded (this is being done by a few of the old
+style remailers), and all messages must be indistinguishable. This last is
+the primary improvement with the type 2 remailer,
+.IR Mixmaster .
+.SS "Remailer RSA keys with Mixmaster:"
+.I Mixmaster
+has its own rudimentary key management, and unique key file format.
+To get the latest key from a remailer, send mail to the remailer with
+the subject
+.BR remailer-key .
+It will send you a file containing the key and a
+line for your
+.I type2.list
+file. The line after the
+.B =\-=\-=\-=\-=
+line is the one
+you should put in your
+.I type2.list
+file. If there is already a line with the
+same remailer name, the new line should replace it.
+.PP
+The remailer key is every thing between the 
+.B "Begin Mix Key"
+and
+.BR "End Mix Key" ,
+including those lines. You should add that text to your
+.I pubring.mix
+file. You may also include any text outside of the begin
+and end lines to identify the key.
+.PP
+When you chain through a remailer,
+.I Mixmaster
+finds which key to use by looking at
+.IR type2.list ,
+and then finds the corresponding key in
+.IR pubring.mix .
+.SS "Using type 2 remailers:"
+The trend towards ever more complicated remailer message formats has been
+clear for some time. Several programs have been written to automatically
+build messages which will be remailed by several remailers. This process is
+called chaining.
+.PP
+With type 2 remailers it is no longer possible to create these messages by
+hand.
+.I Mixmaster
+takes a message you wish to send, a list of remailers to
+chain it through, and a final destination, and builds the packet which the
+remailers will use.
+.\"For simplicity I will first describe the interactive
+.\"use of Mixmaster, then I will discuss how it can be controlled through
+.\"command line arguments.
+.SS "Interactive use of Mixmaster:"
+If you run
+.I Mixmaster
+with no arguments, you will be prompted for all the
+required information.
+.PP
+First you will be asked to specify the final destination of the message.
+This is the full e-mail address where you want your message delivered.
+Remember that the message is being sent by the last remailer in the chain,
+so you must specify the full internet address (e.g.
+.IR name@machine.example.com ),
+you may not use local mail aliases. You may enter multiple recipients on
+separate lines. Hit return on a blank line to stop entering destinations.
+You must have at least one.
+.PP
+.I Mixmaster
+recognizes these special keywords ending with a colon:
+.br
+.B "null:"
+for cover traffic.
+.br
+.B "post:"
+posts to the following newsgroup.
+.PP
+Next you will be asked to enter any headers you want to have inserted
+before the message. These are those lines at the beginning of e-mail
+messages, like
+.IR "From: fred@bedrock.univ.edu" ,
+or
+.IR "Subject: Party invitation" .
+If you want your message to have a subject when it is delivered, you must
+enter a line like this:
+.PP
+.B Subject:
+.IR "your subject here" .
+.PP
+Note that 
+.B Subject
+must be capitalized, with the
+.B :
+and space as shown. (A subject header can also be added by using the
+.B \-s
+command line argument.) When you are done entering headers, hit
+return. It is OK to have zero headers.
+.PP
+You will now be presented with a list of remailers through which you can
+chain your messages. The order in which you choose them is the order in
+which they will be traversed by your message. The remailers that can
+be used at the end of a chain are marked with an asterisk; a 
+.B U
+means that according to the list of reliable remailers, the remailer
+is unreliable at the moment. See the file
+.B mix.list
+for information about the reliability history printed in square
+brackets.
+
+You may choose up to 20 remailers, but remember that the reliability
+and speed of the chain diminish as the number of remailers in the
+chain increases. Four is a reasonable number of remailers to use. It
+is fine to use a given remailer more than once in your chain. Press
+return on a blank line to stop entering remailers.
+.PP
+You may enter
+.B 0
+for the remailer and
+.I Mixmaster
+will choose a random
+remailer for you. This is particularly useful for routing multipacket
+messages over different remailer chains. If specified in the
+configuration file,
+.I Mixmaster
+can automatically select a remailer chain.
+.PP
+Finally you will be asked what file you want to send. This must be an ASCII
+file. You may either enter the name of an existing file, or you may choose
+to enter the message directly by typing
+.B \-
+or
+.B stdin
+as the file name. This is
+intended for use by scripts. There are no editing capabilities when using
+stdin. Enter the end of file character (EOF is ^D) when you are done
+entering the file.
+.PP
+.I Mixmaster
+will now build the type 2 remailer packet, and send it to the
+first remailer in the chain.
+.PP
+List of statistics on remailer usage can be requested by sending
+the remailers mail with subject
+.BR remailer-stats .
+.TP
+.B \-X
+Seed the random number generator.
+This should be done once, before sending messages and creating remailer
+keys.
+.SH MIXMASTER AS A REMAILER
+The
+.I Mixmaster
+remailer accepts packets in the Mixmaster message format, and re-sends
+them to other Mixmaster remailers and \- unless it is configured as a
+"middle only" remailer \- to users.
+.PP
+The same source and binary is used for the remailer program and the
+client program. The remailer can be installed on any Unix mail
+account.
+.PP
+To install
+.IR Mixmaster ,
+run
+.BR ./Install .
+The Install script will ask a few questions and set up the remailer.
+.PP
+All remailer functions (as opposed to chaining
+functions) are invoked with capital letters on the command line.
+.SS Support for "cypherpunk remailer" (type 1) messages:
+If you want to be able to handle type 1 messages as well as type 2,
+you can do so using the Mixmaster mail address.
+.PP
+Set up the type 1 remailer just as though it were going to be used on its
+own, but do not set up mail forwarding to the remailer. That should
+go to
+.IR Mixmaster .
+.PP
+Edit
+.I mix.help
+to include the help file that comes with your type 1
+remailer. Add your type 1 key to
+.IR keyinfo.txt .
+Edit
+.IR mixmaster.conf ,
+and define
+.I TYPE1
+to be the command line needed to
+run the type 1 remailer.
+.PP
+.I Mixmaster
+will recognize incoming type 1 messages, and open a pipe to the
+program you specified. It will send the message to stdin of that
+process.
+.PP
+You can set the type 1 remailer's
+.I sendmail
+to be
+.B mixmaster
+.BR \-Q ,
+so the messages will be added to the reordering pool. Mixmaster will
+add its disclaimer to all messages sent. If your type 1 remailer has
+its own disclaimer, add that line to
+.BR headers.del ,
+so Mixmaster will filter it out, making type 1 and type 2 messages
+indiscernible.
+.B \-Q
+may optionally be followed by a Mixmaster destination.
+.SH OPTIONS
+.SS Client mode options:
+.TP
+.B \-c
+Indicates that chaining rather than remailer functions are desired.
+It is a NOP since chaining is the default operation.
+.TP
+.I "input.file"
+If a filename is given, then this will be used as the input
+file. As in the interactive mode, you may choose
+.B \-
+or
+.BR stdin .
+No filename will be prompted for.
+.TP
+.B \-f
+Filter mode. All prompts suppressed, but input still accepted as
+described in the interactive section. The remailer list must be
+specified on the command line.
+.TP
+.B \-m
+Like
+.BR \-f ,
+but the input is a message in Internet mail format. Be careful not to
+send any mail headers that leak information about your identity.
+.TP
+.B \-d
+Generate a dummy message, which will be sent through 5..15 random remailers
+unless specified otherwise in
+.I CHAIN
+or using
+.BR \-l .
+You should generate cover messages to foil traffic analysis.
+.TP
+.I "\fB\-s\fP subject"
+Add a subject line to the message. The user should
+.I not
+include
+.B Subject:
+in this string.
+.I Mixmaster
+will not prompt for other headers if
+.B \-s
+is used.
+.TP
+.I "\fB\-v\fP 'Header: text'"
+Add an arbitrary header line to the message.
+.B \-v
+can be used repeatedly.
+.TP
+.I "\fB\-n\fP numcopies"
+Create multiple copies of the same message, to increase reliability of
+randomly selected chains. Only one copy will be delivered to the
+recipient.
+.TP
+.I "\fB\-o\fP output.file"
+Specifies an output file rather than sending the message to the
+first remailer automatically. If
+.I "output.file"
+is
+.B \-
+or
+.BR stdout ,
+then the remailer packet will be written to standard output.
+.TP
+.I "\fB\-O\fP output.file"
+As
+.B \-o
+above, but it includes a "To: " line so the output file can be
+sent directly to sendmail.
+.TP
+.I "\fB\-to\fP foo@bar.org"
+Specifies the final destination of the message.
+.I Mixmaster
+will not prompt for other destinations if
+.B \-to
+is used.
+.TP
+.I "\fB\-l\fP 4 3 12 5 ..."
+Specifies the list of remailers to chain through. This must be
+the last argument on the command line. A maximum of 20 remailers may
+be specified.
+.I Mixmaster
+will not prompt for other remailers if
+.B \-l
+is used. As in the interactive mode, you may enter
+.B 0
+for a random
+remailer. Remailers may also be specified by their name or address.
+.SS "Special command line arguments for scripts:"
+Many scripts and other programs which will drive
+.I Mixmaster
+may need to
+know where
+.I Mixmaster
+keeps its files, and what remailers it knows about.
+There are two special commands to help with this. Both are executed before
+any other command line options (\fB\-P\fP
+then
+.BR \-T ).
+.TP
+.B \-P
+Write the 
+.I Mixmaster
+directory, the name of the remailer list and the mixmaster version
+to stdout, each followed by a newline.
+The result is something like:
+.PP
+                /home/joe/Mix
+                type2.list
+                2.0.5
+.TP
+.B \-T
+Write the list of remailers (usually
+.IR type2.list )
+to stdout.
+.SS Remailer functions:
+.TP
+.B \-G
+Generate a new key pair. The private key is prepended to
+.IR secring.mix ,
+the public key is prepended to
+.IR pubring.mix ,
+and a new
+.IR mix.key
+is created. The
+.I mix.key
+file has one line (after the 
+.BR =\-=\-=\-=\-= )
+which goes in
+.IR type2.list .
+The rest is the new public key, which can be appended to the
+public key file by a user who requests the key.
+
+The
+.I mix.key
+file is mailed to anyone who send mail to the remailer with the
+subject
+.BR "remailer-key" .
+
+When you generate a new key (if you keep the same passphrase), the old
+key will still work. You must remove the key from the ring when you want
+to retire it permanently. This allows you to keep supporting the old key
+while the new key is propagated.
+.TP
+.B \-K
+Update
+.IR mix.key .
+.TP
+.B \-R
+Process incoming mail, reading from stdin.
+.I Mixmaster
+.B \-R
+should be invoked from
+.I /etc/aliases
+or the
+.I .forward
+mechanism.
+A safer way to invoke
+.I Mixmaster
+is with the
+.B reorder
+package.
+
+Output can be redirected to a log file, but this is not required.
+If you do, make sure that it is sufficiently writeable. The only
+things that go in this log file are failed messages, and error messages.
+If
+.I Mixmaster
+is installed on a personal account, the output should be appended to
+the mail folder, to ensure that regular e-mail is delivered. All
+non-remailer messages will be sent to stdout.
+.TP
+.B \-S
+Randomly select and send all but
+.I POOLSIZE
+messages.
+.TP
+.B \-L
+Check all latent messages and converts them to regular 
+messages if their time has passed.
+Since there is no type 2 latent,
+.B \-L
+has no effect.
+.PP
+The functions
+.B \-L
+and
+.B \-S
+are typically performed periodically using
+.BR crond (8).
+
+If you are unable to run
+.BR crontab (1)
+or
+.BR at (1),
+you can process the pooled and latent messages each time a new message
+arrives, using
+.B mixmaster \-R \-S \-L
+in the 
+.I .forward
+or
+.I /etc/aliases
+files.
+.TP
+.B \-Q
+Read a message from
+.B stdin
+and add it to the reordering pool.
+.TP
+.B \-D
+Will be used to run
+.I Mixmaster
+as a demon waiting for socket
+connections in a future version.
+.SH CONFIGURATION
+The configuration both for the client and the remailer is set in
+.IR mixmaster.conf .
+Unless otherwise noted, the entries cannot contain whitespace.
+.TP
+.I SENDMAIL
+Name and path of the
+.BR sendmail (8)
+program. The
+.B \-t
+flag is required (the destination is in the
+.B "To:"
+header). Can contain whitespace.
+
+If
+.I SENDMAIL
+is set to
+.B outfile
+(this is the default under MSDOS), Mixmaster will write its output to
+files named
+.I "\fBoutfile.\fPnnn"
+instead of mailing it.
+.SS Client configuration:
+.TP
+.I CHAIN
+A chain for remailer messages, if you don't want to chose them
+manually.
+.B 0
+means a random remailer. This chain can be overridden by the command
+line option
+.BR \-l .
+Can contain whitespace.
+.TP
+.I NUMCOPIES
+Number of copies (see option
+.BR \-n ).
+This entry can be useful if you use a long
+.I CHAIN
+of random remailers. Default: 1.
+.TP
+.I MINREL
+The minimum reliablity
+.I Mixmaster
+will require for a remailer to be chosen randomly, in % (will be
+ignored if no reliability information is available). Default: 98.
+.TP
+.I RELFINAL
+The minimum reliability for a remailer to be randomly chosen as the
+final hop, in %.
+.I Mixmaster
+will chose the most reliable remailer if no remailer reaches the
+minimum. Default: 99.
+.TP
+.I MAXLAT
+The maximum latency
+.I Mixmaster
+will accept for a remailer to be chosen randomly, in hours. Default: 24.
+.TP
+.I DISTANCE
+The distance after which a remailer can be selected again in a chain.
+0 is a purely random selection, 20 means previously-used remailers
+will not be selected again. Default: 2.
+.TP
+.I REQUIRE
+A list of ability flags the final remailer must have. For example,
+set this entry to
+.B C
+if you want to send all messages compressed. Other remailers will not
+be selected randomly. If they are selected by the user,
+.I Mixmaster
+will print a warning.
+.TP
+.I REJECT
+A list of ability flags the final remailer in the chain must not have.
+Default:
+.B M
+(do not use "middle only" remailers as the last hop).
+.TP
+.I VERBOSE
+Mixmaster prints information about the selected chain if
+.I VERBOSE
+is set to
+.BR 1 .
+.SS Remailer configuration:
+.TP
+.I REMAILERADDR
+The remailer's e-mail address. This entry has no default value.
+.TP
+.I ANONADDR
+An e-mail address to appear in the 
+.B From:
+header of remailed messages. Defaults to the value of
+.IR REMAILERADDR .
+.TP
+.I COMPLAINTS
+The address to which you want complaints about the remailer sent (this
+is put in the comments block in the outgoing message header). Defaults
+to the value of
+.IR REMAILERADDR .
+.TP
+.I REMAILERNAME
+The name of your remailer to be put in the message header on remailer
+responses. Can contain whitespace.
+.TP
+.I ANONNAME
+A name to appear in remailed messages. Defaults to the value of
+.IR REMAILERNAME .
+Can contain whitespace.
+.TP
+.I SHORTNAME
+A short name to identify the remailer.
+.TP
+.I POOLSIZE
+The number of messages to be kept in the reordering pool at all
+times. Zero means to remail immediately. Five means there will always
+be at least five messages in the pool at any time. If you support a
+type1 remailer with reordering, its pool size should be the same as
+.IR Mixmaster 's
+or the
+.B remailer-stats
+report will be misleading.
+.TP
+.I RATE
+The fraction of messages to send each time the pool is processed, in
+%. A reduced rate can be useful to reduce system load when lots
+of messages arrive at the same time and to avoid `flooding attacks'.
+Default: 100.
+.TP
+.I NEWS
+News posting software. Set to
+.B mail-to-news
+if you want to use a gateway, or leave empty if you do not want to
+allow posting. Can contain whitespace. Default: No posting.
+.TP
+.I ORGANIZATION
+A string to be used in the Organization: line of locally posted articles.
+.TP
+.I MAILtoNEWS
+Address of a mail to news gateway to use to deliver news messages.
+.TP
+.I TYPE1
+Command line to execute for old style type 1 messages.
+Define this only if you wish to run a type 1 remailer under
+the
+.I Mixmaster
+remailer. Can contain whitespace.
+.TP
+.I T1PGPONLY
+Set to
+.B 1
+if you want the type 1 remailer to accept encrypted messages only.
+.TP
+.I MIDDLEMAN
+If set to
+.BR 1 ,
+the key and statistics messages will not be sent directly. This flag
+can be used in combination with the
+.B destination.allow
+file to hide the location of the remailer from users. (Note that the
+address remains visible to the next-hop remailer.)
+.TP
+.I FORWARDTO
+Where to forward messages that do not match
+.IR destination.allow .
+.B 0
+means random remailer. Can contain whitespace. Default: one random
+remailer.
+.TP
+.I IDEXP
+Time (in hours) that packet ID numbers will be kept. Messages
+containing a timestamp older than
+.B IDEXP
+hours are discarded. The default is one week, minimum four days to
+allow clients to date their messages back. If set to
+.BR 0 ,
+IDs will be kept forever.
+.TP
+.I PACKETEXP
+Time (in hours) that partially reconstructed multi-part 
+messages will be kept. Default: one week.
+.PP
+The following definitions can be set in
+.IR mix.h :
+.TP
+.I DISCLAIMER
+A comment to be inserted into the anonymized messages.
+.TP
+.I SPOOL
+The default directory where
+.I Mixmaster
+will look for its files if
+.I MIXPATH
+is not set.
+.TP
+.I PASSPHRASE
+If no passphrase is given at compile time, this one is used. If you
+are compiling a remailer, you must do this at compile time by calling
+make with
+.B make
+.I system
+.IR "\fBPASS=\fP'your pass phrase'" .
+.SH FILES
+.TP
+.I mixmaster.conf
+Configuration file for
+.IR Mixmaster .
+.TP
+.I README
+Instructions.
+.TP
+.I type2.list
+List of known type 2 remailers and their abilities.
+The first column is the nickname, the second is the address of
+your remailer, the third is a unique string from the remailer's key,
+the fourth column is the version string, and the fifth column
+contains information about the capabilities of the remailer (\fBC\fP
+= compression,
+.B N
+= posting to news,
+.B M
+= middle only remailer).
+.TP
+.I pubring.mix
+The remailers' public keys.
+.TP
+.I mix.list
+List of reliable Mixmaster remailers.
+.SS Remailer files:
+.TP
+.I id.log
+List of used packet ID numbers. They are used to prevent messages from
+being sent twice (replay attacks). If this file does not exist,
+.I Mixmaster
+will assume that you do not want packet ID logging.
+.TP
+.I destination.block
+A list of blocked destination addresses. The message is dropped if the
+address matches a regular expression in a line of this file (or a
+substring of the address is equal to a line of this file). The search
+is case independent.
+
+In a regular expression, a
+.B .
+represents any one character;
+.B .*
+stands for any sequence of characters. The dot itself is represented
+by
+.B \e.
+.B ^
+means to start the comparison at the leftmost character of the address;
+.B $
+means to end it at the rightmost character.
+For example
+.B whitehouse
+matches any address containing the string "whitehouse".
+.B ^president@.*whitehouse\e.gov
+matches the addresses
+.B president
+may have at any computer in the
+.B whitehouse.gov
+domain, but not
+.BR vice-president@whitehouse.gov .
+.B \e.gov$
+matches all addresses in the
+.B .gov
+toplevel domain, but not in
+.BR .gov.au .
+.TP
+.I source.block
+A list of blocked source addresses. The message is dropped if the
+address matches a regular expression in a line of this file.
+.TP
+.I destination.allow
+If this file exists, messages are delivered only if the address
+matches a regular expression in a line of this file. All other
+messages are forwarded to another remailer.
+.TP
+.I headers.del
+A list of unwanted message header fields. A message header is filtered
+out if it matches a regular expression in a line of this file.
+.TP
+.I mix.help
+Help file sent in response to
+.IR remailer-help .
+.TP
+.I mix.key
+File with the key and a line for
+.IR type2.list ,
+sent in response to
+.IR remailer-key .
+To change this file, modify
+.I keyinfo.txt
+or
+.IR mixmaster.conf ,
+then run
+.BR "mixmaster -K" .
+.TP
+.I keyinfo.txt
+Information about the remailer key.
+May contain type 1 PGP remailer keys.
+.I keyinfo.txt
+is prepended to 
+.IR mix.key .
+.TP
+.I coerce
+.B sendmail
+replacement, to prevent abuse and traffic analysis of type-I messages.
+.TP
+.I Makefile
+Edit
+.B CFLAGS
+if you want debugging information in the object code.
+Remove
+.B USE_RX
+if you want to block addresses by case-independant substring search
+instead of regular expressions. Remove
+.B USE_ZLIB
+if you don't want to support compression.
+.TP
+.I "\fBmail\fPXXXXXX"
+Pool of processed remailer messages.
+.TP
+.I "\fBlat\fPXXXXXX"
+Latent messages.
+.TP
+.I "\fBpac\fPXXXXXX"
+Packets of partially processed multi-part messages.
+.SH ENVIRONMENT
+.TP
+.I MIXPATH
+Full path to the directory with
+.IR Mixmaster 's
+files.
+.SH SEE ALSO
+.BR premail (1),
+.BR pgp (1),
+.BR sendmail (8),
+.BR procmail (1),
+.BR crontab (1).
+.SH AUTHOR
+Lance Cottrell
+<loki@obscura.com>
+.SH MAINTAINERS
+Ulf Moeller,
+Peter Palfrader,
+Len Sassaman
+.SH MAILING LIST
+<mixmaster-users@lists.mixmaster.anonymizer.com>

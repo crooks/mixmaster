@@ -1,0 +1,319 @@
+/(a)b|/
+
+/(a*)*/
+
+/(abc|)+/
+
+/abc/
+    abc
+    defabc
+    \Aabc
+    \IABC
+    *** Failers
+    \Adefabc
+    ABC
+
+/^abc/
+    abc
+    \Aabc
+    *** Failers
+    defabc
+    \Adefabc
+
+/a+bc/
+
+/a*bc/
+
+/a{3}bc/
+
+/(abc|a+z)/
+
+/^abc$/
+    abc
+    \Mdef\nabc
+    *** Failers
+    def\nabc
+
+/abc\/
+
+/ab\gdef/X
+
+/(?X)ab\gdef/X
+
+/x{5,4}/
+
+/z{65536}/
+
+/[abcd/
+
+/[\B]/
+
+/[a-\w]/
+
+/[z-a]/
+
+/^*/
+
+/(abc/
+
+/(?# abc/
+
+/(?z)abc/
+
+/.*b/
+
+/.*?b/
+
+/cat|dog|elephant/
+    this sentence eventually mentions a cat
+    this sentences rambles on and on for a while and then reaches elephant
+
+/cat|dog|elephant/S
+    this sentence eventually mentions a cat
+    this sentences rambles on and on for a while and then reaches elephant
+
+/cat|dog|elephant/iS
+    this sentence eventually mentions a CAT cat
+    this sentences rambles on and on for a while to elephant ElePhant
+
+/cat|dog|elephant/IS
+    this sentence eventually mentions a CAT cat
+    this sentences rambles on and on for a while to elephant ElePhant
+
+/cat|dog|elephant/IS
+    \Ithis sentence eventually mentions a CAT cat
+    \Ithis sentences rambles on and on for a while to elephant ElePhant
+
+/a|[bcd]/S
+
+/(a|[^\dZ])/S
+
+/(a|b)*[\s]/S
+
+/(ab\2)/
+
+/{4,5}abc/
+
+/(a)(b)(c)\2/
+    abcb
+    \O0abcb
+    \O2abcb
+    \O4abcb
+    \O6abcb
+    \O8abcb
+
+/(a)bc|(a)(b)\2/
+    abc
+    \O0abc
+    \O2abc
+    \O4abc
+    aba
+    \O0aba
+    \O2aba
+    \O4aba
+    \O6aba
+    \O8aba
+
+/^a.b/
+    \Sa\nb
+
+/abc$/E
+    abc
+    *** Failers
+    abc\n
+    abc\ndef
+
+/abc$/
+    *** Failers
+    \Eabc\n
+    \Eabc\ndef
+
+/abc$/m
+    \Eabc\n
+    \Eabc\ndef
+
+/(a)(b)(c)(d)(e)\6/
+
+/the quick brown fox/
+    the quick brown fox
+    this is a line with the quick brown fox
+
+/the quick brown fox/A
+    the quick brown fox
+    *** Failers
+    this is a line with the quick brown fox
+
+/ab(?z)cd/
+
+".*/\Xfoo"X
+    /this/is/a/very/long/line/in/deed/with/very/many/slashes/in/it/you/see/
+
+"(?X).*/\Xfoo"
+    /this/is/a/very/long/line/in/deed/with/very/many/slashes/in/it/you/see/
+
+".*/\Xfoo"X
+    /this/is/a/very/long/line/in/deed/with/very/many/slashes/in/and/foo
+
+"(?X).*/\Xfoo"
+    /this/is/a/very/long/line/in/deed/with/very/many/slashes/in/and/foo
+
+/(\.\d\d[1-9]?)\d+/
+    1.230003938
+    1.875000282
+    1.235 
+
+/(\.\d\d[1-9]?)\X\d+/X
+    1.230003938
+    1.875000282
+    *** Failers 
+    1.235 
+
+/(\.\d\d((?=0)|\d(?=\d)))/
+    1.230003938
+    1.875000282
+    *** Failers 
+    1.235 
+
+/^(\w+\X|\s+\X)*$/X
+    now is the time for all good men to come to the aid of the party
+    *** Failers
+    this is not a line with only words and spaces!
+    
+/^abc|def/
+    abcdef
+    abcdef\B
+
+/.*((abc)$|(def))/
+    defabc
+    \Zdefabc
+
+/abc/P
+    abc
+    *** Failers
+    
+/^abc|def/P
+    abcdef
+    abcdef\B
+
+/.*((abc)$|(def))/P
+    defabc
+    \Zdefabc
+  
+/the quick brown fox/P
+    the quick brown fox
+    *** Failers 
+    The Quick Brown Fox 
+
+/the quick brown fox/Pi
+    the quick brown fox
+    The Quick Brown Fox 
+
+/abc.def/P
+    *** Failers
+    abc\ndef
+    
+/abc$/P
+    abc
+    abc\n 
+
+/abc\/P
+
+/(abc)\2/P
+
+/(abc\1)/P
+    abc
+
+"(?>.*/)foo"X
+    /this/is/a/very/long/line/in/deed/with/very/many/slashes/in/it/you/see/
+
+"(?>.*/)foo"X
+    /this/is/a/very/long/line/in/deed/with/very/many/slashes/in/and/foo
+
+/(?>(\.\d\d[1-9]?))\d+/X
+    1.230003938
+    1.875000282
+    *** Failers 
+    1.235 
+
+/^((?>\w+)|(?>\s+))*$/X
+    now is the time for all good men to come to the aid of the party
+    *** Failers
+    this is not a line with only words and spaces!
+    
+/(\d+)(\w)/X
+    12345a
+    12345+ 
+
+/((?>\d+))(\w)/X
+    12345a
+    *** Failers
+    12345+ 
+
+/([a]*)*/
+
+/([ab]*)*/
+
+/([^a]*)*/
+
+/([^ab]*)*/
+
+/([a]*?)*/
+
+/([ab]*?)*/
+
+/([^a]*?)*/
+
+/([^ab]*?)*/
+
+/(?>a*)*/X
+
+/((?>a*))*/X
+
+/((?>a*?))*/X
+
+/)/
+
+/a[]b/
+
+/[^a]/
+    \Iaaaabcd
+    \IaaAabcd 
+
+/[^az]/
+    \Iaaaabcd
+    \IaaAabcd 
+
+/[^az]/
+    \Izazabcd
+    \IAaZabcd 
+    
+/[^aeiou ]{3,}/
+    co-processors, and for 
+    \Ico-processors, and for 
+    
+/((a)*)*/
+ 
+/((a|b|c)*)*/
+
+/<.*>/
+    abc<def>ghi<klm>nop
+
+/<.*?>/
+    abc<def>ghi<klm>nop
+
+/<.*>/U
+    abc<def>ghi<klm>nop
+    
+/<.*>(?U)/
+    abc<def>ghi<klm>nop
+
+/<.*?>/U
+    abc<def>ghi<klm>nop
+    
+/={3,}/U
+    abc========def
+    
+/(?U)={3,}?/
+    abc========def
+
+/ End of test input /

@@ -1,0 +1,70 @@
+Date: Thu, 13 Feb 2003 12:33:23 -0800 (PST)
+From: Len Sassaman <rabbi@abditum.com>
+Subject: Obituary for Janis Jagars (Disastry) 
+
+Janis Jagars, known to many people on the Internet by his handle Disastry,
+was a prolific programmer who made numerous valuable contributions to the
+Internet. I am afraid I cannot do his memory justice, having known him
+only a short number of years and only through his work on privacy
+enhancing programs, but he earned my respect and appreciation for his
+achievements in that area.
+
+I first "met" Janis Jagars while I was employed by PGP Security. In
+preparation for the release of PGP 7, I located and contacted the people
+responsible for other implementations of OpenPGP, in order to set up
+interop testing. Janis was working on updating the DOS-aware PGP 2.6.3i
+program to work with modern implementations of PGP. His work on that
+program, and his presence in the IETF OpenPGP working group, helped to
+smooth over a number of PGP compatibility problems. On the PGP newsgroups
+and mailing lists, Janis helped many new PGP users get started using email
+encryption, and tirelessly answered support questions for privacy-related
+programs. To my knowledge, Janis operated the only anonymous remailer to
+exist in Latvia.
+
+Janis was, by the original definition, a true Cypherpunk. He believed that
+privacy was a right that must not be denied to Internet users, and he
+wrote code to help ensure that it could not be.
+
+When he needed a way to easily send encrypted email through Netscape, he
+wrote a plugin. When he wanted a way to mount PGPdisk volumes under Linux,
+he wrote a conversion tool. When Windows users wanted a pre-compiled
+version GnuPG, Janis gave them one. Janis understood that the fight for
+Internet privacy must take place at the hands of programmers, and he rose
+to the challenge of bring useful privacy-enhancing programs into
+existence, and into the hands of the public.
+
+Immediately after the terrorist attacks in September, 2001, I took over
+maintenance of the Mixmaster anonymous remailer project. Mixmaster had
+been unmaintained for over a year, and needed serious work. I was
+delighted when I received email from Janis, offering his help. Over the
+next year, entirely of his own initiative, Janis ported Mixmaster's server
+functionality to Windows, brought Mixmaster's OpenPGP support from an
+unstable "alpha" state to a solid, usable feature set, and established
+himself as an invaluable member of the Mixmaster development team. The
+upcoming Mixmaster 3.0 release features a number of crucial improvements
+which would not have happened had it not been for Janis's involvement.
+
+My last communication with Janis was on October 11th of last year. He had
+planned a vacation in Nepal, and expected to return a month later. When he
+did not return, we feared the worst. Sadly, it turns out that our fears
+were true: On October 31, while descending from Lobuche summit, Janis fell
+250m, and did not survive.
+
+I am dedicating this year's CodeCon conference to Janis's memory. Janis
+will be missed, but his contributions will still be appreciated and
+utilized. It is my hope that Janis's work will serve as an example for
+other like-minded programmers, who chose to give their time and code in
+the name of free speech and privacy.
+
+
+Len Sassaman
+13 February 2003
+San Francisco, CA
+
+
+--
+
+Janis's home page may be viewed here:
+http://web.archive.org/web/20010927055328/disastry.dhs.org/
+News of his accident can be found here:
+http://www.vertikalex.lv/minisurvey/Discussion/ShowMessage.asp?ID=4703

@@ -1,0 +1,236 @@
+README file for PCRE (Perl-compatible regular expressions)
+----------------------------------------------------------
+
+The distribution should contain the following files:
+
+  ChangeLog         log of changes to the code
+  Makefile          for building PCRE
+  Performance       notes on performance
+  README            this file
+  Tech.Notes        notes on the encoding
+  pcre.3            man page for the functions
+  pcreposix.3       man page for the POSIX wrapper API
+  maketables.c      auxiliary program for building chartables.c
+  study.c           ) source of
+  pcre.c            )   the functions
+  pcreposix.c       )
+  pcre.h            header for the external API
+  pcreposix.h       header for the external POSIX wrapper API
+  internal.h        header for internal use
+  pcretest.c        test program
+  pgrep.1           man page for pgrep
+  pgrep.c           source of a grep utility that uses PCRE
+  perltest          Perl test program
+  testinput         test data, compatible with Perl
+  testinput2        test data for error messages and non-Perl things
+  testoutput        test results corresponding to testinput
+  testoutput2       test results corresponding to testinput2
+
+To build PCRE, edit Makefile for your system (it is a fairly simple make file)
+and then run it. It builds a two libraries called libpcre.a and libpcreposix.a,
+a test program called pcretest, and the pgrep command.
+
+To test PCRE, run pcretest on the file testinput, and compare the output with
+the contents of testoutput. There should be no differences. For example:
+
+  pcretest testinput some.file
+  diff some.file testoutput
+
+Do the same with testinput2, comparing the output with testoutput2, but this
+time using the -i flag for pcretest, i.e.
+
+  pcretest -i testinput2 some.file
+  diff some.file testoutput2
+
+The make target "runtest" runs both these tests, using the file "testtry" to
+store the intermediate output, deleting it at the end if all goes well.
+
+There are two sets of tests because the first set can also be fed directly into
+the perltest program to check that Perl gives the same results. The second set
+of tests check pcre_info(), pcre_study(), error detection and run-time flags
+that are specific to PCRE, as well as the POSIX wrapper API.
+
+To install PCRE, copy libpcre.a to any suitable library directory (e.g.
+/usr/local/lib), pcre.h to any suitable include directory (e.g.
+/usr/local/include), and pcre.3 to any suitable man directory (e.g.
+/usr/local/man/man3).
+
+To install the pgrep command, copy it to any suitable binary directory, (e.g.
+/usr/local/bin) and pgrep.1 to any suitable man directory (e.g.
+/usr/local/man/man1).
+
+PCRE has its own native API, but a set of "wrapper" functions that are based on
+the POSIX API are also supplied in the library libpcreposix.a. Note that this
+just provides a POSIX calling interface to PCRE: the regular expressions
+themselves still follow Perl syntax and semantics. The header file
+for the POSIX-style functions is called pcreposix.h. The official POSIX name is
+regex.h, but I didn't want to risk possible problems with existing files of
+that name by distributing it that way. To use it with an existing program that
+uses the POSIX API it will have to be renamed or pointed at by a link.
+
+
+Character tables
+----------------
+
+PCRE uses four tables for manipulating and identifying characters. These are
+compiled from a source file called chartables.c. This is not supplied in
+the distribution, but is built by the program maketables (compiled from
+maketables.c), which uses the ANSI C character handling functions such as
+isalnum(), isalpha(), isupper(), islower(), etc. to build the table sources.
+This means that the default C locale set in your system may affect the contents
+of the tables. You can change the tables by editing chartables.c and then
+re-building PCRE. If you do this, you should probably also edit Makefile to
+ensure that the file doesn't ever get re-generated.
+
+The first two tables pcre_lcc[] and pcre_fcc[] provide lower casing and a
+case flipping functions, respectively. The pcre_cbits[] table consists of four
+32-byte bit maps which identify digits, letters, "word" characters, and white
+space, respectively. These are used when building 32-byte bit maps that
+represent character classes.
+
+The pcre_ctypes[] table has bits indicating various character types, as
+follows:
+
+    1   white space character
+    2   letter
+    4   decimal digit
+    8   hexadecimal digit
+   16   alphanumeric or '_'
+  128   regular expression metacharacter or binary zero
+
+You should not alter the set of characters that contain the 128 bit, as that
+will cause PCRE to malfunction.
+
+
+The pcretest program
+--------------------
+
+This program is intended for testing PCRE, but it can also be used for
+experimenting with regular expressions.
+
+If it is given two filename arguments, it reads from the first and writes to
+the second. If it is given only one filename argument, it reads from that file
+and writes to stdout. Otherwise, it reads from stdin and writes to stdout, and
+prompts for each line of input.
+
+The program handles any number of sets of input on a single input file. Each
+set starts with a regular expression, and continues with any number of data
+lines to be matched against the pattern. An empty line signals the end of the
+set. The regular expressions are given enclosed in any non-alphameric
+delimiters, for example
+
+  /(a|bc)x+yz/
+
+and may be followed by i, m, s, or x to set the PCRE_CASELESS, PCRE_MULTILINE,
+PCRE_DOTALL, or PCRE_EXTENDED options, respectively. These options have the
+same effect as they do in Perl.
+
+There are also some upper case options that do not match Perl options: /A, /E,
+and /X set PCRE_ANCHORED, PCRE_DOLLAR_ENDONLY, and PCRE_EXTRA respectively.
+The /D option is a PCRE debugging feature. It causes the internal form of
+compiled regular expressions to be output after compilation. The /S option
+causes pcre_study() to be called after the expression has been compiled, and
+the results used when the expression is matched. If /I is present as well as
+/S, then pcre_study() is called with the PCRE_CASELESS option.
+
+Finally, the /P option causes pcretest to call PCRE via the POSIX wrapper API
+rather than its native API. When this is done, all other options except /i and
+/m are ignored. REG_ICASE is set if /i is present, and REG_NEWLINE is set if /m
+is present. The wrapper functions force PCRE_DOLLAR_ENDONLY always, and
+PCRE_DOTALL unless REG_NEWLINE is set.
+
+A regular expression can extend over several lines of input; the newlines are
+included in it. See the testinput file for many examples.
+
+Before each data line is passed to pcre_exec(), leading and trailing whitespace
+is removed, and it is then scanned for \ escapes. The following are recognized:
+
+  \a     alarm (= BEL)
+  \b     backspace
+  \e     escape
+  \f     formfeed
+  \n     newline
+  \r     carriage return
+  \t     tab
+  \v     vertical tab
+  \nnn   octal character (up to 3 octal digits)
+  \xhh   hexadecimal character (up to 2 hex digits)
+
+  \A     pass the PCRE_ANCHORED option to pcre_exec()
+  \B     pass the PCRE_NOTBOL option to pcre_exec()
+  \E     pass the PCRE_DOLLAR_ENDONLY option to pcre_exec()
+  \I     pass the PCRE_CASELESS option to pcre_exec()
+  \M     pass the PCRE_MULTILINE option to pcre_exec()
+  \S     pass the PCRE_DOTALL option to pcre_exec()
+  \Odd   set the size of the output vector passed to pcre_exec() to dd
+           (any number of decimal digits)
+  \Z     pass the PCRE_NOTEOL option to pcre_exec()
+
+A backslash followed by anything else just escapes the anything else. If the
+very last character is a backslash, it is ignored. This gives a way of passing
+an empty line as data, since a real empty line terminates the data input.
+
+If /P was present on the regex, causing the POSIX wrapper API to be used, only
+\B, and \Z have any effect, causing REG_NOTBOL and REG_NOTEOL to be passed to
+regexec() respectively.
+
+When a match succeeds, pcretest outputs the list of identified substrings that
+pcre_exec() returns, starting with number 0 for the string that matched the
+whole pattern. Here is an example of an interactive pcretest run.
+
+  $ pcretest
+  Testing Perl-Compatible Regular Expressions
+  PCRE version 0.90 08-Sep-1997
+
+      re> /^abc(\d+)/
+    data> abc123
+   0: abc123
+   1: 123
+    data> xyz
+  No match
+
+Note that while patterns can be continued over several lines (a plain ">"
+prompt is used for continuations), data lines may not. However newlines can be
+included in data by means of the \n escape.
+
+If the -p option is given to pcretest, it is equivalent to adding /P to each
+regular expression: the POSIX wrapper API is used to call PCRE. None of the
+following flags has any effect in this case.
+
+If the option -d is given to pcretest, it is equivalent to adding /D to each
+regular expression: the internal form is output after compilation.
+
+If the option -i (for "information") is given to pcretest, it calls pcre_info()
+after compiling an expression, and outputs the information it gets back. If the
+pattern is studied, the results of that are also output.
+
+If the option -s is given to pcretest, it outputs the size of each compiled
+pattern after it has been compiled.
+
+If the -t option is given, each compile, study, and match is run 2000 times
+while being timed, and the resulting time per compile or match is output in
+milliseconds. Do not set -t with -s, because you will then get the size output
+2000 times and the timing will be distorted.
+
+
+
+The perltest program
+--------------------
+
+The perltest program tests Perl's regular expressions; it has the same
+specification as pcretest, and so can be given identical input, except that
+input patterns can be followed only by Perl's lower case options.
+
+The data lines are processed as Perl strings, so if they contain $ or @
+characters, these have to be escaped. For this reason, all such characters in
+the testinput file are escaped so that it can be used for perltest as well as
+for pcretest, and the special upper case options such as /A that pcretest
+recognizes are not used in this file. The output should be identical, apart
+from the initial identifying banner.
+
+The testinput2 file is not suitable for feeding to Perltest, since it does
+make use of the special upper case options and escapes that pcretest uses to
+test additional features of PCRE.
+
+Philip Hazel <ph10@cam.ac.uk>
+October 1997

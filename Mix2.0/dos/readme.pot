@@ -1,0 +1,125 @@
+
+Mixmaster and Potato Software    (ReadMe.POT)
+---------------------------------------------
+    This document details installation of Mixmaster for use with the following
+    remailer utilities:
+
+        Jack B. Nymble v1.2
+        Potato v2.3
+
+    If your version number is higher, check the program documentation for the
+    latest information or changes.
+
+    This document is intended for distribution with Mixmaster 2.0.5.
+
+
+Installing Mixmaster 2.0.5
+--------------------------
+    Download the Mixmaster DOS binary ("mix205.zip").  Create a directory
+    named "C:\MIX", or similar. Unzip the archive to this directory.
+
+    If you use Jack B. Nymble:
+
+        Note: Jack B. Nymble v1.2 includes an installation wizard which will
+        complete the required steps below. Select Tools|Wizards|Install
+        Mixmaster.  Or:
+
+        In Options|Global Settings|Remailers|Mix Path, enter the path to
+        Mixmaster, C:\MIX
+
+        In the Stats Book, select Tools|Update Mix List and Keys.
+
+
+    If you use Potato:
+
+        In POT.INI find the line "---mix", and enter (for example):
+           ---mix=C:\MIX
+
+        Download the current type2.lis and pubring.mix files, and save
+        them to your Mixmaster directory. (See below for links.)
+
+
+
+    Optional:  If you installed Mixmaster to a directory other than C:\MIX,
+    you may wish to set the MIXPATH environment variable in Autoexec.bat,
+    particularly if you are using the older Mixmaster 2.0.3 independently, or
+    with other software. However, neither Potato nor Jack B. Nymble require
+    this variable with Mixmaster 2.0.4 or 2.0.5.
+
+
+
+Using Jack B. Nymble with Mixmaster
+-----------------------------------
+    Jack B. Nymble supports all current client features of Mixmaster 2.0.5,
+    including multi-part messages, random remailers, and redundant message
+    chains.
+
+    In Message Books, Mixmaster remailers are used the same way as Cypherpunk
+    remailers.  Press the Mix button to toggle between the two.
+
+    When using Mixmaster remailers, the To field may contain multiple addresses
+    separated with commas.  (No spaces.)
+
+    The Stats Book will update your type2.lis and pubring.mix files.  Select
+    Tools|Update Mix List and Keys.  (The URLs used to obtain these files may be
+    customized in JBN's Options|Global Settings|Remailers.)
+
+    Each time you update the Stats Book, JBN also updates Mixmaster's
+    mixmaste.htm file in the Mixmaster directory.
+
+
+
+Using Potato with Mixmaster
+---------------------------
+    Potato supports all current client features of Mixmaster 2.0.5, including
+    multi-part messages, random remailers, and redundant message chains.
+
+    Press Alt-M to toggle CPunk/Mixmaster remailers.  In the To field, enter one
+    or more addresses, separated by commas.  (No spaces.) Select remailers in
+    the M1-M5 fields by pressing PageUp/PageDown.  In the Hd fields, enter any
+    additional headers you wish included.  (Headers may also be added using the
+    three variable headers, and using X-Header.txt - consult Potato.txt.)
+
+    Potato requires the user to update the Mixmaster type2.lis and pubring.mix
+    files, which contain the remailer list and keys, and mixmaste.htm, which
+    contains statistics used by Mixmaster's random remailer functions.  For the
+    locations of these files, consult the links at the end of this document.
+
+
+
+Useful Links
+------------
+    Potato Software Homepage:
+        (Knowledge Base, Version Updates, and Up-To-Date Links)
+        http://www.bigfoot.com/~potatoware
+        http://members.tripod.com/~l4795
+        http://members.xoom.com/potatoware
+        
+    Home of Mixmaster 2.0.5:
+        http://web.mixmaster.anonymizer.com/
+
+    Lance Cottrell's Site (Mixmaster FAQ):
+        http://obscura.com/~loki/
+
+    Mixmaster Statistics URLs:
+        http://stats.melontraffickers.com/mlist.txt
+        http://mixmaster.shinn.net/stats/mlist
+        http://anon.efga.org/Remailers/mlist
+        http://www.noreply.org/echolot/mlist.txt
+
+    Mixmaster Files:
+        http://stats.melontraffickers.com/type2.list
+        http://stats.melontraffickers.com/pubring.mix
+
+        http://mixmaster.shinn.net/stats/type2.list
+        http://mixmaster.shinn.net/stats/pubring.mix
+
+        http://anon.efga.org/Remailers/type2.list
+        http://anon.efga.org/Remailers/pubring.mix
+
+        http://www.noreply.org/echolot/type2.list
+        http://www.noreply.org/echolot/pubring.mix
+
+
+RProcess  18-Apr-98
+(updated -- rabbi 21-Sep-02)

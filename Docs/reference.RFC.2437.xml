@@ -1,0 +1,35 @@
+<?xml version='1.0'?>
+
+<reference anchor='RFC2437'>
+
+<front>
+<title abbrev='PKCS #1'>PKCS #1: RSA Cryptography Specifications Version 2.0</title>
+<author initials='B.' surname='Kaliski' fullname='Burt Kaliski'>
+<organization>RSA Laboratories East</organization>
+<address>
+<postal>
+<street>20 Crosby Drive</street>
+<street>Bedford</street>
+<street>MA  01730</street></postal>
+<phone>(617) 687-7000</phone>
+<email>burt@rsa.com</email></address></author>
+<author initials='J.' surname='Staddon' fullname='Jessica Staddon'>
+<organization>RSA Laboratories West</organization>
+<address>
+<postal>
+<street>2955 Campus Drive</street>
+<street>Suite 400</street>
+<street>San Mateo</street>
+<street>CA 94403</street></postal>
+<phone>(650) 295-7600</phone>
+<email>jstaddon@rsa.com</email></address></author>
+<date month='October' year='1998' />
+<area>Security</area>
+<keyword>cryptographic</keyword>
+<keyword>public key cryptography standards</keyword>
+<keyword>public key encryption</keyword></front>
+
+<seriesInfo name='RFC' value='2437' />
+<format type='HTML' octets='93905' target='http://xml.resource.org/public/rfc/html/rfc2437.html' />
+<format type='XML' octets='76587' target='http://xml.resource.org/public/rfc/xml/rfc2437.xml' />
+</reference>

@@ -1,0 +1,71 @@
+<?xml version='1.0'?>
+
+<reference anchor='RFC2311'>
+
+<front>
+<title>S/MIME Version 2 Message Specification</title>
+<author initials='S.' surname='Dusse' fullname='Steve Dusse'>
+<organization>RSA Data Security, Inc.</organization>
+<address>
+<postal>
+<street>100 Marine Parkway, #500</street>
+<city>Redwood City</city>
+<region>CA</region>
+<code>94065</code></postal>
+<phone>(415) 595-8782</phone>
+<email>spock@rsa.com</email></address></author>
+<author initials='P.' surname='Hoffman' fullname='Paul Hoffman'>
+<organization>Internet Mail Consortium</organization>
+<address>
+<postal>
+<street>127 Segre Place</street>
+<city>Santa Cruz</city>
+<region>CA</region>
+<code>95060</code></postal>
+<phone>(408) 426-9827</phone>
+<email>phoffman@imc.org</email></address></author>
+<author initials='B.' surname='Ramsdell' fullname='Blake Ramsdell'>
+<organization>Worldtalk</organization>
+<address>
+<postal>
+<street>13122 NE 20th St., Suite C</street>
+<city>Bellevue</city>
+<region>WA</region>
+<code>98005</code></postal>
+<phone>(425) 882-8861</phone>
+<email>blaker@deming.com</email></address></author>
+<author initials='L.' surname='Lundblade' fullname='Laurence Lundblade'>
+<organization>QUALCOMM Incorporated</organization>
+<address>
+<postal>
+<street>Eudora Division</street>
+<street>6455 Lusk Boulevard</street>
+<city>San Diego</city>
+<region>California</region>
+<code>92121-2779</code></postal>
+<phone>(800) 238-3672</phone>
+<email>lgl@qualcomm.com</email></address></author>
+<author initials='L.' surname='Repka' fullname='Lisa Repka'>
+<organization>Netscape Communications Corporation</organization>
+<address>
+<postal>
+<street>501 East Middlefield Road</street>
+<city>Mountain View</city>
+<region>CA</region>
+<code>94043</code></postal>
+<phone>(415) 254-1900</phone>
+<email>repka@netscape.com</email></address></author>
+<date month='March' year='1998' />
+<area>Security</area>
+<area>Applications</area>
+<keyword>authentication</keyword>
+<keyword>cryptographic</keyword>
+<keyword>digital signature</keyword>
+<keyword>encryption</keyword>
+<keyword>multipurpose internet mail extensions</keyword>
+<keyword>security</keyword></front>
+
+<seriesInfo name='RFC' value='2311' />
+<format type='HTML' octets='80984' target='http://xml.resource.org/public/rfc/html/rfc2311.html' />
+<format type='XML' octets='71356' target='http://xml.resource.org/public/rfc/xml/rfc2311.xml' />
+</reference>

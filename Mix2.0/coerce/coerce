@@ -1,0 +1,194 @@
+#!/usr/bin/procmail -m
+# coerce-1.11 1997/12/08
+# (C) 1997 Andy Dustman <andy@CCMSD.chem.uga.edu>
+# Use (at your own risk) instead of your sendmail to prevent abuse and
+# traffic analysis of type-I messages and other wonderful things.
+
+# 1997/12/08: Munges return address for all USENET posts, all gateways.
+#               Adds disclaimer for multiple From: lines (if enabled in
+#               your remailer). Separate config file.
+# 1997/11/18: Broke some of the more complicated stuff out into
+#		separate files. Should improve performance. Minor bug fixes
+#		(thanks, Secret Squirrel).
+# 1997/11/10: Minor bugfix for post Message-ID:
+# 1997/11/07: USENET post Message-ID: calculations done on body only to
+#		prevent multiple-post spamming.
+# 1997/11/03: Anti-spam-baiting now done through external program.
+#                Read the code.
+# 1997/10/06: Tightened up anti-spam-baiting recipe.
+# 1997/09/25: Added CANTREACH to chain through another remailer if the
+#	  	destination is not reachable.
+# 1997/09/19: Added DONTREMIX to prevent mail loss when remixing to
+#		"dumb" middlemen. Unrenamed!
+# 1997/09/10: Bulk mail inhibitor (20 recipients max). Improved ADDNOSPAM.
+# 1997/09/03: General improvements, renamed from "coerce"
+# 1997/08/11: Smarter Middleman, spam-bait mangler.
+# 1997/08/01: Incorporated some procmail suggestions by Secret Squirrel.
+
+# Read README.coerce.
+
+INCLUDERC=/home/anon/Mix/coerce.conf    # most config done here
+#VERBOSE=on
+
+# Send mixmaster messages without further processing
+:0
+*B ?? ^^::$Remailer-Type: Mixmaster
+| $SENDMAIL $SENDMAILFLAGS 
+
+# Messages with more than 20 are rejected.
+# (Sorry, couldn't find a way to make this a configurable option.)
+
+RECIPIENTS=`formail -z -xTo: -xCC: -xBcc:`
+DATE=`date`
+
+:0 :
+* -20^0
+* 1^1 RECIPIENTS ?? @
+| formail "-aDate: $DATE" -aX-Rejected: too many recipients" >>$REJECTS
+
+# Messages larger than MAXBYTES are discarded. Well, save a little bit.
+
+:0
+* > $MAXBYTES
+{
+    :0 fb
+    | head -100
+
+    :0 :
+    | formail "-aDate: $DATE" "-aX-Rejected: oversized" >>$REJECTS
+}
+
+TO=`formail -z -xTo:`
+
+# Some dufuses generate cover traffic (or something) and send the result
+# to "null" instead of "null:" (depends on message type). Eat 'em up.
+
+:0 :
+* TO ?? ^null$
+/dev/null
+
+# Nuke messages sent to an IP address (would avoid blocking tests)
+
+:0 :
+* TO ?? @\[?[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\]?
+| formail "-aX-Rejected: To IP address" "-aDate: $DATE" >>$REJECTS
+
+# Do we have an extra From:? If so, remove the remailer's From: 
+# (the first one), set a Sender:, and insert a disclaimer in the body.
+
+:0
+* -1^0
+* 1^1 ^From:
+{
+    :0 fh
+    | formail -fb -UFrom: "-ISender: $MYFROM"
+
+    :0 :
+    * ? formail -xFrom: | fgrep -qif $MIXPATH/destination.block
+    | formail "-aX-Rejected: From is destination blocked" "-aDate: $DATE" >>$REJECTS
+
+    :0 fb
+    | (cat $DISCLAIMER; cat)
+
+    :0
+    * ^Content-Type: .*\/boundary=.*
+    { BOUNDARY=`echo $MATCH | sed -e 's/boundary="\(.*\)"/\1/'` }
+
+    :0 fb
+    * BOUNDARY ?? ^..*$
+    | (echo "MIME message"; echo; echo --$BOUNDARY;\
+	echo 'Content-Type: text/plain; charset="us-ascii"'; \
+	echo 'Content-Transfer-Encoding: 7bit'; echo; cat )
+}
+
+# Anti-Spam-Baiting and general anti-USENET-abuse.
+# May need periodic adjustments for new mail2news gateways.
+
+:0 
+* ANTIUSENETABUSE ?? (yes|on)
+* TO ?? $ $MAIL2NEWSGW
+{
+	INCLUDERC="${COERCEPATH}/aua.prc"
+}
+
+# Eliminate duplicate messages. EATSPAM is written in Python and is
+# available separately. EATSPAM generates a unique Message-ID (MD5).
+# If EATSPAM is set to "internal", we instead use md5sum and formail
+# to approximate the same feature (probably not as fast).
+
+:0 f: eat-spam${LOCKEXT}
+*! EATSPAM ?? internal
+| $EATSPAM
+
+:0 e:
+| formail "-aDate: $DATE" >>$DUPLICATES
+
+:0 
+* EATSPAM ?? internal
+{
+	INCLUDERC="${COERCEPATH}/eat-spam.prc"
+}
+
+:0 fh
+* UMID ?? @anonymous\.poster
+| formail -fb "-IMessage-ID: $UMID"
+
+# Save copies of USENET posts. This gives us an edge on looking for
+# patterns of abuse. Don't save posts to groups in NOSAVEGROUPS.
+
+NOSAVEGROUPS="(^\$)|$NOSAVEGROUPS"
+
+:0 c:
+* SAVEPOSTS ?? (yes|on)
+*! NEWSGROUPS ?? $ $NOSAVEGROUPS
+| formail "-aDate: $DATE" >>$POSTS
+
+# If we can't reach the recipient (listed in CANTREACH), pretend to
+# be a middleman. Change the zero after "-l" if you want to always
+# chain through some reliable remailer. Else, you may need to edit
+# type2.list and mark the CANTREACH remailers as middlemen, and make
+# sure mix.list is regularly updated.
+
+:0
+* CANTREACH ?? ^..*$
+* TO ?? $ $CANTREACH
+| formail -bf -IFrom: -ITo: -IComments: -IMessage-ID: \
+        | $MIXMASTER -f -to $TO -l 0 
+
+# Remix. If to a mixmaster and not in mixmaster format, push it through
+# mixmaster again. Mixmaster 2.0.3 compatible. Don't remix to ourselves;
+# this could cause false duplicates (maybe) and waste time (definitely).
+# Also don't remix if the recipient is listed in DONTREMIX (most middle).
+
+MIXNUM=`grep -n "$TO" $TYPE2 | sed 's/\([0-9]*\):.*/\1/'`
+
+:0 
+*REMIX ?? (yes|on)
+*TO ?? !$ $US|$DONTREMIX
+*MIXNUM ?? [0-9]+
+*B ?? !^^::$Remailer-Type: Mixmaster
+| formail -bf -IFrom: -ITo: -IComments: -IMessage-ID: \
+	| $MIXMASTER -f -to $TO -l $MIXNUM
+
+# Smart middle. If not to another remailer, send it through a random mixmaster.
+# Mixmaster 2.0.3 compatible. However, remails PGP messages directly. Delete
+# that line if you don't want this feature.
+
+:0 
+* MIDDLE ?? (on|yes)
+*! ? grep "$TO" $RLIST $TYPE2
+*B ?? !^-----BEGIN PGP MESSAGE-----$
+| formail -bf -IFrom: -ITo: -IComments: -IMessage-ID: \
+        | $MIXMASTER -f -to $TO -l 0 
+
+# Is it for us? Just push it back into the remailer, avoid sendmail.
+
+:0
+*TO ?? $ $US
+| $REMAILER
+
+# We made it this far, so send out the mail.
+
+:0
+| $SENDMAIL $SENDMAILFLAGS 
+

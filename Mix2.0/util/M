@@ -1,0 +1,57 @@
+#!/bin/sh
+# send mail anonymously
+# $Id: M,v 1.1 2002/08/28 20:06:52 rabbi Exp $
+
+header()
+{
+  header=`cat "$2" | sed '/^$/,$d' | grep -i "^$1:" | sed 's/^[a-zA-Z-]*: //'`
+}
+
+mixmaster=""
+for i in $HOME/Mix/mixmaster mixmaster `which mixmaster 2>&1` $MIXPATH/mixmaster
+do
+  if [ -f "$i" -a -x "$i" ]
+  then
+    mixmaster=$i
+  fi
+done
+if [ "$mixmaster" = "" ]
+then
+  echo "Please put the mixmaster binary somewhere in your PATH."
+  exit 1
+fi
+
+MSG=/tmp/msg.$$
+
+(
+echo 'To: '
+echo 'Subject: '
+echo Chain: 0 0 0
+
+echo
+
+if [ -f ~/.anonsig ]
+then
+ echo "-- "
+ cat ~/.anonsig
+fi
+
+) >$MSG
+
+$EDITOR $MSG </dev/tty
+
+echo -n "Send message (y/n)? "
+read ans </dev/tty
+
+if [ "$ans" = "y" ]
+then
+  header Chain $MSG
+  if [ "$header" = "" ]
+  then
+    CHAIN=""
+  else
+    CHAIN="-l $header"
+  fi
+  cat $MSG | grep -v '^Chain:' | $mixmaster -m $CHAIN
+fi
+rm $MSG

@@ -1,0 +1,18 @@
+<?xml version='1.0'?>
+
+<reference anchor='RFC1421'>
+
+<front>
+<title abbrev='Privacy Enhancement for Electronic Mail'>Privacy Enhancement for Internet Electronic Mail: Part I: Message Encryption and Authentication Procedures</title>
+<author initials='J.' surname='Linn' fullname='John Linn'>
+<organization>Internet Architecture Board (IAB)
+			Internet Research Task Force (IRTF),
+			MIT's Programming Systems Research Group (PSRG),
+			Internet Engineering Task Force (IETF),
+			Privacy Enhanced Mail Work Group (PEM WG)</organization>
+<address>
+<email>104-8456@mcimail.com</email></address></author>
+<date month='February' year='1993' /></front>
+
+<seriesInfo name='RFC' value='1421' />
+</reference>

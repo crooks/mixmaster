@@ -1,0 +1,45 @@
+Subject: Information about %RMN
+
+This message is being sent to you automatically in response to the
+message you sent to %RMA with subject "remailer-help".
+
+There is an automated mail handling program installed on this
+account which will take any message in the Mixmaster message format
+and automatically re-send it anonymously.
+
+You can get the Mixmaster client software via FTP from
+<ftp://ftp.zedz.net/pub/crypto/remailer/mixmaster/> (Netherlands) or
+<ftp://download.mixmaster.anonymizer.com/pub/source/> (USA). You can
+get the Mixmaster client software via HTTP from <http://mixmaster.sf.net/>
+and <http://web.mixmaster.anonymizer.com/> (USA).  Please read its manual
+page and README file for usage instructions.
+
+More information about anonymous remailers is available at
+<http://www.stack.nl/~galactus/remailers/>.
+For an up-to-date listing of anonymous remailers with statistics,
+see <http://stats.melontraffickers.com/mlist.txt>.
+
+
+Abuse Policy:
+
+I consider the following to be inappropriate use of this anonymous
+remailer, and will take steps to prevent anyone from doing any of the
+following:
+
+- Sending messages intended primarily to be harassing or annoying.
+- Use of the remailer for any illegal purpose.
+
+If you don't want to receive anonymous mail, send a message to the
+operator, and you e-mail address will be added to the block list.
+
+
+You can get a list of statistics on remailer usage by sending mail to
+%RMA with Subject: remailer-stats
+
+To get the remailer's public keys, send mail with Subject: remailer-key
+or finger mlist-keys@anon.efga.org to get the public keys of all active
+Mixmaster remailers.
+
+For a copy of these instructions, send mail with Subject: remailer-help
+
+To reach the operator, direct your mail to %CA.

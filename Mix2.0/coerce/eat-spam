@@ -1,0 +1,24 @@
+#!/usr/bin/python
+
+import sys, shelve, md5, string
+#from binascii import b2a_base64
+from os import popen
+from time import time
+def char2hex(s):
+        return string.join(map(lambda c:"%02x"%ord(c),s),'')
+
+hostname = "anon.efga.org" # hostname to use in Message-Id:
+
+id_log = shelve.open("/home/anon/Mix/spam-can")
+l=sys.stdin.read()
+id = md5.md5(l).digest()
+spam = id_log.has_key(id)
+id_log[id] = time()
+id_log.close()
+if spam: sys.exit(1)
+else:
+    if sys.argv[1:]: p = popen(string.join(sys.argv[1:],' '),'w')
+    else: p = sys.stdout
+    p.write("Message-ID: <%s@%s>\n" % (char2hex(id),hostname) )
+    p.write(l)
+    sys.exit(p.close())
