@@ -200,7 +200,8 @@ start:
 	 (remailer[i].flags.pgp && remailer[i].flags.ek && rtype == 1) ||
 	 (remailer[i].flags.newnym && rtype == 2)) &&
 	(remailer[i].info[t].reliability >= 100 * RELFINAL || constraints_ignored ) && /* remailer has sufficient reliability */
-	(remailer[i].info[t].latency <= MAXLAT || constraints_ignored ) &&             /* remailer has small enough latency */
+	(remailer[i].info[t].latency <= MAXLAT || constraints_ignored ) &&             /* remailer has low enough latency */
+	(remailer[i].info[t].latency >= MINLAT || constraints_ignored ) &&             /* remailer has high enough latency */
 	(type == MSG_NULL || !remailer[i].flags.middle) &&   /* remailer is not middleman */
 	!remailer[i].flags.star_ex &&                        /* remailer is not excluded from random selection */
 	(remailer[i].flags.post || type != MSG_POST) &&      /* remailer supports post when this is a post */
@@ -258,7 +259,8 @@ start:
 	select[i] = ((remailer[i].flags.mix && t == 0) ||        /* remailer supports type */
 		     (remailer[i].flags.pgp && remailer[i].flags.ek && t == 1)) &&
 	  (remailer[i].info[t].reliability >= 100 * MINREL || constraints_ignored ) &&  /* remailer has sufficient reliability */
-	  (remailer[i].info[t].latency <= MAXLAT || constraints_ignored ) &&            /* remailer has small enough latency */
+	  (remailer[i].info[t].latency <= MAXLAT || constraints_ignored ) &&            /* remailer has low enough latency */
+	  (remailer[i].info[t].latency >= MINLAT || constraints_ignored ) &&            /* remailer has high enough latency */
 	  !remailer[i].flags.star_ex &&                          /* remailer is not excluded from random selection */
 	  !badchains[i][0] && !badchains[i][thischain[hop-1]] && /* remailer can send to the next one */
 	  (hop == chainlen-1 || !badchains[thischain[hop+1]][i]);

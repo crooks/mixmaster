@@ -370,6 +370,7 @@ extern int DISTANCE;
 extern int MINREL;
 extern int RELFINAL;
 extern long MAXLAT;
+extern long MINLAT;
 DLLIMPORT extern char PGPPUBRING[];
 DLLIMPORT extern char PGPSECRING[];
 DLLIMPORT extern char PASSPHRASE[];

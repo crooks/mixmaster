@@ -475,5 +475,9 @@
                              works under Win32 only (by goblin).
                            Fixed bug in buffers.c.
 
-2004-?????      3.0???
+2005-?????      3.0???
                            Prefer pubring.asc over secring.pgp.
+                           Added MINLAT directive. Ensures randhopped messages
+                             are sent through remailers of latency of 
+                             MINLAT time or greater. (by Len Sassaman, 
+                             suggested by Steve Cook.)

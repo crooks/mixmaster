@@ -227,8 +227,8 @@ static int send_packet(int numcopies, BUFFER *packet, int chain[],
  *                 that has foo as the next hop via a chain so that the packet will
  *                 actually flow hop1,hop2,hop3,foo,....
  * ignore_constraints_if_necessary .. to be used when randhopping messages.
- *                 if a chain can not be constructed otherwhise, maxlat and
- *                 minrel are ignored.
+ *                 if a chain can not be constructed otherwhise, maxlat, minlat,
+ *                 and minrel are ignored.
  * feedback    ... a buffer to write feedback to
  */
 {
@@ -541,7 +541,7 @@ int mix2_encrypt(int type, BUFFER *message, char *chainstr, int numcopies,
 
    ignore_constraints_if_necessary .. to be used when randhopping messages.
                                    if a chain can not be constructed otherwhise,
-                                   maxlat and minrel are ignored.
+                                   maxlat, minlat, and minrel are ignored.
      */
 
   REMAILER remailer[MAXREM];

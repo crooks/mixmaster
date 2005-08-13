@@ -93,6 +93,7 @@ DISTANCE            2
 MINREL              98
 RELFINAL            99
 MAXLAT              36h
+MINLAT              5m
 
 ## This file lists remailers which should not be used in randomly generated
 ## remailer chains

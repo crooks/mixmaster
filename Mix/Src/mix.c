@@ -169,6 +169,7 @@ int DISTANCE;
 int MINREL;
 int RELFINAL;
 long MAXLAT;
+long MINLAT;
 char PGPPUBRING[PATHMAX];
 char PGPSECRING[PATHMAX];
 char PASSPHRASE[LINELEN];
@@ -510,6 +511,7 @@ static void mix_setdefaults()
 	MINREL = 98;
 	RELFINAL = 99;
 	MAXLAT = 36 * 60 * 60;
+	MINLAT = 5 * 60;
 	strnncpy(PGPPUBRING, "");
 	strnncpy(PGPSECRING, "");
 #ifdef COMPILEDPASS
@@ -574,6 +576,7 @@ int mix_configline(char *line)
 	  read_conf(CHAIN) || read_conf_i(VERBOSE) ||
 	  read_conf_i(DISTANCE) || read_conf_i(MINREL) ||
 	  read_conf_i(RELFINAL) || read_conf_t(MAXLAT) ||
+	  read_conf_t(MINLAT) ||
 	  read_conf(PGPPUBRING) || read_conf(PGPSECRING) ||
 	  read_conf(PASSPHRASE) || read_conf_t(KEYLIFETIME) ||
 	  read_conf_t(KEYGRACEPERIOD) || read_conf_t(KEYOVERLAPPERIOD) ||
