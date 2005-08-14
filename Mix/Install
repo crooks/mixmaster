@@ -524,10 +524,10 @@ then
  # Find the OpenSSL version header
  if [ -f "$INCDIR/openssl/opensslv.h" ]
  then
-  version=`grep 'SSL.*_VERSION_NUMBER.*0x' $INCDIR/openssl/opensslv.h | sed 's/.*0x0*//;s/[ 	].*//;s/L$//'`
+  version=`grep 'SSL.*_VERSION_NUMBER.*0x' $INCDIR/openssl/opensslv.h | sed 's/.*0x0*//;s/[ 	].*//;s/L$//' | tr '[a-f]' '[A-F]'`
  elif [ -f "$INCDIR/opensslv.h" ]
  then
-  version=`grep 'SSL.*_VERSION_NUMBER.*0x' $INCDIR/opensslv.h | sed 's/.*0x0*//;s/[ 	].*//;s/L$//'`
+  version=`grep 'SSL.*_VERSION_NUMBER.*0x' $INCDIR/opensslv.h | sed 's/.*0x0*//;s/[ 	].*//;s/L$//' | tr '[a-f]' '[A-F]'`
  fi
  if [ "$version" = "" ]
  then
@@ -538,80 +538,80 @@ then
    echo $opensslinfo
    exit 1
   fi
- elif [ "$version" = "90581f" ]
+ elif [ "$version" = "90581F" ]
  then
   echo "Compiling with OpenSSL 0.9.5a."
   opensslwarn 6
- elif [ "$version" = "90601f" ]
+ elif [ "$version" = "90601F" ]
  then
   echo "Compiling with OpenSSL 0.9.6a."
   opensslwarn 6
- elif [ "$version" = "90602f" ]
+ elif [ "$version" = "90602F" ]
  then
   echo "Compiling with OpenSSL 0.9.6b."
   opensslwarn 6
- elif [ "$version" = "90603f" ]
+ elif [ "$version" = "90603F" ]
  then
   echo "Compiling with OpenSSL 0.9.6c."
   opensslwarn 6
- elif [ "$version" = "90604f" ]
+ elif [ "$version" = "90604F" ]
  then
   echo "Compiling with OpenSSL 0.9.6d."
   opensslwarn 6
- elif [ "$version" = "90605f" ]
+ elif [ "$version" = "90605F" ]
  then
   echo "Compiling with OpenSSL 0.9.6e."
   opensslwarn 6
- elif [ "$version" = "90606f" ]
+ elif [ "$version" = "90606F" ]
  then
   echo "Compiling with OpenSSL 0.9.6f."
   opensslwarn 6
- elif [ "$version" = "90607f" ]
+ elif [ "$version" = "90607F" ]
  then
   echo "Compiling with OpenSSL 0.9.6g."
   opensslwarn 6
- elif [ "$version" = "90608f" ]
+ elif [ "$version" = "90608F" ]
  then
   echo "Compiling with OpenSSL 0.9.6h."
   opensslwarn 6
-elif [ "$version" = "90609f" ]
+elif [ "$version" = "90609F" ]
  then
   echo "Compiling with OpenSSL 0.9.6i."
   opensslwarn 6
- elif [ "$version" = "9060a0" ]
+ elif [ "$version" = "9060A0" ]
  then
   echo "Compiling with OpenSSL 0.9.6j."
   opensslwarn 6
- elif [ "$version" = "9060b0" ]
+ elif [ "$version" = "9060B0" ]
  then
   echo "Compiling with OpenSSL 0.9.6k."
   opensslwarn 6
- elif [ "$version" = "9060c0" ]
+ elif [ "$version" = "9060C0" ]
  then
   echo "Compiling with OpenSSL 0.9.6l."
- elif [ "$version" = "9060d0" ]
+ elif [ "$version" = "9060D0" ]
  then
   echo "Compiling with OpenSSL 0.9.6m."
- elif [ "$version" = "90700f" ]
+ elif [ "$version" = "90700F" ]
  then
   echo "Compiling with OpenSSL 0.9.7."
   opensslwarn 7
   DEF="$DEF -DUSE_AES"
- elif [ "$version" = "90701f" ]
+ elif [ "$version" = "90701F" ]
  then
   echo "Compiling with OpenSSL 0.9.7a."
   opensslwarn 7
   DEF="$DEF -DUSE_AES"
- elif [ "$version" = "90702f" ]
+ elif [ "$version" = "90702F" ]
  then
   echo "Compiling with OpenSSL 0.9.7b."
   opensslwarn 7
   DEF="$DEF -DUSE_AES"
- elif [ "$version" = "90703f" ]
+ elif [ "$version" = "90703F" ]
  then
   echo "Compiling with OpenSSL 0.9.7c."
   DEF="$DEF -DUSE_AES"
- elif [ "$version" = "90704f" ]
+ elif [ "$version" = "90704F" ]
  then
   echo "Compiling with OpenSSL 0.9.7d."
   DEF="$DEF -DUSE_AES"
@@ -623,11 +623,11 @@ elif [ "$version" = "90609f" ]
  then
   echo "Compiling with OpenSSL 0.9.7f."
   DEF="$DEF -DUSE_AES"
- elif [ "$version" = "90707f" ]
+ elif [ "$version" = "90707F" ]
  then
   echo "Compiling with OpenSSL 0.9.7g."
   DEF="$DEF -DUSE_AES"
- elif [ "$version" = "90800f" ]
+ elif [ "$version" = "90800F" ]
  then
   echo "Compiling with OpenSSL 0.9.8."
   DEF="$DEF -DUSE_AES"
