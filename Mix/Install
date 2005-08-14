@@ -429,7 +429,7 @@ then
   readln "Continue anyway?" n
   if [ "$ans" = "n" ]
   then
-   echo "Please install zlib 1.1.4 or greater now."
+   echo "Please install zlib 1.1.4 or 1.2.3 or greater now."
    exit 1
   fi
  else
