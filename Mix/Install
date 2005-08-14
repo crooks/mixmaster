@@ -538,110 +538,160 @@ then
    echo $opensslinfo
    exit 1
   fi
+#
+# Here we match against known OpenSSL versions
+#
  elif [ "$version" = "90581F" ]
  then
+  decimalversion=9459743
   echo "Compiling with OpenSSL 0.9.5a."
   opensslwarn 6
  elif [ "$version" = "90601F" ]
  then
+  decimalversion=9461791
   echo "Compiling with OpenSSL 0.9.6a."
   opensslwarn 6
  elif [ "$version" = "90602F" ]
  then
+  decimalversion=9461807
   echo "Compiling with OpenSSL 0.9.6b."
   opensslwarn 6
  elif [ "$version" = "90603F" ]
  then
+  decimalversion=9461823
   echo "Compiling with OpenSSL 0.9.6c."
   opensslwarn 6
  elif [ "$version" = "90604F" ]
  then
+  decimalversion=9461839
   echo "Compiling with OpenSSL 0.9.6d."
   opensslwarn 6
  elif [ "$version" = "90605F" ]
  then
+  decimalversion=9461855
   echo "Compiling with OpenSSL 0.9.6e."
   opensslwarn 6
  elif [ "$version" = "90606F" ]
  then
+  decimalversion=9461871
   echo "Compiling with OpenSSL 0.9.6f."
   opensslwarn 6
  elif [ "$version" = "90607F" ]
  then
+  decimalversion=9461887
   echo "Compiling with OpenSSL 0.9.6g."
   opensslwarn 6
  elif [ "$version" = "90608F" ]
  then
+  decimalversion=9461903
   echo "Compiling with OpenSSL 0.9.6h."
   opensslwarn 6
 elif [ "$version" = "90609F" ]
  then
+  decimalversion=9461919
   echo "Compiling with OpenSSL 0.9.6i."
   opensslwarn 6
  elif [ "$version" = "9060A0" ]
  then
+  decimalversion=9461920
   echo "Compiling with OpenSSL 0.9.6j."
   opensslwarn 6
  elif [ "$version" = "9060B0" ]
  then
+  decimalversion=9461936
   echo "Compiling with OpenSSL 0.9.6k."
   opensslwarn 6
  elif [ "$version" = "9060C0" ]
  then
+  decimalversion=9461952
   echo "Compiling with OpenSSL 0.9.6l."
  elif [ "$version" = "9060D0" ]
  then
+  decimalversion=9461968
   echo "Compiling with OpenSSL 0.9.6m."
  elif [ "$version" = "90700F" ]
  then
+  decimalversion=9465871
   echo "Compiling with OpenSSL 0.9.7."
   opensslwarn 7
   DEF="$DEF -DUSE_AES"
  elif [ "$version" = "90701F" ]
  then
+  decimalversion=9465887
   echo "Compiling with OpenSSL 0.9.7a."
   opensslwarn 7
   DEF="$DEF -DUSE_AES"
  elif [ "$version" = "90702F" ]
  then
+  decimalversion=9465903
   echo "Compiling with OpenSSL 0.9.7b."
   opensslwarn 7
   DEF="$DEF -DUSE_AES"
  elif [ "$version" = "90703F" ]
  then
+  decimalversion=9465919
   echo "Compiling with OpenSSL 0.9.7c."
   DEF="$DEF -DUSE_AES"
  elif [ "$version" = "90704F" ]
  then
+  decimalversion=9465935
   echo "Compiling with OpenSSL 0.9.7d."
   DEF="$DEF -DUSE_AES"
  elif [ "$version" = "90705F" ]
  then
+  decimalversion=9465951
   echo "Compiling with OpenSSL 0.9.7e."
   DEF="$DEF -DUSE_AES"
  elif [ "$version" = "90706F" ]
  then
+  decimalversion=9465967
   echo "Compiling with OpenSSL 0.9.7f."
   DEF="$DEF -DUSE_AES"
  elif [ "$version" = "90707F" ]
  then
+  decimalversion=9465983
   echo "Compiling with OpenSSL 0.9.7g."
   DEF="$DEF -DUSE_AES"
  elif [ "$version" = "90800F" ]
  then
+  decimalversion=9469967
   echo "Compiling with OpenSSL 0.9.8."
   DEF="$DEF -DUSE_AES"
- elif [ "$version" -lt "920" ]
+ fi
+#
+# Now we try to guess about unknown versions: 
+#
+ if [ "$decimalversion" = "" ]
+ then
+  decimalversion=`echo 16i $version p | dc`
+ fi
+ if [ "$decimalversion" = "" ]
+ then
+  echo "Warning: This version: ${version} of OpenSSL is not recognized."
+  readln "Continue anyway?" y
+  if [ "$ans" = "n" ]
+  then
+   echo $opensslinfo
+   exit 1
+  else
+   echo "Does this version of OpenSSL contain AES support?"
+   readln "If unsure of the answer, say \`n'" n
+    if [ "$ans" = "y" ]
+    then
+    DEF="$DEF -DUSE_AES"
+    fi
+  fi
+ elif [ "$decimalversion" -lt "2336" ]  # 920
  then
   echo "This version: ${version} of SSLeay is not supported."
   echo $opensslinfo
   exit 1
- elif [ "$version" -lt "903100" ]
+ elif [ "$decimalversion" -lt "9449728" ]  # 903100
  then
   echo "This version: ${version} of OpenSSL is not supported."
   echo $opensslinfo
   exit 1
- elif [ "$version" -gt "906000" ]
+ elif [ "$decimalversion" -gt "9469967" ]  # 90800F
  then
   echo "Warning: This version: ${version} of OpenSSL is untested."
   readln "Continue anyway?" y
