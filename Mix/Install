@@ -589,6 +589,9 @@ elif [ "$version" = "90609f" ]
  elif [ "$version" = "9060c0" ]
  then
   echo "Compiling with OpenSSL 0.9.6l."
+ elif [ "$version" = "9060d0" ]
+ then
+  echo "Compiling with OpenSSL 0.9.6m."
  elif [ "$version" = "90700f" ]
  then
   echo "Compiling with OpenSSL 0.9.7."
@@ -611,6 +614,22 @@ elif [ "$version" = "90609f" ]
  elif [ "$version" = "90704f" ]
  then
   echo "Compiling with OpenSSL 0.9.7d."
+  DEF="$DEF -DUSE_AES"
+ elif [ "$version" = "90705F" ]
+ then
+  echo "Compiling with OpenSSL 0.9.7e."
+  DEF="$DEF -DUSE_AES"
+ elif [ "$version" = "90706F" ]
+ then
+  echo "Compiling with OpenSSL 0.9.7f."
+  DEF="$DEF -DUSE_AES"
+ elif [ "$version" = "90707f" ]
+ then
+  echo "Compiling with OpenSSL 0.9.7g."
+  DEF="$DEF -DUSE_AES"
+ elif [ "$version" = "90800f" ]
+ then
+  echo "Compiling with OpenSSL 0.9.8."
   DEF="$DEF -DUSE_AES"
  elif [ "$version" -lt "920" ]
  then
