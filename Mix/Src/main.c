@@ -398,7 +398,7 @@ int main(int argc, char *argv[])
   if (about) {
     printf("Many people have contributed to the source code for Mixmaster.\n");
     printf("These contributors include:\n\n");
-    printf("Anonymizer, Inc.\n");
+    printf("Lance Cottrell\n");
     printf("Janis Jagars\n");
     printf("Ulf Moeller\n");
     printf("Peter Palfrader\n");
