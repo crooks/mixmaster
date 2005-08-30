@@ -39,7 +39,7 @@ To check out a copy of the Mixmaster development tree you need
 
 <blockquote>
 <code>
-	svn co http://source.mixmaster.anonymizer.com/svn/mixmaster/trunk/Mix/ mixmaster-devel
+	svn co http://svn.noreply.org/svn/mixmaster/trunk/Mix/ mixmaster-devel
 </code>
 </blockquote>
 
