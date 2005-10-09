@@ -24,7 +24,7 @@
 
 static char *largopt(char *p, char *opt, char *name, int *error);
 static void noarg(char *name, char p);
-static int check_get_pass(int force);
+static int check_get_pass(int force, int never_ask_for_passphrase);
 
 /** main *****************************************************************/
 
@@ -44,6 +44,7 @@ int main(int argc, char *argv[])
   redirect_mail = 0, about=0, version=0;
   int daemon = 0, type_list = 0, nodetach = 0;
   int update_stats = 0, update_pingerlist = 0;
+  int never_ask_for_passphrase = 0;
 
 #ifdef USE_SOCK
   int pop3 = 0;
@@ -135,6 +136,8 @@ int main(int argc, char *argv[])
 	  sign = 1;
 	else if (streq(p, "encrypt"))
 	  encrypt = 1;
+	else if (streq(p, "no-ask-passphrase"))
+	  never_ask_for_passphrase = 1;
 	else if (streq(p, "update-pinger-list"))
 	  update_pingerlist = 1;
 	else if (streq(p, "update-stats")) {
@@ -512,7 +515,7 @@ WinNT service:\n\
 
     if (f && buf_read(msg, f) != -1) {
       if (readmail == 1) {
-	check_get_pass(1);
+	check_get_pass(1, never_ask_for_passphrase);
 	mix_decrypt(msg);
       } else if (readmail == 2)
 	pool_add(msg, "inf");
@@ -663,7 +666,7 @@ WinNT service:\n\
 #endif /* USE_PGP */
 
   if (keygen) {
-    check_get_pass(0);
+    check_get_pass(0, never_ask_for_passphrase);
     keymgt(keygen);
   }
   if (sendpool)
@@ -673,7 +676,7 @@ WinNT service:\n\
     pop3get();
 #endif /* USE_SOCK */
   if (maint) {
-    check_get_pass(1);
+    check_get_pass(1, never_ask_for_passphrase);
     mix_regular(0);
   }
 
@@ -695,7 +698,7 @@ end:
   buf_free(statssrc);
 
   if (daemon) {
-    check_get_pass(1);
+    check_get_pass(1, never_ask_for_passphrase);
 #ifdef UNIX
     if (! nodetach) {
       int pid;
@@ -756,14 +759,14 @@ static void noarg(char *name, char p)
   fprintf(stderr, "%s: Missing argument for option -%c\n", name, p);
 }
 
-static int check_get_pass(int force)
+static int check_get_pass(int force, int never_ask_for_passphrase)
 /* get a passphrase and check against keys
  * if force != 0 passphrase must match with some key */
 {
     BUFFER *pass, *pass2, *key;
     int n = 0;
 
-    if (PASSPHRASE[0] == '\0' && isatty(fileno(stdin))) {
+    if (PASSPHRASE[0] == '\0' && isatty(fileno(stdin)) && ! never_ask_for_passphrase) {
       pass = buf_new();
       pass2 = buf_new();
       key = buf_new();

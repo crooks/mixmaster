@@ -170,6 +170,10 @@ Run the Mixmaster Service on Win32.
 .TP
 .B \-\-redirect
 Read a Mixmaster packet from stdin and route it through a chain given with
+.B \-\-no\-ask\-passphrase
+Do not ask for the remailer passphrase even if we don't have it compiled in,
+don't have it in the config file, don't have it in the environment and we are
+on a tty.
 \fB\-\-chain\fP.
 Note that this may corrupt the packet if there is not enough space in the
 headers (that is, if there are more than 20 hops total).  This function is
