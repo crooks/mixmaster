@@ -430,7 +430,7 @@ int main(int argc, char *argv[])
 #ifdef NYMSUPPORT
 	   "-n, --nym=yournym                 use pseudonym to send the message\n"
 #endif /* NYMSUPPORT */
-    "--encrypt                     encrypt the message using the PGP format\n\
+"    --encrypt                     encrypt the message using the PGP format\n\
     --sign                        sign the message using the PGP format\n"
 #endif /* USE_PGP */
 	   "-l, --chain=mix1,mix2,mix3,...    specify a remailer chain\n\

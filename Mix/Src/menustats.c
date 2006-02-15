@@ -15,7 +15,6 @@ char MIXDIR[512];
 #include "util.c"
 #include "buffers.c"
 int menu_getuserpass(BUFFER *p, int mode) { return 0; };
-#define ALLPINGERSFILE "allpingers.txt"
 #endif
 
 #include <string.h>
@@ -149,6 +148,7 @@ static char *files[] = { "mlist", "rlist", "mixring", "pgpring"};
 int stats_download(BUFFER *allpingers, char *sourcename, int curses) {
   char *localfiles[] = { TYPE2REL, TYPE1LIST, PUBRING, PGPREMPUBASC };
   char path[PATHMAX];
+  char path_t[PATHMAX];
   BUFFER *value;
   int ret = 0;
   int err;
@@ -171,6 +171,8 @@ int stats_download(BUFFER *allpingers, char *sourcename, int curses) {
       printf("%s\n\r", value->data);
   }
 
+/* Loop to get each file in turn to a temp file */
+
   for (i=0; i<NUMFILES; i++) {
     err = get_attribute(allpingers, sourcename, files[i], value);
     if (err < 0) {
@@ -185,7 +187,7 @@ int stats_download(BUFFER *allpingers, char *sourcename, int curses) {
     }
     else
       printf("downloading %s from %s...", localfiles[i], value->data);
-    err = url_download(value->data, path);
+    err = url_download(value->data, strcat(path, ".t"));
     if (err < 0) {
       if (curses)
 	printw("failed to download.\n\rTry using another stats source.");
@@ -200,6 +202,15 @@ int stats_download(BUFFER *allpingers, char *sourcename, int curses) {
       printf("done\n\r");
   }
 
+/* We got them all ok - so rename them to their correct names */
+
+  for (i=0; i<NUMFILES; i++) {
+    mixfile(path, localfiles[i]);
+    mixfile(path_t, localfiles[i]);
+    strcat(path_t, ".t");
+    rename(path_t, path);
+  }
+  
   if (curses) {  
     printw("\n\n\n\n\rPress any key to continue");
     getch();
@@ -251,7 +262,7 @@ int download_stats(char *sourcename) {
       if (f != NULL) {
         fprintf(f, "%s", sourcename);
         fclose(f);
-        ret = 0;
+	ret = 0;
       } else {
         ret = -2;
 	errlog(ERRORMSG, "Could not open stats source file for writing.\n");
