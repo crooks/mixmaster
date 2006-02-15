@@ -1,8 +1,3 @@
-stats stuff:
- - let wget download to temporary files, and only move them over the existing
-   stats when all downloads succeeded (and perhaps passed basic sanity checks)
- - Code cleanup / move #DEFINE's to the proper files.
-
 Items that need to be completed before the next MAIN release:
 
 - Full functionality / regression testing around chain operations
