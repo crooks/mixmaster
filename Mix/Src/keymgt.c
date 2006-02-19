@@ -39,7 +39,7 @@ int getv2seckey(byte keyid[], BUFFER *key)
 {
   FILE *keyring;
   BUFFER *iv, *pass, *temp;
-  char idstr[33];
+  char idstr[34];
   char line[LINELEN];
   int err = -1;
   char *res;
@@ -78,7 +78,7 @@ int getv2seckey(byte keyid[], BUFFER *key)
 	} while ( res != NULL && strchr(line, ':') != NULL );
 	if (res == NULL)
 	  break;
-	if (keyid && !streq(line, idstr))
+	if (keyid && (strncmp(line, idstr, 32) != 0))
 	  continue;
 	if (created != 0 && (created > time(NULL))) {
 	  errlog(ERRORMSG, "Key is not valid yet (creation date in the future): %s", idstr);
@@ -126,7 +126,7 @@ static int getv2pubkey(byte keyid[], BUFFER *key)
 {
   FILE *keyring;
   BUFFER *b, *temp, *iv;
-  char idstr[33];
+  char idstr[34];
   char line[LINELEN];
   int err = 0;
 
@@ -149,7 +149,7 @@ static int getv2pubkey(byte keyid[], BUFFER *key)
 	line[strlen(line)-1] = '\0';
       if ((strlen(line) > 0) && (line[strlen(line)-1] == '\r'))
 	line[strlen(line)-1] = '\0';
-      if (!streq(line, idstr))
+      if (strncmp(line, idstr, 32) != 0)
 	continue;
       fgets(line, sizeof(line), keyring);	/* ignore length */
       for (;;) {
