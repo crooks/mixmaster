@@ -480,7 +480,7 @@
                            Added MINLAT directive. Ensures randhopped 
                              messages are sent through remailers of 
                              latency of MINLAT time or greater
-                             (suggested by Steve Cook).
+                             (suggested by Steve Crook).
                            Improved OpenSSL version checking in the
                              Install script.
 
