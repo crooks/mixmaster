@@ -209,6 +209,7 @@ int digestmem_md5(byte *b, int n, BUFFER *md);
 int digest_sha1(BUFFER *b, BUFFER *md);
 int digest_rmd160(BUFFER *b, BUFFER *md);
 
+#define KEY_ID_LEN 32
 int keymgt(int force);
 int key(BUFFER *b);
 int adminkey(BUFFER *b);
