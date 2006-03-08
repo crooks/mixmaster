@@ -483,6 +483,8 @@
                              (suggested by Steve Crook).
                            Improved OpenSSL version checking in the
                              Install script.
+                           Added Full stats download support.
+                           Fixed buffer overflow bug in keymgt.c
 
 
 
