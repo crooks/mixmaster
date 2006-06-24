@@ -352,6 +352,7 @@ int main(int argc, char *argv[])
     ret = 1;
     goto end;
   }
+
   if (type_list) {
     BUFFER *type2list;
     type2list = buf_new();
@@ -364,11 +365,13 @@ int main(int argc, char *argv[])
     buf_free(type2list);
     goto end;
   }
+
   if (version) {
     printf("Mixmaster %s\n", VERSION);
     ret = 0;
     goto end;
   }
+
   if (update_pingerlist) {
     mixfile(pingpath, ALLPINGERSFILE);
     if (verbose) printf ("downloading %s...\n", ALLPINGERSURL);
@@ -382,6 +385,7 @@ int main(int argc, char *argv[])
     ret = 0;
     goto end;
   }
+  
   if (update_stats) {
     ret = download_stats(statssrc->data);
     if (ret == -3) {
@@ -394,6 +398,15 @@ int main(int argc, char *argv[])
     ret = 0;
     goto end;
   }
+
+#ifdef USE_NCURSES
+/* If we get here then it's possible we still want to use the NCURSES interface */
+    if (deflt && (send == -1) && isatty(fileno(stdin))) {
+      menu_main();
+      goto clientpool;
+    }
+#endif /* USE_NCURSES */
+  
   if (help ||about ||(isatty(fileno(stdin)) && isatty(fileno(stdout))))
     fprintf(stderr, "Mixmaster %s\n", VERSION);
   if (help ||about)
@@ -411,6 +424,7 @@ int main(int argc, char *argv[])
     ret = 0;
     goto end;
   }
+  
   if (help) {
     printf("Usage: %s [options] [user@host] [filename]\n\n", argv[0]);
     printf("Options:\n\
@@ -482,6 +496,7 @@ WinNT service:\n\
     ret = 0;
     goto end;
   }
+
   if (deflt && send == -1)
     send = MSG_MAIL;
   if (nym[0] != 0)
