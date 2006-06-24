@@ -1,162 +1,72 @@
 
 Broken type-I remailer chains:
-(* krotus)
-(* nitemare)
-(amessage cmeclax)
 (antani senshi)
-(austria cf)
-(bigapple freedom)
-(cf aarg)
-(cf citrus)
-(cf cripto)
-(cf cthulu)
-(cf liberty)
-(cmeclax starwars)
-(cripto cf)
-(cripto citrus)
-(cripto cmeclax)
-(cripto dingo)
-(cthulu bikikii)
+(austria senshi)
+(bigapple borked)
+(borked senshi)
 (cthulu dingo)
 (cthulu senshi)
 (cthulu starwars)
-(dingo cf)
-(dingo dot)
-(dingo hastio)
-(dizum bikikii)
-(dizum dot)
-(dizum lemuria)
-(dizum liberty)
-(dizum vger)
-(dot starwars)
-(edo bikikii)
-(edo frell)
-(freedom liberty)
-(futurew freedom)
-(hermes hastio)
-(italy antani)
-(krotus *)
-(lemuria cf)
-(lemuria cthulu)
-(lemuria hastio)
-(lemuria starwars)
-(liberty austria)
-(liberty bigapple)
-(liberty bikikii)
-(liberty dot)
-(metacolo bigapple)
-(metacolo bikikii)
-(metacolo dingo)
-(metacolo edo)
-(metacolo frell)
-(metacolo panta)
+(dizum borked)
+(frell bird)
+(hastio austria)
+(metacolo austria)
 (metacolo senshi)
-(nitemare *)
-(riot amessage)
-(riot amigo)
-(riot liberty)
-(riot willers)
-(starwars amessage)
-(starwars liberty)
-(willers senshi)
+(paranoia cthulu)
+(paranoia senshi)
+(pboxmix hermes)
+(pboxmix senshi)
+(twisty cthulu)
+(vger senshi)
+(zerofree senshi)
 
 Broken type-II remailer chains:
-(aarg amigo)
-(amigo amessage)
-(amigo paranoia)
-(antani liberty)
-(austria cf)
-(austria lcs)
-(banana lcs)
-(bigapple freedom)
-(cf lcs)
-(cf liberty)
-(cf starwars)
-(cmeclax starwars)
+(anon dizum)
+(banana bunker)
+(cripto bunker)
+(cripto lcs)
 (cthulu antani)
-(cthulu freedom)
 (cthulu starwars)
-(dingo cf)
-(dingo discord)
-(dingo dot)
-(dingo hastio)
-(dingo lcs)
-(dizum dot)
-(dizum lemuria)
-(dizum vger)
-(dot starwars)
-(futurew freedom)
-(futurew lcs)
-(harmless lcs)
-(hastio lcs)
-(hermes hastio)
+(dizum lcs)
+(eelbash bunker)
+(frell bird)
 (hermes lcs)
-(italy antani)
-(krotus starwars)
-(lcs riot)
-(lemuria cthulu)
-(lemuria hastio)
-(lemuria starwars)
-(liberty amessage)
-(liberty austria)
-(liberty banana)
-(liberty dot)
-(liberty krotus)
-(liberty lcs)
-(metacolo liberty)
-(paranoia lcs)
-(randseed lcs)
-(rot26 lcs)
-(rot26 liberty)
-(starwars amessage)
-Last update: Fri 07 May 2004 01:20:12 GMT
+(lcs dizum)
+(paranoia cthulu)
+(twisty dizum)
+(zerofree hastio)
+Last update: Sat 24 Jun 2006 13:05:07 GMT
 mixmaster           history  latency  uptime
 --------------------------------------------
-citrus         +++++++++-++  1:47:01 100.00%
-aarg           +++*+++*++++  1:06:55 100.00%
-rot26          ******+*****    39:29 100.00%
-lemuria        ************    36:29 100.00%
-antani         *********+**    35:56 100.00%
-dingo          ************    25:53 100.00%
-amessage       *******_.+**    21:27 100.00%
-tonga          ************    20:57 100.00%
-starwars       ************    20:57 100.00%
-futurew        ************    20:56 100.00%
-paranoia       ************    17:57 100.00%
-freedom        ************    16:29 100.00%
-cripto         ************    16:27 100.00%
-austria        ************    11:25 100.00%
-randseed       +***********    10:59 100.00%
-discord        *******#****     9:59 100.00%
-metacolo       ***#********     8:55 100.00%
-bigapple       ************     7:56 100.00%
-banana         **#**#**#**#     5:59 100.00%
-panta          ++++++++++++  2:44:58  99.96%
-gbnq           ++++++++++++  1:56:58  99.93%
-bikikii        +++++++++++*  1:56:00  99.68%
-dizum          ************    27:29  99.68%
-george         ***-********    16:59  99.67%
-cside          ++++++++++--  3:21:56  99.47%
-italy          ************     7:00  99.46%
-chicago        ************    29:58  99.44%
-anon           -++++++*++++  1:31:27  98.97%
-gateway        ***+*****++*    48:54  98.88%
-frell          ++.--------+  5:33:28  98.74%
-ashcroft             ++++++  2:10:26  98.29%
-riot           -----.------  7:29:28  97.93%
-mercler        ++++++++++++  1:43:59  97.89%
-vger           .-******+++*    52:00  97.60%
-willers        ++++++++++++  2:10:00  97.14%
-hastio         ***+**_-+***    53:00  96.89%
-lcs              ****.___.- 15:03:29  96.56%
-cmeclax        +++++++++-++  2:54:56  94.94%
-harmless       +++****+++**  1:06:57  94.13%
-krotus         ************    25:55  93.88%
-amigo          + +****+++++  1:03:58  93.13%
-hermes         ++++-+++++++  1:56:58  91.00%
-cf             *********.-*    21:58  90.91%
-cthulu         *********+**    49:27  89.19%
-dot            +++++++-++++  2:49:54  84.47%
-bunker         ++++++++++++  2:31:01  76.71%
-edo            ++*+++++++++  1:24:56  75.40%
-liberty        *********       13:55  63.93%
+pboxmix        *+***+++-++*  1:16:30 100.00%
+deuxpi         *******+****    42:00 100.00%
+cside          ++++++++++++  1:58:55 100.00%
+lcs            **+******.-+    59:58  99.95%
+tonga          +**+********    49:57  99.79%
+twisty         +**-****++**    25:58  99.78%
+bikikii        -+-++++-++++  2:49:00  99.77%
+cripto         ++++*+*+++++  1:18:59  99.73%
+austria        ++**********    38:00  99.68%
+metacolo       -+****-**-+*    56:59  99.63%
+banana         +*+*+++*++*+  1:16:55  99.63%
+zerofree       ************    17:30  99.52%
+borked         +**+********    42:00  99.47%
+hastio         +++++.--++-+  2:08:30  99.39%
+eelbash        ++****+***+*    39:59  99.38%
+frell          ----+---+-++  5:47:58  98.81%
+paranoia       +**__.--++++  3:25:29  98.71%
+george         ******+*****    46:29  98.63%
+bigapple       *++*********    22:58  98.24%
+panta          +-+-++---+++  3:04:58  97.92%
+bird           +++++++*++++  1:36:56  97.28%
+hermes         +-+++-++++++  2:36:59  96.12%
+kroken         +++++++*++++  1:36:26  94.94%
+antani         ++++++++++++  2:30:55  94.40%
+vger             ++*+++-+++  1:44:29  93.91%
+starwars       -+++++++++++  2:29:59  93.85%
+anon           +++-++++++++  2:09:25  92.72%
+citrus         -++-++++++++  2:39:00  92.08%
+dingo          -*++*+*++*++  1:26:28  90.52%
+cthulu         -+-+++++++++  2:24:55  80.11%
+dizum          --+._.---++* 12:09:28  56.45%
+bunker         _---+.+-+-++  4:34:56  26.11%
