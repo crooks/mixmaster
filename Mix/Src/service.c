@@ -1,3 +1,14 @@
+/* Mixmaster version 3.0  --  (C) 1999 - 2006 Anonymizer Inc. and others.
+
+   Mixmaster may be redistributed and modified under certain conditions.
+   This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
+   ANY KIND, either express or implied. See the file COPYRIGHT for
+   details.
+
+   Win32 Service support
+   $Id$ */
+
+
 #include <windows.h>
 #include <stdio.h>
 #include <direct.h>

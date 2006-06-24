@@ -1,4 +1,4 @@
-/* mpgp -- (C) 2000 - 2004 Ulf Moeller and others.
+/* mpgp -- (C) 2000 - 2006 Ulf Moeller and others.
 
    mpgp may be redistributed and modified under certain conditions.
    This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
