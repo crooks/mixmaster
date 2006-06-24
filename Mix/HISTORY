@@ -474,7 +474,7 @@
                              works under Win32 only (by goblin).
                            Fixed bug in buffers.c.
 
-2005-?????      3.0???
+2006-06-24      3.0rc1
                            Prefer pubring.asc over secring.pgp.
                            Support an unpublished dest.alw file.
                            Added MINLAT directive. Ensures randhopped 
@@ -483,8 +483,8 @@
                              (suggested by Steve Crook).
                            Improved OpenSSL version checking in the
                              Install script.
-                           Added Full stats download support.
-                           Fixed buffer overflow bug in keymgt.c
+                           Added full stats download support.
+                           Fixed buffer overflow bug in keymgt.c.
 
 
 
@@ -492,4 +492,4 @@ Mixmaster maintainer history:
 
 1998-2000: Ulf Möller -- versions 2.9beta0 through 2.9beta22.
 2000: Johannes Kroeger -- version 2.9beta23.
-2001-2005: Len Sassaman -- versions 2.9beta24 through 3.0b2.
+2001-2005: Len Sassaman -- versions 2.9beta24 through present.
