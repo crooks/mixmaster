@@ -133,10 +133,6 @@
 /* Support the OpenPGP message format? */
 #define USE_PGP
 
-#ifndef WIN32
-# define HAVE_SETENV 1
-#endif
-
 #ifdef UNIX
 # define HAVE_UNAME
 # define HAVE_GECOS

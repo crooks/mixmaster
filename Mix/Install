@@ -822,6 +822,20 @@ END
    rm -f tmptst.c tmptst
  fi
 
+ echo "testing for setenv()..."
+ cat <<END >tmptst.c
+int main() {
+#include <stdlib.h>
+ setenv("TZ", "GMT", 0);
+ exit(0);
+}
+END
+ if gcc tmptst.c -o tmptst
+ then
+   DEF="$DEF -DHAVE_SETENV"
+ fi
+ echo "done"
+ rm -f tmptst.c tmptst
 
 # if [ "$MIXDEST" = "$HOME/Mix" ]
 # then
