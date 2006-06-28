@@ -1,5 +1,5 @@
 #!/bin/sh
-# Mixmaster version 3.0  --  (C) 1999-2004 Anonymizer Inc. and others.
+# Mixmaster version 3.0  --  (C) 1999-2006 Anonymizer Inc. and others.
 
 # Mixmaster may be redistributed and modified under certain conditions.
 # This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
@@ -652,11 +652,37 @@ elif [ "$version" = "90609F" ]
   decimalversion=9465983
   echo "Compiling with OpenSSL 0.9.7g."
   DEF="$DEF -DUSE_AES"
+ elif [ "$version" = "90708F" ]
+ then
+  decimalversion=9465999
+  echo "Compiling with OpenSSL 0.9.7h."
+  DEF="$DEF -DUSE_AES"
+ elif [ "$version" = "90709F" ]
+ then
+  decimalversion=9466015
+  echo "Compiling with OpenSSL 0.9.7i."
+  DEF="$DEF -DUSE_AES"
+ elif [ "$version" = "9070A0" ]
+ then
+  decimalversion=9466016
+  echo "Compiling with OpenSSL 0.9.7j."
+  DEF="$DEF -DUSE_AES"
  elif [ "$version" = "90800F" ]
  then
   decimalversion=9469967
   echo "Compiling with OpenSSL 0.9.8."
   DEF="$DEF -DUSE_AES"
+ elif [ "$version" = "90801F" ]
+ then
+  decimalversion=9469983
+  echo "Compiling with OpenSSL 0.9.8a."
+  DEF="$DEF -DUSE_AES"
+ elif [ "$version" = "90802F" ]
+ then
+  decimalversion=9469999
+  echo "Compiling with OpenSSL 0.9.8b."
+  DEF="$DEF -DUSE_AES"
+
  fi
 #
 # Now we try to guess about unknown versions: 
