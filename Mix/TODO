@@ -18,6 +18,7 @@ Items to watch:
 
 Items for 3.0.x:
 
+- Automatically fetch fresh stats during installation process
 - Make the default mix.cfg file we write more useful.
   Include (commented out) in a user section:
     + SMTPRELAY
