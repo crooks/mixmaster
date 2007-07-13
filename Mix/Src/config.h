@@ -189,7 +189,7 @@
 /** file names ********************************************************/
 
 #ifdef WIN32
-#define DEFAULT_MIXCONF "mix.cfg.txt"  /* mixmaster configuration file */
+#define DEFAULT_MIXCONF "mix.cfg"  /* mixmaster configuration file */
 #else
 #define DEFAULT_MIXCONF "mix.cfg"      /* mixmaster configuration file */
 #endif
