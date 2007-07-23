@@ -19,8 +19,8 @@ server installations and is designed to run on several operation systems
 including but not limited to *BSD, Linux and Microsoft Windows.
 
 <p>
-The current 2.9.x versions are stable and widely deployed.  The 3.0beta*
-releases are betas for the upcoming Mixmaster 3.0.
+The current 2.9.x versions are stable and widely deployed.  The 3.0rc*
+releases are release candidates for the upcoming Mixmaster 3.0.
 
 <p>
 To download Mixmaster visit Sourceforge's
@@ -46,8 +46,22 @@ To check out a copy of the Mixmaster development tree you need
 <h2>Signing Releases</h2>
 
 <p>
+
+<!-- Mix 3.0 -->
+
+Releases of Mixmaster 3.0 will be signed by Len Sassaman using the <em>Mixmaster 3.x Code
+Release Signing Ke</em> (<a href="keys/2993D5F9.asc"><code>2993D5F9</code></a>).
+
+<pre>
+pub   2048R/2993D5F9 2007-07-03 Mixmaster 3.x Code Release Signing Key
+      Key fingerprint = 9439 B73F DE78 8B59 2020  1D41 1AF5 1CE7 2993 D5F9
+</pre>
+
+<p>
+
 <!-- 2004 -->
-Releases of Mixmaster are signed by Len Sassaman using the <em>Mixmaster Code
+<h3>Releases in 2004</h3>
+Releases of Mixmaster in 2004 were signed by Len Sassaman using the <em>Mixmaster Code
 Release Signing Key 2004</em> (<a href="keys/8A277312.asc"><code>8A277312</code></a>).
 
 <pre>
@@ -61,6 +75,7 @@ This key is signed by Len Sassaman's key <a href="keys/5DE480FC.asc"><code>5DE48
 (<code>5327 8E77 666A 91F3 7007  B357 844B 9659 4F68 DD91</code>) and several other people.
 
 <p>
+<em>Note: This key expired on January 1st 2004</em><br>
 For a full list of signatures see <a href="http://keyserver.noreply.org/pks/lookup?search=0x8A277312&fingerprint=on&op=vindex">0x8A277312 on keyserver.noreply.org</a> or any other keyserver.
 
 
