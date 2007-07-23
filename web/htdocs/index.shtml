@@ -50,14 +50,34 @@ To check out a copy of the Mixmaster development tree you need
 <!-- Mix 3.0 -->
 
 Releases of Mixmaster 3.0 will be signed by Len Sassaman using the <em>Mixmaster 3.x Code
-Release Signing Ke</em> (<a href="keys/2993D5F9.asc"><code>2993D5F9</code></a>).
+Release Signing Key</em> (<a href="keys/2993D5F9.asc"><code>2993D5F9</code></a>).
 
 <pre>
 pub   2048R/2993D5F9 2007-07-03 Mixmaster 3.x Code Release Signing Key
       Key fingerprint = 9439 B73F DE78 8B59 2020  1D41 1AF5 1CE7 2993 D5F9
 </pre>
 
+This key is signed by Len Sassaman's key <a href="keys/5DE480FC.asc"><code>5DE480FC</code></a>
+(<code>B115 73A8 91A8 05DC B26D  CBEB 4A0A 8149 5DE4 80FC</code>) and several other people.<br>
+
+For a full list of signatures see
+<a href="http://keyserver.noreply.org/pks/lookup?search=0x2993D5F9&fingerprint=on&op=vindex">
+0x2993D5F9 on keyserver.noreply.org</a> or any other keyserver.
+
 <p>
+
+<!-- 2006 -->
+<h3>Releases in 2006</h3>
+Releases of Mixmaster in 2006 were signed by Len Sassaman using the <em>Mixmaster Code
+Release Signing Key 2006</em> (<a href="keys/EA103D8B.asc"><code>EA103D8B</code></a>).
+
+<pre>
+pub  2048R/EA103D8B 2006-06-24 Mixmaster Code Release Signing Key 2006
+     Key fingerprint = BD24 B172 7C1E 8AF0 BFBF  F9C6 A33E DC41 EA10 3D8B
+</pre>
+
+<p>
+<em>Note: This key expired on January 1st 2007</em>
 
 <!-- 2004 -->
 <h3>Releases in 2004</h3>
@@ -75,8 +95,7 @@ This key is signed by Len Sassaman's key <a href="keys/5DE480FC.asc"><code>5DE48
 (<code>5327 8E77 666A 91F3 7007  B357 844B 9659 4F68 DD91</code>) and several other people.
 
 <p>
-<em>Note: This key expired on January 1st 2004</em><br>
-For a full list of signatures see <a href="http://keyserver.noreply.org/pks/lookup?search=0x8A277312&fingerprint=on&op=vindex">0x8A277312 on keyserver.noreply.org</a> or any other keyserver.
+<em>Note: This key expired on December 31st 2004</em>
 
 
 <!-- 2003 -->
