@@ -1,4 +1,4 @@
-/* Mixmaster version 3.0  --  (C) 1999 - 2006 Anonymizer Inc. and others.
+/* Mixmaster version 3.0  --  (C) 1999 - 2007 Anonymizer Inc. and others.
 
    Mixmaster may be redistributed and modified under certain conditions.
    This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
@@ -189,14 +189,18 @@
 /** file names ********************************************************/
 
 #ifdef WIN32
-#define DEFAULT_MIXCONF "mix.cfg"  /* mixmaster configuration file */
+#define DEFAULT_MIXCONF "mix.ini"  /* mixmaster configuration file */
 #else
 #define DEFAULT_MIXCONF "mix.cfg"      /* mixmaster configuration file */
 #endif
 #define DEFAULT_DISCLAIMFILE "disclaim.txt"
 #define DEFAULT_FROMDSCLFILE "fromdscl.txt"
 #define DEFAULT_MSGFOOTERFILE "footer.txt"
+#ifdef WIN32
+#define DEFAULT_POP3CONF "pop3.ini"
+#else
 #define DEFAULT_POP3CONF "pop3.cfg"
+#endif
 #define DEFAULT_HELPFILE "help.txt"
 #define DEFAULT_REQUESTDIR "requests"
 #define DEFAULT_ABUSEFILE "abuse.txt"

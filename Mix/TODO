@@ -1,13 +1,7 @@
 Items that need to be completed before the next MAIN release:
 
-- Full functionality / regression testing around chain operations
-  following the recent whitespace bug fix. (everyone)
 - Full WIN32 support.
-  - rename pop3.cfg to pop3.cfg.txt
-  - different editor handling?  if so, provide suggestions.
   - Sane randomness handling
-- Remove OpenSSL version checks. Maybe print a message stating the 
-  supported versions, and leave it up to the user?
 
 Items to watch:
 
@@ -24,7 +18,7 @@ Items for 3.0.x:
     + SMTPRELAY
 - Write a document on how to setup a remailer on windows
     + install as service
-    + configure pop3.cfg
+    + configure pop3.ini
 - doallow() should check more than one email address in a line
   (patch # 877312) (weasel)
 - delete secret keys securely after keygraceperiod expires
@@ -32,6 +26,8 @@ Items for 3.0.x:
   "/bin/rm -P" or "/usr/bin/shred -fz -n3")? Does this even
   serve a purpose now that journaled FSes are the norm?
 - destblk request confirmation (patch # 873498)
+    + perhaps we should phase this out in favor of a distributed RAB.
+- Integrate RAB support -- automatic downloading similar to stats.
 
 Packaging:
 - Modify release tarball generation script to build the .tab.c file from
@@ -59,6 +55,8 @@ Wishlist:
 
 
 Abandoned/Deferred:
+D Remove OpenSSL version checks. Maybe print a message stating the 
+  supported versions, and leave it up to the user?
 D allow for verification of clearsigned OpenPGP messages  disastry
 D honor key preferences when encrypting to multiple keys  ulf/disastry (n/a)
 D further mpgp testing of AES/MDC packet support  ulf
