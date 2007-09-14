@@ -2,6 +2,8 @@ Items that need to be completed before the next MAIN release:
 
 - Full WIN32 support.
   - Sane randomness handling
+  - Resolve crash when running with --post
+  - Resolve crash when config contains "SENDMAIL outfile"
 
 Items to watch:
 
