@@ -30,6 +30,9 @@ Items for 3.0.x:
 - destblk request confirmation (patch # 873498)
     + perhaps we should phase this out in favor of a distributed RAB.
 - Integrate RAB support -- automatic downloading similar to stats.
+- Introduce hashed RAB handling where mail recipients are hashed and
+  compared against a downloaded rab.hash file.  This solves the issue
+  of publishing a plain-text list of email addresses.
 
 Packaging:
 - Modify release tarball generation script to build the .tab.c file from
