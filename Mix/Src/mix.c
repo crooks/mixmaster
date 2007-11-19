@@ -436,7 +436,7 @@ static void mix_setdefaults()
 	strnncpy(TYPE1        , "");
 
 /* addresses */
-	strnncpy(MAILtoNEWS   , "mail2news@anon.lcs.mit.edu");
+	strnncpy(MAILtoNEWS   , "mail2news@dizum.com,mail2news@m2n.mixmin.net");
 	strnncpy(REMAILERNAME , "Anonymous Remailer");
 	strnncpy(ANONNAME     , "Anonymous");
 	strnncpy(REMAILERADDR , "");
