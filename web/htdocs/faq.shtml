@@ -11,13 +11,14 @@
 <h1><div align="center">Official Mixmaster Remailer FAQ</div></h1>
 <br><br>
 
-This FAQ is maintained by Alex Kirk <a href="mailto:alex@schnarff.com">< alex@schnarff.com ></a>. It is currently (1/7/03) being written for the first time. If you find an error, have a further question, or wish to make modifications/updates/additions, please notify him.<br><br>
-First Pieces Posted: 11/26/02<br>
-Last Update: 1/7/03
+This FAQ was originally written by Alex Kirk <a href="mailto:alex@schnarff.com">< alex@schnarff.com ></a>.<br>
+It is currently (19/11/07) maintained by Colin Tuckley <a href="mailto:colintu@users.sourceforge.net">< colintu@users.sourceforge.net ></a>.<br>
+If you find an error, have a further question, or wish to make modifications/updates/additions, please notify him.<br><br>
+Last Update: 19/11/07
 <br>
 <h2>Table of Contents</h2><br>
 <a href=#1>1. Introduction<br></a>
-<a href=#1.1>1.1 Document Audience<br></a>
+<a href=#1.1>1.1 Document Audience and Licence<br></a>
 <a href=#1.2>1.2 What's an anonymous remailer?<br></a>
 <a href=#1.3>1.3 Why should I run an anonymous remailer?<br></a>
 <a href=#1.4>1.4 History of remailers/cryptography<br></a>
@@ -98,8 +99,33 @@ Last Update: 1/7/03
 <a name="1"></a>
 <h2>1. Introduction</h2>
 <a name="1.1"></a>
-<h3>1.1 Document Audience</h3>
+<h3>1.1 Document Audience and Licence</h3>
 This document is intended for those who run or are thinking about running an anonymous remailer, mail2news gateway, or remail statistics pinger. It might answer some questions for those who want to know what these are, but the primary audience is administrators, potential or current.<br><br>
+This document is published under the MIT License.<br><br>
+Copyright (c) 2002,2003 Alex Kirk<br>
+Copyright (c) 2007 Colin Tuckley<br>
+<pre>
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+</pre><br><br>
 <a name="1.2"></a>
 <h3>1.2 What's an anonymous remailer?</h3>
 From the <a href=http://www.andrebacard.com/remail.html>Anonymous Remailer FAQ</a>:
