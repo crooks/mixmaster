@@ -103,8 +103,6 @@ STAREX              starex.txt
 ## Leave empty to disable mix-post capability flag
 ## Add more mail2news gateways to increase posting reliability
 ## (and mail load on your MTA). Additional m2n include:
-## mail2news@freedom.gmsociety.org
-## mail2news@frogadmin.yi.org
 ## mail2news@news.gradwell.net
 #NEWS                mail2news@dizum.com,mail2news@anon.lcs.mit.edu
 ORGANIZATION        Anonymous Posting Service
