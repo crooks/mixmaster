@@ -16,13 +16,14 @@ http://prdownloads.sourceforge.net/mixmaster/
 
 Mixmaster clients binaries for Win32 (Windows 98, NT, 2000, XP)
 
-Win32 users may wish to try Jack B. Nymble, a graphical user interface
-client implementing the mixmaster protocol. Jack B. Nymble is developed
-independently of the main Mixmaster distribution. Please do not contact
-the Mixmaster development team or the Administrator of the
+Win32 users may wish to try one of the GUI applications that interface with
+Mixmaster:
+Omnimix:		http://www.danner-net.de/om.htm
+Quicksilver:		http://www.quicksilvermail.net/
+Jack B. Nymble:		http://www.panta-rhei.eu.org/downloads/JBN/
+These are all developed independently of the main Mixmaster distribution. Please
+do not contact the Mixmaster development team or the Administrator of the
 %RMN with questions about this software.
-You can obtain a copy of Jack B. Nymble from
-http://www.skuz.net/potatoware/jbn2/
 
 For more information about Mixmaster or to contribute to the development
 of Mixmaster, please see the following URL's:
