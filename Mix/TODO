@@ -12,36 +12,26 @@ Items to watch:
   [This is a pesky one. Changing the .forward pipe to go through 
    truss first 'fixes' it. Grr. --rabbi]
 
-Items for 3.0.x:
-
-- Automatically fetch fresh stats during installation process
-- Make the default mix.cfg file we write more useful.
-  Include (commented out) in a user section:
-    + SMTPRELAY
-- Write a document on how to setup a remailer on windows
-    + install as service
-    + configure pop3.ini
+Items for 3.1.x:
 - doallow() should check more than one email address in a line
-  (patch # 877312) (weasel)
-- delete secret keys securely after keygraceperiod expires
-  (Should this just be a call to an external program? I.e.
-  "/bin/rm -P" or "/usr/bin/shred -fz -n3")? Does this even
-  serve a purpose now that journaled FSes are the norm?
+- Automatically fetch pinger list and stats during installation process
 - destblk request confirmation (patch # 873498)
-    + perhaps we should phase this out in favor of a distributed RAB.
+    + perhaps we should phase this out in favor of a distributed RAB?
 - Integrate RAB support -- automatic downloading similar to stats.
 - Introduce hashed RAB handling where mail recipients are hashed and
   compared against a downloaded rab.hash file.  This solves the issue
   of publishing a plain-text list of email addresses.
+    + We might want to salt these hashes but the salt would have to be
+      known to remops.
+- Include a formal win32 binary release, complete with docs.
 
 Packaging:
 - Modify release tarball generation script to build the .tab.c file from
   parsedate.y, so we don't end up requiring bison on every system that
   wants to build mixmaster  (rabbi)
 - rpm -- dybbuk
-. Windows build instructions/files  (weasel)
+- Windows build instructions/files  (zax)
 - provide a packaged Windows build to be used with QuickSilver
-  + Richard has an Installer we can use for this purpose  (rabbi)
 - Macintosh OS/X support  (rabbi)
 - Update Install script to put files in global system locations if
   invoked by root. Also update to be smart about AES support.
