@@ -12,9 +12,9 @@
 <br><br>
 
 This FAQ was originally written by Alex Kirk <a href="mailto:alex@schnarff.com">< alex@schnarff.com ></a>.<br>
-It is currently (19/11/07) maintained by Colin Tuckley <a href="mailto:colintu@users.sourceforge.net">< colintu@users.sourceforge.net ></a>.<br>
+It is currently maintained by Colin Tuckley <a href="mailto:colintu@users.sourceforge.net">< colintu@users.sourceforge.net ></a>.<br>
 If you find an error, have a further question, or wish to make modifications/updates/additions, please notify him.<br><br>
-Last Update: 19/11/07
+Last Update: 22/11/07
 <br>
 <h2>Table of Contents</h2><br>
 <a href=#1>1. Introduction<br></a>
@@ -100,7 +100,9 @@ Last Update: 19/11/07
 <h2>1. Introduction</h2>
 <a name="1.1"></a>
 <h3>1.1 Document Audience and Licence</h3>
-This document is intended for those who run or are thinking about running an anonymous remailer, mail2news gateway, or remail statistics pinger. It might answer some questions for those who want to know what these are, but the primary audience is administrators, potential or current.<br><br>
+This document is intended for those who run or are thinking about running an anonymous remailer,
+mail2news gateway, or remailer statistics pinger.
+It might answer some questions for those who want to know what these are, but the primary audience is administrators, potential or current.<br><br>
 This document is published under the MIT License.<br><br>
 Copyright (c) 2002,2003 Alex Kirk<br>
 Copyright (c) 2007 Colin Tuckley<br>
@@ -132,7 +134,7 @@ From the <a href=http://www.andrebacard.com/remail.html>Anonymous Remailer FAQ</
 
 <blockquote>
 <i>
-"A remailer is a computer service which privatizes your e-mail. A remailer is in sharp contrast to the average Internet Service Providers [ISP] which is terribly anti-private. In fact, ISP could equally stand for "Internet Surveillance Point". <a href=http://www.andrebacard.com/email.html>[Click here to Learn About Email Privacy]</a>.
+"A remailer is a computer service which privatizes your e-mail. A remailer is in sharp contrast to the average Internet Service Providers [ISP] which is terribly anti-private. In fact, ISP could equally stand for "Internet Surveillance Point".
 <p>
 "Traditionally, a remailer allowed you to send electronic mail to a Usenet news group, or to a person, without revealing your true name or e-mail address to the recipient. Today, new web-based remailers permit you to send mail using your real name (if you wish), while protecting your email records from the snooping eyes of your Internet Service Provider.
 <p>
@@ -144,7 +146,7 @@ From the <a href=http://www.andrebacard.com/remail.html>Anonymous Remailer FAQ</
 <h3>1.3 Why should I run an anonymous remailer?</h3>
 There are several good reasons for running an anonymous remailer. You might be interested if you want to:
 <ul>
-<li>Promote of free speech
+<li>Promote free speech
 <li>Work against oppresive governments
 <li>Help whistleblowers escape retribution
 <li>Promote cryptography and anonymity on the Internet
@@ -154,11 +156,12 @@ There are several good reasons for running an anonymous remailer. You might be i
 <h3>1.4 History of remailers/cryptography</h3>
 <a name="1.5"></a>
 <h3>1.5 Newsgroups/Mailing Lists</h3>
-Those interested in running an anonymous remailer or mail2news gateway should subscribe to <a href="mailto:remailer-operators@anon.lcs.mit.edu?body=subscribe">remailer-operators@anon.lcs.mit.edu</a> (or its mirror, <a href="http://lexx.shinn.net/mailman/listinfo/remops">remops@freedom.gmsociety.org</a>). You should also frequent <a href="news://alt.privacy.anon-server">alt.privacy.anon-server</a> and <a href="news://alt.privacy">alt.privacy</a>.
+Those interested in running an anonymous remailer or mail2news gateway should subscribe to the remops mailing list
+<a href="http://lists.mixmin.net/mailman/listinfo/remops">remops@lists.mixmin.net</a> . You should also frequent <a href="news://alt.privacy.anon-server">alt.privacy.anon-server</a> and <a href="news://alt.privacy">alt.privacy</a>.
 <a name="1.6"></a>
 <h3>1.6 Important Reading</h3>
 Papers of note include:<br>
-<a href=http://lexx.shinn.net/chaum-acm-1981.html>Chaums digital mixes</a><br>
+<a href=http://world.std.com/~franl/crypto/chaum-acm-1981.html>Chaums digital mixes</a><br>
 <a href=http://obscura.com/~loki/remailer/mixmaster-faq.html>Mixmaster FAQ</a> by Lance Cottrell.<br>
 <a href=http://obscura.com/~loki/remailer-essay.html>Mixmaster and remailer attacks</a>. An essay by Lance Cottrell, which motivates the original design of Mixmaster<br>
 <a href=http://www.andrebacard.com/remail.html>Anonymous Remailer FAQ</a> by Andre Bacard.
@@ -168,14 +171,16 @@ Papers of note include:<br>
 <h3>2.1 Requirements</h3>
 <a name=2.1.1></a>
 <h3>2.1.1 Hardware</h3>
-With the right operating system, you can run an anonymous remailer on the most paltry of hardware: some large remailers run on 486 DX 33MHz boxes. Of course, this can only be done if you're running a UNIX-style operating system and if the machine is dedicated to its task. More realistically, especially if you intend to use your hardware for anything else, you should have at least a Pentium 75MHz, with 16MB of RAM.<br><br>
+With the right operating system, you can run an anonymous remailer on the most paltry hardware: some large remailers run on 486 DX 33MHz boxes. Of course, this can only be done if you're running a UNIX-style operating system and if the machine is dedicated to its task. More realistically, especially if you intend to use your hardware for anything else, you should have at least a Pentium 75MHz, with 16MB of RAM.<br><br>
 Windows users will need a bit more system resources: at least a Pentium II 200MHz with 64MB of RAM. This is due, of course, to the large overhead of keeping a GUI running.
 <a name=2.1.2></a>
 <h3>2.1.2 Internet Connectivity</h3>
 It is possible to run a remailer without a dedicated connection, as long as you have POP access and an account with a decent quota that won't bounce messages all over the place. This setup is not recommended, however, because it requires constant administrator intervention. Any form of broadband is preferable. Note that, on average, Type II remailers consume anywhere from 84-140 MB per day in bandwidth (3,500-5,000 messages * 28125 bytes/message). Type I remailers typically consume less bandwidth, as they are lower traffic, though this can change if you allow binaries to move through your remailer.
 <a name=2.1.3></a>
 <h3>2.1.3 Operating System</h3>
-Your best bet is probably UNIX, Linux, or a BSD, as these systems are generally free, stable, and relatively secure. Chances are, if you have a well configured machine running this type of operating system, it will be exremely low maintenance. The personal recommendation of the author of this document (though not that of the Mixmaster team at large, as some of them have complaints about OpenBSD's disclosure & advisory policy) is <a href=http://www.openbsd.org>OpenBSD</a>, whose claim to fame -- six years with only one remotely exploitable hole in the default install -- is a good indicator of its security track record.<br><br>
+Your best bet is probably UNIX, Linux, or a BSD, as these systems are generally free, stable, and relatively secure.
+Chances are, if you have a well configured machine running this type of operating system, it will be exremely low maintenance.
+The personal recommendation of the original author of this document (though not that of the Mixmaster team at large, as some of them have complaints about OpenBSD's disclosure & advisory policy) is <a href=http://www.openbsd.org>OpenBSD</a>, whose claim to fame -- six years with only one remotely exploitable hole in the default install -- is a good indicator of its security track record.<br><br>
 It is possible to run a remailer on a Windows system, but due to the massive security holes and general lack of stability, this is not recommended. If you do choose to run Windows, you will probably have the most success with Windows 2000, as it is the most stable and secure of the Windows operating systems.
 <a name=2.1.4></a>
 <h3>2.1.4 Software</h3>
@@ -233,7 +238,7 @@ If you want to run a remailer, but are afraid of potential consequences from use
 <h3>2.2.3 Nyms</h3>
 <a name=2.2.4></a>
 <h3>2.2.4 Name</h3>
-All remamilers must have a name to identify themselves within the network. This name must not exceed eight characters. Preferably, it should be something easily associated with the remailer, even something humorous, so that it can be easily remembered.
+All remailers must have a name to identify themselves within the network. This name must not exceed eight characters. Preferably, it should be something easily associated with the remailer, even something humorous, so that it can be easily remembered.
 <a name=2.2.5></a>
 <h3>2.2.5 Policy</h3>
 Before putting your remailer into action, you need to have a clearly articulated policy governing use and abuse of your system (even if you are a middleman, this is a good idea). It should be posted on your web site and be included in autoresponses to non-remailer generated messages (i.e. in abuse.txt). You should probably read <a href=http://mixmaster.shinn.net/abuse.txt>an example</a> before finalizing your own.<br>
