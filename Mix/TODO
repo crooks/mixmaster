@@ -1,9 +1,6 @@
 Items that need to be completed before the next MAIN release:
 
-- Full WIN32 support.
-  - Sane randomness handling
-  - Resolve crash when running with --post
-  - Resolve crash when config contains "SENDMAIL outfile"
+- revert renaming of conf files for WIN32.
 
 Items to watch:
 
@@ -12,18 +9,34 @@ Items to watch:
   [This is a pesky one. Changing the .forward pipe to go through 
    truss first 'fixes' it. Grr. --rabbi]
 
-Items for 3.1.x:
+Items for 3.0.x:
 - doallow() should check more than one email address in a line
 - Automatically fetch pinger list and stats during installation process
 - destblk request confirmation (patch # 873498)
     + perhaps we should phase this out in favor of a distributed RAB?
+- general bug fixes that do not break backward compatibility
+
+Items for 3.1.x
+- Full WIN32 support.
+  - Sane randomness handling
+  - Resolve crash when running with --post
+  - Resolve crash when config contains "SENDMAIL outfile"
+  - Confirm operation as a WIN32 service
+  - Test on Vista.
+- Include a formal win32 binary release, complete with docs.
 - Integrate RAB support -- automatic downloading similar to stats.
 - Introduce hashed RAB handling where mail recipients are hashed and
   compared against a downloaded rab.hash file.  This solves the issue
   of publishing a plain-text list of email addresses.
     + We might want to salt these hashes but the salt would have to be
       known to remops.
-- Include a formal win32 binary release, complete with docs.
+
+
+Items for 3.5:
+
+- binomial mix implementation
+- RGB dummies
+- native echolot
 
 Packaging:
 - Modify release tarball generation script to build the .tab.c file from
