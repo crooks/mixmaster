@@ -189,7 +189,7 @@
 /** file names ********************************************************/
 
 #ifdef WIN32
-#define DEFAULT_MIXCONF "mix.ini"  /* mixmaster configuration file */
+#define DEFAULT_MIXCONF "mix.cfg"  /* change to mix.ini eventually  */
 #else
 #define DEFAULT_MIXCONF "mix.cfg"      /* mixmaster configuration file */
 #endif
@@ -197,7 +197,7 @@
 #define DEFAULT_FROMDSCLFILE "fromdscl.txt"
 #define DEFAULT_MSGFOOTERFILE "footer.txt"
 #ifdef WIN32
-#define DEFAULT_POP3CONF "pop3.ini"
+#define DEFAULT_POP3CONF "pop3.cfg"  /* change to pop3.ini eventually */
 #else
 #define DEFAULT_POP3CONF "pop3.cfg"
 #endif
