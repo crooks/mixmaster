@@ -738,7 +738,7 @@ elif [ "$version" = "90609F" ]
  elif [ "$version" = "90809F" ]
  then
   decimalversion=9470111
-  echo "Compiling with OpenSSL 0.9.8g."
+  echo "Compiling with OpenSSL 0.9.8h."
   echo "This version was unreleased at the time of packaging."
   echo "It is not guaranteed to work. Please report any problems."
   DEF="$DEF -DUSE_AES"
@@ -776,7 +776,7 @@ elif [ "$version" = "90609F" ]
   echo "This version: ${version} of OpenSSL is not supported."
   echo $opensslinfo
   exit 1
- elif [ "$decimalversion" -gt "9469967" ]  # 90800F
+ elif [ "$decimalversion" -gt "9470111" ]  # 0.9.8h
  then
   echo "Warning: This version: ${version} of OpenSSL is untested."
   readln "Continue anyway?" y
