@@ -1,5 +1,5 @@
 #!/bin/sh
-# Mixmaster version 3.0  --  (C) 1999-2006 Anonymizer Inc. and others.
+# Mixmaster version 3.0  --  (C) 1999-2008 Anonymizer Inc. and others.
 
 # Mixmaster may be redistributed and modified under certain conditions.
 # This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF
@@ -662,10 +662,33 @@ elif [ "$version" = "90609F" ]
   decimalversion=9466015
   echo "Compiling with OpenSSL 0.9.7i."
   DEF="$DEF -DUSE_AES"
- elif [ "$version" = "9070A0" ]
+
+ elif [ "$version" = "9070AF" ]
  then
-  decimalversion=9466016
+  decimalversion=9466031
   echo "Compiling with OpenSSL 0.9.7j."
+  DEF="$DEF -DUSE_AES"
+ elif [ "$version" = "9070BF" ]
+ then
+  decimalversion=9466047
+  echo "Compiling with OpenSSL 0.9.7k."
+  DEF="$DEF -DUSE_AES"
+ elif [ "$version" = "9070CF" ]
+ then
+  decimalversion=9466063
+  echo "Compiling with OpenSSL 0.9.7l."
+  DEF="$DEF -DUSE_AES"
+ elif [ "$version" = "9070DF" ]
+ then
+  decimalversion=9466079
+  echo "Compiling with OpenSSL 0.9.7m."
+  DEF="$DEF -DUSE_AES"
+ elif [ "$version" = "9070EF" ]
+ then
+  decimalversion=9466095
+  echo "Compiling with OpenSSL 0.9.7n."
+  echo "This version was unreleased at the time of packaging."
+  echo "It is not guaranteed to work. Please report any problems."
   DEF="$DEF -DUSE_AES"
  elif [ "$version" = "90800F" ]
  then
@@ -682,7 +705,43 @@ elif [ "$version" = "90609F" ]
   decimalversion=9469999
   echo "Compiling with OpenSSL 0.9.8b."
   DEF="$DEF -DUSE_AES"
-
+ elif [ "$version" = "90803F" ]
+ then
+  decimalversion=9470015
+  echo "Compiling with OpenSSL 0.9.8c."
+  DEF="$DEF -DUSE_AES"
+ elif [ "$version" = "90804F" ]
+ then
+  decimalversion=9470031
+  echo "Compiling with OpenSSL 0.9.8d."
+  DEF="$DEF -DUSE_AES"
+ elif [ "$version" = "90805F" ]
+ then
+  decimalversion=9470047
+  echo "Compiling with OpenSSL 0.9.8e."
+  DEF="$DEF -DUSE_AES"
+ elif [ "$version" = "90806F" ]
+ then
+  decimalversion=9470063
+  echo "Compiling with OpenSSL 0.9.8f."
+  DEF="$DEF -DUSE_AES"
+ elif [ "$version" = "90807F" ]
+ then
+  decimalversion=9470079
+  echo "Compiling with OpenSSL 0.9.8g."
+  DEF="$DEF -DUSE_AES"
+ elif [ "$version" = "90808F" ]
+ then
+  decimalversion=9470095
+  echo "Compiling with OpenSSL 0.9.8h."
+  DEF="$DEF -DUSE_AES"
+ elif [ "$version" = "90809F" ]
+ then
+  decimalversion=9470111
+  echo "Compiling with OpenSSL 0.9.8g."
+  echo "This version was unreleased at the time of packaging."
+  echo "It is not guaranteed to work. Please report any problems."
+  DEF="$DEF -DUSE_AES"
  fi
 #
 # Now we try to guess about unknown versions: 
