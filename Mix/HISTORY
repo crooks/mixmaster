@@ -486,7 +486,7 @@
                            Added full stats download support.
                            Fixed buffer overflow bug in keymgt.c.
 
-2008-03-03     3.0rc2
+2008-03-03     3.0
                            Changed name of WIN32 default config file
                              from mix.cfg.txt to mix.ini.
                            Changed pop3.cfg to pop3.ini on WIN32.
