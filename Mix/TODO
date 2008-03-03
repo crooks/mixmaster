@@ -30,13 +30,14 @@ Items for 3.1.x
   of publishing a plain-text list of email addresses.
     + We might want to salt these hashes but the salt would have to be
       known to remops.
-
+- Hashcash support?
 
 Items for 3.5:
 
 - binomial mix implementation
 - RGB dummies
 - native echolot
+- Regroup-and-Go?
 
 Packaging:
 - Modify release tarball generation script to build the .tab.c file from

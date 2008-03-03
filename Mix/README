@@ -1,8 +1,6 @@
 Mixmaster 3.0 -- anonymous remailer software -- (C) 1999 - 2000 Anonymizer Inc.
-                                  (C) 2000-2007 The Mixmaster Development Team
+                                  (C) 2000-2008 The Mixmaster Development Team
 -------------------------------------------------------------------------------
-
-PREVIEW VERSION  ---  WARNING: THIS SOFTWARE IS UNDER DEVELOPMENT!
 
 This program consists of
 
@@ -158,6 +156,12 @@ your files, the remailer passphrase offers only casual protection for the
 remailer keys. If you install a remailer, the remailer passphrase must be
 different from your private passphrases.
 
+Note that nym.alias.net style nym-servers are trivially breakable by an
+adversary performing a long-term intersection attack. Discussion of 
+these attacks can be found in section 4.2 of The Pynchon Gate, by 
+Sassaman, Cohen, and Mathewson, 2005. Use of Type I remailers for any 
+purpose is discouraged.
+
 
 Copyright:
 ---------
@@ -176,6 +180,11 @@ product includes software developed by the OpenSSL Project for use in the
 OpenSSL Toolkit (http://www.OpenSSL.org/).  For some platforms: This product
 includes software developed by the University of California, Berkeley and its
 contributors.
+
+Additionally, this software uses code provided by the members of the 
+Mixmaster development team. The members respectively hold the copyright 
+to the code in question, having elected to make it available under the 
+Mixmaster license.
 
 All trademarks are the property of their respective owners.
 

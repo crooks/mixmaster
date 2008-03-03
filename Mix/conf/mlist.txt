@@ -1,90 +1,48 @@
 
-Groups of remailers sharing a machine or operator:
-(bigpond thrasher)
-(daat hod)
-(aaabbc eelbash razelka)
-(lcs nym)
-(panta pantanym)
-(paranoia nymph)
-(riot blackhol)
-
-
 Broken type-I remailer chains:
-(antani senshi)
 (austria borked)
-(austria senshi)
-(borked austria)
-(borked cripto)
-(borked cyberiad)
 (borked senshi)
-(cripto borked)
-(cripto panta)
 (cyberiad borked)
 (deuxpi senshi)
-(dizum beton)
+(dizum borked)
 (frell senshi)
-(hastio cyberiad)
-(panta antani)
-(panta cyberiad)
-(panta daat)
-(panta deuxpi)
-(panta metacolo)
-(paranoia starwars)
-(pboxmix daat)
-(pboxmix senshi)
+(george borked)
+(senshi beton)
 
 Broken type-II remailer chains:
 (austria borked)
-(banana tonga)
-(borked austria)
 (borked cyberiad)
-(cside daat)
-(cside tonga)
 (cthulu antani)
-(cthulu borked)
-(cthulu starwars)
-(cyberiad borked)
-(daat bunker)
-(dizum beton)
-(dizum panta)
-(george daat)
-(hastio bunker)
-(panta austria)
-(panta bunker)
-(panta cripto)
-(panta george)
-(panta kroken)
-(panta winters)
-(pboxmix tonga)
-(tonga bunker)
-Last update: Mon 19 Nov 2007 13:25:01 GMT
+(deuxpi tonga)
+(metacolo tonga)
+(pobox tonga)
+(winters tonga)
+Last update: Sat 22 Dec 2007 14:50:04 GMT
 mixmaster           history  latency  uptime
 --------------------------------------------
-beton               **++*+*    57:00 100.00%
-cyberiad        *******-***    14:00 100.00%
-paranoia       *******+****    24:00  99.78%
-borked         +******#****    16:00  99.78%
-dizum          ************    26:00  99.03%
-hermetix       ************    11:00  98.90%
-cside          +*++++++-+++  1:36:00  98.89%
-metacolo       ************    16:00  98.89%
-eurovibes      ++++++++++++  1:32:59  98.46%
-daat           ++++++++-+++  2:22:30  98.07%
-austria        ************    27:30  98.00%
-citrus         ++++++++++++  1:51:00  97.89%
-pobox          +++++*+*+**+  1:21:00  97.89%
-george         ********+***    22:00  97.78%
-kroken         +++*++****+*    55:00  97.78%
-pboxmix        *+*****+-***    32:00  97.67%
-winters        +++++**+++++  1:11:59  97.51%
-cripto             ********    23:00  97.51%
-deuxpi         ************    15:59  97.31%
-starwars             ++++++  1:53:00  96.92%
-antani         +++++++*+*++  1:27:00  96.27%
-banana         ***+******+*    35:00  96.23%
-frell          -+-+--++++++  3:31:00  90.92%
-cthulu         +++++++*++++  1:36:00  85.37%
-hastio         *****.-*.***    14:59  80.63%
-tonga          __+---- -++   5:34:59  29.85%
-bunker         _- - ------+  5:37:00  20.97%
+cthulu                  +-- 12:23:02 100.00%
+nymkey                  *-- 12:15:01 100.00%
+cyberiad                *-- 12:10:30 100.00%
+george                  *-- 11:53:04 100.00%
+dizum                   +-- 11:43:56 100.00%
+pboxmix                 *-- 11:27:59 100.00%
+banana                  +-- 11:16:59 100.00%
+borked                  *-- 11:13:06 100.00%
+metacolo                *-- 11:01:08 100.00%
+hermetix                *-- 10:35:00 100.00%
+deuxpi                  *-- 10:25:01 100.00%
+cside                   +-- 11:04:57  99.88%
+antani                  +-- 13:38:02  99.49%
+frell                   --- 16:59:02  99.03%
+citrus                  +-- 14:20:01  98.42%
+starwars                +-- 13:51:02  98.27%
+kroken                  +-- 10:25:33  96.30%
+pobox                   +-- 11:48:00  95.82%
+eurovibes               +-- 11:33:00  92.45%
+winters                 +--  9:52:06  89.99%
+beton              ___  +-- 64:40:28  64.21%
+austria              _  +-- 11:04:58  45.96%
+tonga                   +--  4:48:00  30.70%
+bunker                  +-- 14:50:01  24.07%
+hastio                      99:59:59   0.00%
 panta                       99:59:59   0.00%

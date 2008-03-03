@@ -486,10 +486,11 @@
                            Added full stats download support.
                            Fixed buffer overflow bug in keymgt.c.
 
-2007-09-??     3.0rc2
+2008-03-03     3.0rc2
                            Changed name of WIN32 default config file
                              from mix.cfg.txt to mix.ini.
                            Changed pop3.cfg to pop3.ini on WIN32.
+                           Updated Install script.
                            Minor documentation changes.
 
 
@@ -498,4 +499,4 @@ Mixmaster maintainer history:
 
 1998-2000: Ulf Möller -- versions 2.9beta0 through 2.9beta22.
 2000: Johannes Kroeger -- version 2.9beta23.
-2001-2007: Len Sassaman -- versions 2.9beta24 through present.
+2001-2008: Len Sassaman -- versions 2.9beta24 through present.
