@@ -39,9 +39,7 @@ binary but instead links against the mix.dll build from Mixmaster's sources.
 
 <a href="http://www.danner-net.de/om.htm">Omnimix</a> is an actively developed
 and maintained client for Win32.  It functions as a news/email proxy enabling
-users to send anonymous messages using their preferred client applications.  It
-also integrates with Tor (www.torproject.org) to provide additional security
-between the remailer client and server.
+users to send anonymous messages using their preferred client applications.
 
 <p>
 <a href="http://www.eskimo.com/~turing/remailer/FAQ/faq.6.html">Section 6 of the alt.privacy.anon-server FAQ</a>
