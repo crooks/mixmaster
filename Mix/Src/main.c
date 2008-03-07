@@ -432,6 +432,7 @@ int main(int argc, char *argv[])
 -h, --help                        summary of command line options\n\
 -V, --version                     print version information\n\
     --about                       print authorship information\n\
+    --config=file                 use alternate configuration file\n\
 -T, --type-list                   list available remailers\n\
 -t, --to=user@host                the recipient's address(es)\n\
 -g, --post-to=newsgroup           newsgroup(s) to post to\n\
@@ -481,8 +482,7 @@ Remailer:\n\
 #endif /* USE_SOCK */
 	   "-P, --pop-mail                    force getting messages from POP3 servers\n\
 -G, --generate-key                generate a new remailer key\n\
--K, --update-keys                 generate remailer keys if necessary\n\
-    --config=file                 use alternate configuration file\n"
+-K, --update-keys                 generate remailer keys if necessary\n"
 #ifdef WIN32SERVICE
 	   "\n\
 WinNT service:\n\
