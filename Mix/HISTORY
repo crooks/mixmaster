@@ -493,7 +493,11 @@
                            Updated Install script.
                            Minor documentation changes.
 
-
+2008-03-07     3.1 alpha1
+                           Fixed DEBUG and NDEBUG logic.
+			   Fixed "assert" problems.
+			   tidied up --config option in help and man page.
+			   check more than one email address per line in doallow()
 
 Mixmaster maintainer history:
 
