@@ -40,7 +40,10 @@ static void alloc(BUFFER *b)
   b->size = space;
 }
 
-#undef buf_new /* DEBUG */
+#ifdef DEBUG
+#undef buf_new
+#endif /* DEBUG */
+
 BUFFER *buf_new(void)
 {
   BUFFER *b;
@@ -56,7 +59,6 @@ BUFFER *buf_new(void)
   return (b);
 }
 
-#ifdef DEBUG
 static void sanity_check(BUFFER *b)
 {
   assert(b != NULL);
@@ -65,9 +67,6 @@ static void sanity_check(BUFFER *b)
   assert(b->length >= 0 && b->length < b->size);
   assert(b->ptr >= 0 && b->ptr <= b->length);
 }
-#else /* not DEBUG */
-#define sanity_check(arg)
-#endif /* else not DEBUG */
 
 int buf_reset(BUFFER *buffer)
 {

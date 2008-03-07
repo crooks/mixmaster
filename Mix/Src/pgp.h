@@ -174,7 +174,7 @@ typedef struct {
   int type; /* undefined, public, private */
   char filename[LINELEN];
   BUFFER *encryptkey;
-#ifndef NDEBUG
+#ifdef DEBUG
   int writer;
 #endif
 } KEYRING;
