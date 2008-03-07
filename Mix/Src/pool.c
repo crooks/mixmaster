@@ -834,10 +834,10 @@ BUFFER *readdestblk( )
 }
 
 int doblock(BUFFER *line, BUFFER *filter, int logandreset)
-/* logandreset is usually 0
- * it is only set to 1 when called from doallow
- *  which only checks whether messages are allowed to
- *  be sent directly
+/* logandreset is usually 1
+ * it is only set to 0 when called from doallow
+ * which only checks whether messages are allowed to
+ * be sent directly
  */
 {
   int block = 0;
