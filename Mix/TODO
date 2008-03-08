@@ -23,6 +23,8 @@ Items for 3.1.x
   - Resolve crash when config contains "SENDMAIL outfile"
   - Confirm operation as a WIN32 service
   - Test on Vista.
+  - Make Win32 Mixmaster portable.  i.e. Don't require a CSIDL_APPDATA dir,
+    just use the current one.
 - Include a formal win32 binary release, complete with docs.
 - Integrate RAB support -- automatic downloading similar to stats.
 - Introduce hashed RAB handling where mail recipients are hashed and
