@@ -15,6 +15,8 @@ Items for 3.0.x:
 - destblk request confirmation (patch # 873498)
     + perhaps we should phase this out in favor of a distributed RAB?
 - general bug fixes that do not break backward compatibility
+- Fix the randomness/entropy gathering
+- Make mixmaster do nothing but report version when run with -V
 
 Items for 3.1.x
 - Full WIN32 support.
