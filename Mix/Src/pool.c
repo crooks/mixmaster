@@ -642,7 +642,10 @@ int doallow(BUFFER *line, BUFFER *filter)
   buf_clear(addrs);
 
   while (buf_getline(newlinelist, addrs) != -1) {
-    if (doblock(addrs, filter, 0) == 0) res = 0;
+    if (doblock(addrs, filter, 0) == 0) {
+      res = 0;
+      errlog(DEBUGINFO, "Destination %b not allowed.\n", addrs);
+    }
     buf_clear(addrs);
   }
 
