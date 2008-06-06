@@ -1,6 +1,7 @@
 Items that need to be completed before the next MAIN release:
 
 - revert renaming of conf files for WIN32.
+- Fix Solaris 10 Install bug (whoami is located in /usr/ucb/ )
 
 Items to watch:
 
