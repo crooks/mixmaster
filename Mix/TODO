@@ -18,6 +18,8 @@ Items for 3.0.x:
 - general bug fixes that do not break backward compatibility
 - Fix the randomness/entropy gathering
 - Make mixmaster do nothing but report version when run with -V
+- SMTPRELAY is hardcoded to port 25 in mail.c.  Stunnel users will be happy
+  is we make this configurable.
 
 Items for 3.1.x
 - Full WIN32 support.
