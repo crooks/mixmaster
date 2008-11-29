@@ -1,0 +1,270 @@
+#!/usr/bin/perl -w
+
+#   mixmaster-filter (c) 2002 Peter Palfrader <peter@palfrader.org>
+#   $Id: mixmaster-filter 459 2007-11-21 10:12:30Z weasel $
+#
+#   This program is free software. you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program; if not, write to the Free Software
+#   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+=pod
+
+=head1 NAME
+
+mixmaster-filter - Wrapper around mixmaster that removes unwanted header lines
+
+=over
+
+=head1 SYNOPSIS
+
+=item B<mixmaster-filter>
+
+=back
+
+=head1 DESCRIPTION
+
+B<mixmaster-filter> is a wrapper around mixmaster. It will filter out
+header lines which may endager your anonymity.
+
+All but a few options are passed on to mixmaster as is. If you specify B<-m>,
+B<-g>, B<-l> or B<-n> (see mixmaster(1)) then STDIN is filtered, otherwise
+mixmaster is executed as is.
+
+It is intented to be used from Mail User Agents like the mutt(1) email reader.
+
+=head1 OPTIONS
+
+=over
+
+=item B<--mixmaster>=I<MIXMASTER>
+
+Set the path to the mixmaster binary.
+
+=item B<--configfile>=I<FILTERCONFIGFILE>
+
+Set a config file for B<mixmaster-filter>.
+
+=item B<--help>
+
+Print a brief help message and exit successfully.
+
+=item B<--version>
+
+Print a version information and exit successfully.
+
+=back
+
+All other options are passed through to mixmaster.
+
+=head1 FILES
+
+=over
+
+=item B<--configfile> parameter
+
+=item MIXMASTER_FILTER_CONF environment
+
+=item B<~/.Mix/filter.conf>
+
+=item B</etc/mixmaster/filter.conf>
+
+=back
+
+The first file that is found is used.
+
+
+=head1 FILEFORMAT
+
+The configuration file for B<mixmaster-filter> is simple. Lines with whitespace
+only are ignored as are lines that have the hash our pound (C<#>) sign as their
+first non whitespace character.
+
+Lines are always truncated at the first hash our pound (C<#>) sign.
+
+The first logical line gives the filtering policy. It's either C<FILTER> or C<ALLOW>.
+
+All other lines are taken as a list of Headers.
+
+If your policy is C<FILTER> headers in your list will get removed from messages.
+
+If your policy is C<ALLOW> only headers in your list will be passed to mixmaster.
+
+=head1 ENVIRONMENT
+
+=over
+
+=item MIXMASTER_FILTER_CONF
+
+Config file to use
+
+=item HOME
+
+Your homedirectory. Used for finding your user configuration file. Also the
+default destination directory is $HOME/.Mix/
+
+=back
+
+
+=head1 SEE ALSO
+
+B<mixmaster>(1)
+
+=head1 BUGS
+
+It is far from perfect but should handle most standard cases satisfactorily.
+
+Please report them to the Debian Bug Tracking System as described at
+C<http://bugs.debian.org/> or use a tool like reportbug(1).
+
+=head1 AUTHOR
+
+Peter Palfrader, E<lt>peter@palfrader.orgE<gt>
+
+=cut
+
+use strict;
+use Getopt::Long;
+use English;
+use Mail::Internet;
+
+my $VERSION = '$Revision: 459 $';
+my @configfiles  = ( '/etc/mixmaster/filter.conf',
+                     $ENV{'HOME'}.'/.Mix/filter.conf');
+
+
+my $params;
+Getopt::Long::config('bundling');
+Getopt::Long::config('pass_through');
+GetOptions (
+	'--help'         =>  \$params->{'help'},
+	'--version'      =>  \$params->{'version'},
+	'--configfile=s' =>  \$params->{'configfile'},
+	'--mixmaster=s'  =>  \$params->{'mixmaster'},
+	);
+
+if ($params->{'help'}) {
+	print "Usage: $PROGRAM_NAME [options]\n";
+	print "mixmaster-filter $VERSION - (c) 2002 Peter Palfrader <peter\@palfrader.org>\n";
+	print " --configfile FILE  Also source this config file.\n";
+	print " --mixmaster        Path to the mixmaster binary.\n";
+	print " --help             Print this message.\n";
+	print " --version          Print version information.\n";
+	print "\n";
+	print "ENVIRONMENT VARIABLES:\n";
+	print " MIXMASTER_FILTER_CONF  Also source this config file.\n";
+	print " HOME                   Home directory (base for user config\n";
+	print "                         file and destination).\n";
+	exit 0;
+};
+if ($params->{'version'}) {
+	print ("mixmaster-filter $VERSION\n");
+	print ("(c) 2002 Peter Palfrader <peter\@palfrader.org>\n");
+	exit 0;
+};
+$params->{'mixmaster'} = 'mixmaster' unless defined $params->{'mixmaster'};
+
+my $wrap = 0;
+
+for my $arg (@ARGV) {
+	if ($arg eq '-n' ||
+		$arg eq '-p' ||
+		$arg eq '-m' ||
+		$arg eq '-l' ||
+		$arg eq '-'
+		) {
+		$wrap = 1;
+		last;
+	};
+};
+
+# If neither -n nor -m was passed, simply call mixmaster
+unless ($wrap) {
+	exec ($params->{'mixmaster'}, @ARGV) or
+		die "Can't exec $params->{'mixmaster'}: $!\n";
+};
+
+
+
+# Otherwise read our config.
+
+if (defined $params->{'configfile'}) {
+	open F, $params->{'configfile'} or
+		die ("Cannot open $params->{'configfile'}: $!\n");
+} elsif (defined $ENV{'MIXMASTER_FILTER_CONF'}) {
+	open F, $ENV{'MIXMASTER_FILTER_CONF'} or
+		die ("Cannot open $ENV{'MIXMASTER_FILTER_CONF'}: $!\n");
+} else {
+	my $conffile;
+	for my $file (reverse @configfiles) {
+		if ( -e $file) {
+			$conffile = $file;
+			last;
+		}
+	};
+	die ("Cannot find a config file\n") unless defined $conffile;
+	open F, $conffile or
+		die ("Cannot open $conffile: $!\n");
+};
+
+my @lines = <F>;
+close F;
+
+@lines = grep { ! /^\s*#/ } @lines;
+@lines = map { s/\s*(#.*)?$//s; $_ } @lines;
+@lines = grep { ! /^\s*$/ } @lines;
+
+
+die ("Filtering policy not defined\n") unless (scalar @lines);
+my $policy = lc(shift @lines);
+die ("Filtering policy '$policy' invalid\n") unless ($policy eq 'filter' || $policy eq 'allow');
+
+
+
+
+
+	
+my $mail = new Mail::Internet( \*STDIN );
+my $head = $mail->head();
+my $body = $mail->body();
+
+if ($policy eq 'filter') {
+	for my $header_line (@lines) {
+		$head->delete($header_line);
+	};
+} else {
+	my @head;
+	my $new_header = new Mail::Header;
+	for my $header_line (@lines) {
+		for my $value ($head->get($header_line)) {
+			$new_header->add($header_line, $value);
+		};
+	};
+	$head = $new_header;
+};
+$mail = new Mail::Internet( Header => $head, Body => $body );
+
+
+my $pid;
+die "Can't fork: $!" unless defined($pid = open(KID, "|-"));
+if ($pid) {
+	print KID $mail->as_string();
+	close(KID);
+} else {
+	exec ($params->{'mixmaster'}, @ARGV) or
+		die "Can't exec $params->{'mixmaster'}: $!\n";
+}
+
+wait();
+
+# vim:set ts=4:
+# vim:set shiftwidth=4:

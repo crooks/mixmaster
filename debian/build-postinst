@@ -1,0 +1,23 @@
+#!/usr/bin/perl -wT
+
+use strict;
+
+my %FILES = (
+	DESTBLOCK    => 'conf/dest.blk',
+	MLIST        => 'conf/mlist.txt',
+	RLIST        => 'conf/rlist.txt',
+	PUBRINGMIX   => 'conf/pubring.mix',
+	PUBRINGASC   => 'conf/pubring.asc');
+
+while(<>) {
+	chomp;
+	if (/^\s*FILLIN\s+(DESTBLOCK|MLIST|RLIST|PUBRINGMIX|PUBRINGASC)\s+(\S+)\s*$/) {
+		print "cat > $2 << __EOF__\n";
+		open (F, $FILES{$1}) or die ("Cannot open $FILES{$1}: $!\n");
+		print while <F>;
+		close (F);
+		print "__EOF__\n";
+	} else {
+		print $_,"\n";
+	};
+};

@@ -1,0 +1,35 @@
+# Translation of mixmaster debconf templates to German
+# Copyright (C) Helge Kreutzmann <debian@helgefjell.de>, 2007.
+# This file is distributed under the same license as the mixmaster package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mixmaster\n"
+"Report-Msgid-Bugs-To: weasel@debian.org\n"
+"POT-Creation-Date: 2007-02-16 07:41+0100\n"
+"PO-Revision-Date: 2007-02-17 19:22+0100\n"
+"Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
+"Language-Team: German <debian-l10n-german@lists.debian.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-15\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: boolean
+#. Description
+#: ../mixmaster.templates.in:1001
+msgid "Do you wish to update the reliability statistics now?"
+msgstr "Möchten Sie die Zuverlässigkeits-Statistiken jetzt aktualisieren?"
+
+#. Type: boolean
+#. Description
+#: ../mixmaster.templates.in:1001
+msgid ""
+"If you choose this option, up to date reliability statistics and keyrings "
+"will be downloaded from the Internet once Mixmaster has been set up.  Once "
+"this has happened this option will be disabled to prevent further updates "
+"when the package will be updated."
+msgstr ""
+"Falls Sie diese Option wählen, werden aktuelle Zuverlässigkeits-Statistiken "
+"und Schlüsselringe aus dem Internet heruntergeladen, sobald Mixmaster "
+"eingerichtet wurde. Sobald dies passiert ist wird diese Option deaktiviert, "
+"um zukünftige Aktualisierungen bei Paket-Aktualisierungen zu verhindern."

@@ -1,0 +1,422 @@
+mixmaster (3.0.0-1) unstable; urgency=low
+
+  * New Upstream version.
+  * Fix manpage error (Closes: #460286).
+  * Update to debhelper v5 (no changes required).
+
+ -- Colin Tuckley <colint@debian.org>  Fri, 07 Mar 2008 11:33:59 +0000
+
+mixmaster (3.0b2-7) unstable; urgency=low
+
+  * Update debian/README.Debian to fix typos and correct
+    remops mailing list info (Closes: #439059).
+  * Update debian/mixmaster.postinst.in to fix typo.
+  * Include reference to the Mixmaster FAQ in
+    debian/README.Debian (Closes: #223241).
+  * updated maintainer email address.
+  * Added patch from Ubuntu to use lsb functions
+    in init file by David Mandelberg and add LSB keyword
+    section to init file (Closes: #453401).
+  * bump standards version to 3.7.3 (no changes required).
+  * remove unused man5 and defaultconfig dirs.
+  * Make debian/copyright valid UTF-8.
+
+ -- Colin Tuckley <colint@debian.org>  Fri, 21 Dec 2007 13:12:22 +0000
+
+mixmaster (3.0b2-6) unstable; urgency=low
+
+  [ Colin Tuckley ]
+  * New Maintainer.  Old maintainer still listed as uploader.
+  * Added Homepage field to debian/control (Closes: #412901).
+  * Fix typo in mixmaster.1 (Closes: #429410).
+  * Include Spanish translation from Rudy Godoy (Closes: #414345).
+  * Move debhelper compat setting to debian/compat from debian/rules.
+  * Move to new Menu policy structure, Applications/Network/Communication.
+  * Update allpingers.txt
+
+  [ Peter Palfrader ]
+  * Fix mixmaster-filter and mixmaster-update manpages: In the NAME section
+    there should be a hyphen between the name and the short description.
+    It's what mandb (apropos/whatis) parse.
+
+ -- Colin Tuckley <colin@tuckley.org>  Wed, 21 Nov 2007 10:21:50 +0000
+
+mixmaster (3.0b2-5) unstable; urgency=high
+
+  * Backport a fix from upstream:
+    In two functions in keymgt.c we had allocated a buffer of 33 bytes
+    when if fact we were using one more - 34 - bytes.  This buffer
+    overflow is exposed when building with gcc 4.x, it never was exposed
+    with previous compilers because they apparently layed out the stack
+    differently.
+    The result of this buffer overflow is that a single 0-byte will be
+    written at the end of the buffer.  At that position on the stack
+    there is (at least in the previous build) a saved local variable
+    from a calling function.  This local variable is a pointer to a
+    BUFFER struct and this pointer has its least significant byte
+    set to zero.
+    This prevents mixmaster from properly decrypting incoming type2
+    messages.  It's not likely that this can be exploited to execute
+    arbitrary code, tho evidence or argument to the contrary are of course
+    welcome.
+    Upstream patch:
+    http://svn.noreply.org/cgi-bin/viewcvs.cgi/trunk/Mix/Src/keymgt.c?rev=929&r1=766&r2=929
+    Closes: #418662
+    Thanks to Hauke Lampe and Colin Tuckley.
+
+ -- Peter Palfrader <weasel@debian.org>  Sun, 22 Apr 2007 17:43:13 +0200
+
+mixmaster (3.0b2-4) unstable; urgency=low
+
+  [ Christian Perrier ]
+  * Switch to po-debconf for debconf templates. Closes: #375231
+  * Debconf translations:
+    - French. Closes: #411449
+    - Russian. Closes: #411228
+    - Swedish. Closes: #411231
+    - Galician. Closes: #411245
+    - German. Closes: #411277
+    - Norwegian Bokmål. Closes: #411323
+    - Czech. Closes: #411346
+    - Romanian. Closes: #411451
+    - Dutch. Closes: #411455
+    - Basque. Closes: #411462
+    - Portuguese. Closes: #411773
+
+  [ Peter Palfrader ]
+  * Update allpingers.txt.
+
+ -- Peter Palfrader <weasel@debian.org>  Thu, 22 Feb 2007 14:49:02 +0100
+
+mixmaster (3.0b2-3) unstable; urgency=medium
+
+  * Arjan Oosting: Only call ucf on purge when it is available. The
+    modifications are taken from the example script in the ucf
+    documentation (Closes: #389392).
+  * Arjan Oosting: Fix bashism in /etc/cron.daily/mixmaster and in
+    /etc/ppp/ip-up.d/mixmaster (Closes: 351028).
+  * Update allpingers.txt.
+  * Change default stats source to noreply.
+  * Update to standards-version 3.7.2.
+  * Change to debhelper compatibility level 4 (from 3) -
+    no changes other than changing DH_COMPAT required.
+
+ -- Peter Palfrader <weasel@debian.org>  Thu, 28 Sep 2006 19:52:01 +0200
+
+mixmaster (3.0b2-2) unstable; urgency=low
+
+  * Depend on debconf | debconf-2.0 instead of just debconf (closes: #332027).
+  * Fix typo in mixmaster manpage (closes: #282686).
+  * Remove some debconf questions that modified conffiles which was violating
+    policy.
+  * Fix bashisms in mixmaster.config.  We used -a and -o in test.
+  * Update standards-version to 3.6.2 from 3.6.1.
+  * Depend on adduser since we use it to create a new user in postinst.
+  * A user reported the problem that mixmaster - when started from an init
+    script - asked for a passphrase and therefore locked his entire boot
+    process until somebody hit return.  I don't see how this could happen,
+    but add a new --no-ask-passphrase that makes it never ask for the
+    remailer's passphrase on startup, even if we don't have it compiled in,
+    don't have it in the config file, don't have it in the environment and we
+    are, on a tty.  Use that option in our init script  (Closes: #294664).
+  * Update allpingers.txt file.
+  * Remove parsedate.tab.c in clean target - it's created with bison from the
+    corresponding .y file.
+
+ -- Peter Palfrader <weasel@debian.org>  Mon, 10 Oct 2005 02:19:32 +0200
+
+mixmaster (3.0b2-1) unstable; urgency=low
+
+  * New upstream version.
+  * Force bison to be run during built, even if shipped parsedate.tab.c is
+    newer.
+  * Update allpingers list.
+  * Thanks file is part of upstream again.
+  * Changed Standards-Version in control to 3.6.1 - no changes made.
+
+ -- Peter Palfrader <weasel@debian.org>  Thu, 13 May 2004 08:15:33 +0200
+
+mixmaster (3.0b1-1) unstable; urgency=low
+
+  * New upstream release.
+  * s/useable/usable/ in README.Debian.
+  * Update allpingers list.
+  * Update debian/rules:
+    - mix.1 was renamed to mixmaster.1 in the source distribution.
+    - the source distribution makefile builds a mixmaster executeable,
+      no longer a mix executable.
+    - The template Makefile is called Makefile.in again, it was
+      Makefile-sh.in previously.
+  * Update debian/copyright to use updated list of copyright holders
+    from upstream COPYRIGHT file.
+  * The upstream tarball failed to ship with the THANKS file, adding
+    it to the Debian package from the trunk.
+
+ -- Peter Palfrader <weasel@debian.org>  Fri, 26 Mar 2004 22:38:34 +0100
+
+mixmaster (3.0a9-4) unstable; urgency=low
+
+  * Make sure the mixmaster group is a system group.
+
+ -- Peter Palfrader <weasel@debian.org>  Fri, 12 Dec 2003 00:03:33 +0100
+
+mixmaster (3.0a9-3) unstable; urgency=low
+
+  * Remove debconf for remailer mode.  Anybody who wants to operate a
+    remailer can configure it themselves in etc/mixmaster/remailer.conf.
+
+ -- Peter Palfrader <weasel@debian.org>  Fri,  7 Nov 2003 10:46:22 +0100
+
+mixmaster (3.0a9-2) unstable; urgency=low
+
+  * Backport upstream fix from CVS:
+    fix problem where -ff could not read pgp signed messages.
+
+ -- Peter Palfrader <weasel@debian.org>  Wed, 15 Oct 2003 16:06:45 +0200
+
+mixmaster (3.0a9-1) unstable; urgency=low
+
+  * Upstream CVS snapshot.
+  * Update allpingers.
+  * Include upstream HISTORY file as changelog.
+  * Fixed setting in remailer.conf:
+    the option to set the source block file is called SOURCEBLOCK,
+    not SOURCE-BLOCK.
+  * Document how to use user specific stats (closes: #166863).
+  * Uses dh_installppp to install ppp ip-up file (closes: #212904).
+  * Therefore build depends on debhelper >> 4.1.68.
+  * Also build depend on bison now.
+  * Use true/false instead of yes/no in debconf templates (closes: #214298).
+  * Nym support removed from mixmaster's default built.  This does not
+    fix, but closes: #193533.
+  * Mention parsedate's license in debian/copyright.
+  * Don't mention yes or no in templates as different frontends may
+    label these options differently or have checkboxes for instance.
+
+ -- Peter Palfrader <weasel@debian.org>  Sun, 12 Oct 2003 07:46:42 +0200
+
+mixmaster (2.9.0-3) unstable; urgency=low
+
+  * Fix a bug with having slashes in remailer name
+  * Fix a problem where debconf was forgetting old values because we didn't
+    use /g with sed.
+    closes: #183419
+    Thanks to C. Scott Ananian for the patch for both problems.
+
+ -- Peter Palfrader <weasel@debian.org>  Tue,  4 Mar 2003 21:03:33 +0100
+
+mixmaster (2.9.0-2) unstable; urgency=low
+
+  * Fixed setting in remailer.conf:
+    the option to set the adminkey is called ADMKEYFILE, not ADMKEY-FILE.
+  * Allow Subject header in mixmaster-filter.
+    also allow: Mime-Version, Content-Type, Content-Disposition.
+  * Update allpingers.
+
+ -- Peter Palfrader <weasel@debian.org>  Wed, 26 Feb 2003 11:44:02 +0100
+
+mixmaster (2.9.0-1) unstable; urgency=medium
+
+  * New upstream version.
+    - Makes sure other remailers are never blocked by destination-block
+      when running as remailer.
+
+ -- Peter Palfrader <weasel@debian.org>  Mon, 13 Jan 2003 16:48:44 +0100
+
+mixmaster (2.9b39+2.9b40pre1-7) unstable; urgency=low
+
+  * Fixed debconf defaults: Operating a remailer now defaults to No.
+    Previously there was no default at all. Also changed the priority of the
+    question to low - Those few who will run a serverice can always do
+    dpkg-reconfigure which defaults to low anyway.
+    (closes: #171544: mixmaster: NOT running a server should be the default)
+  * Changed long description a bit.
+  * lintian says: dpkg-reconfigure only stops daemons as of version 1.2.9. To
+    ensure dpkg-reconfigure can correctly start the daemon after
+    reconfiguration, packages should declare a dependency on that version of
+    debconf. Did so.
+
+ -- Peter Palfrader <weasel@debian.org>  Tue,  3 Dec 2002 15:00:11 +0100
+
+mixmaster (2.9b39+2.9b40pre1-6) unstable; urgency=low
+
+  * The mixmaster-update change in -4 introduced a bug: Warnings were written
+    unconditionally and stats never written. Fixed.
+    (closes: #167226: perl warnings when configuring)
+
+ -- Peter Palfrader <weasel@debian.org>  Thu, 31 Oct 2002 13:35:03 +0100
+
+mixmaster (2.9b39+2.9b40pre1-5) unstable; urgency=low
+
+  * Ensure /var/lib/mixmaster has the right permissions using
+    dpkg-statoverride in postinst.
+    This closes the problem of having the stats unreadable for
+    normal users if the default permissions on new users'
+    homedirectories are set to something not 0755 in adduser's
+    configuration file adduser.conf (closes: #166795).
+
+ -- Peter Palfrader <weasel@debian.org>  Tue, 29 Oct 2002 00:59:15 +0100
+
+mixmaster (2.9b39+2.9b40pre1-4) unstable; urgency=low
+
+  * Tidy up clean target in debian/rules.
+  * Start short description with a capital.
+  * Use the correct user in an example in README.Debian.
+    (closes: #165147: README.Debian: it is "mixmaster" not "remailer")
+  * Minor documentation fixes for mixmaster-update(1).
+  * mixmaster-update: if we don't have write permissions on the
+    destination files suggest using --destination or running as a
+    different user (closes: #166073: shouldn't mixmaster-update binary be
+    placed in /usr/sbin ?).
+  * Changed Standards-Version in control to 3.5.7 - no changes made.
+
+ -- Peter Palfrader <weasel@debian.org>  Thu, 24 Oct 2002 13:36:18 +0200
+
+mixmaster (2.9b39+2.9b40pre1-3) unstable; urgency=low
+
+  * Set rate to 100, poolsize to 0 and sendpooltime to 0
+    in default client configuration.
+  * Removed unused maildir.c from current source - it's not
+    yet in the stable mixmaster tree. Forgot to clean it up
+    in CVS.
+  * Add missing build time dependency on zlib1g-dev (closes: #164738).
+  * Clarify license's mention of patents in debian/copyright.
+
+ -- Peter Palfrader <weasel@debian.org>  Mon, 14 Oct 2002 22:29:04 +0200
+
+mixmaster (2.9b39+2.9b40pre1-2) unstable; urgency=low
+
+  * Remove dependency on MTA - in theory mixmaster can work with
+    the built in smtp client and a relay host. Incoming mail for
+    the remailer can be done via POP3.
+    MTA is now only recommended.
+  * Suggest: mutt. Mutt is a nice email client that has built in
+    mixmaster support (it knows how to call it, nothing more).
+    Users wishing to use it should configure mutt to use
+    /usr/bin/mimxaster-filter as mixmaster client as it handles
+    filtering out your From: line (which mutt leaves in - according
+    to the developers Not A Bug[TM] *sigh*).
+
+ -- Peter Palfrader <weasel@debian.org>  Fri, 11 Oct 2002 03:04:04 +0200
+
+mixmaster (2.9b39+2.9b40pre1-1) unstable; urgency=low
+
+  * CVS Snapshot of stable mixmaster tree right after 2.9b39 release.
+    Backported patches are pid file writing, sane SIGTERM handling
+    and MAILIN stuff.
+    This version does not (yet?) include Maildir writing support while
+    the previous snapshops taken from the development tree did. I don't
+    think this is a problem tho.
+  * mixmaster-update makes use of allpingers.txt maintained at
+    http://www.noreply.org/allpingers/ rather than its own built in list.
+    Therefore we have a new config file: allpingers.txt.
+  * Default source changed from shinn to randseed (for no real reason).
+  * Organization, Hash-MsgID, Poolsize, Autoreply, Binfilter and Autoblock
+    are no longer asked via debconf. Go edit the config file with ed(1).
+  * New DFSG free license.
+  * Upload to the Debian Archive
+    (closes: #85612: ITP: mixmaster -- an anonymous remailer).
+
+ -- Peter Palfrader <weasel@debian.org>  Fri, 11 Oct 2002 02:13:45 +0200
+
+mixmaster (2.9b37+cvs.2002.08.28.10.00.00-1) unstable; urgency=low
+
+  * CVS Snapshot.
+
+ -- Peter Palfrader <weasel@debian.org>  Wed, 28 Aug 2002 12:13:51 +0200
+
+mixmaster (2.9b37+cvs.2002.08.27.09.00.00-2) unstable; urgency=low
+
+  * Added missing quotes around variables in comparisons in
+    mixmaster.config.
+
+ -- Peter Palfrader <weasel@debian.org>  Tue, 27 Aug 2002 11:26:13 +0200
+
+mixmaster (2.9b37+cvs.2002.08.27.09.00.00-1) unstable; urgency=low
+
+  * CVS Snapshot.
+
+ -- Peter Palfrader <weasel@debian.org>  Tue, 27 Aug 2002 11:15:48 +0200
+
+mixmaster (2.9b37+cvs.2002.08.25.10.00.00-1) unstable; urgency=low
+
+  * CVS Snapshot.
+  * fix passphrase setting in config file. It's called PASSPHRASE now
+    rather than PASS_PHRASE.
+
+ -- Peter Palfrader <weasel@debian.org>  Sun, 25 Aug 2002 12:57:05 +0200
+
+mixmaster (2.9b37+cvs.2002.08.25.08.25.00-1) unstable; urgency=low
+
+  * CVS Snapshot.
+  * Changed default remailing strategy.
+
+ -- Peter Palfrader <weasel@debian.org>  Sun, 25 Aug 2002 10:29:28 +0200
+
+mixmaster (2.9b37+cvs.2002.08.23.04.30.00-1) unstable; urgency=low
+
+  * CVS Snapshot.
+
+ -- Peter Palfrader <weasel@debian.org>  Fri, 23 Aug 2002 06:50:24 +0200
+
+mixmaster (2.9b37+cvs.2002.08.23.00.30.01-1) unstable; urgency=low
+
+  * Really have 2002-08-23 00:30:00, and not 2002-08-23 00:03:00
+  * Ship debconf handled files as conffiles too.
+
+ -- Peter Palfrader <weasel@debian.org>  Fri, 23 Aug 2002 04:11:22 +0200
+
+mixmaster (2.9b37+cvs.2002.08.23.00.30.00-1) unstable; urgency=low
+
+  * CVS Snapshot.
+  * Run mixmaster remailer as daemon.
+  * Remove mixmaster-drop.  Mail should be delivered to /var/mail/mixmaster
+    instead where the Mixmaster daemon will find it.
+
+ -- Peter Palfrader <weasel@debian.org>  Fri, 23 Aug 2002 02:40:01 +0200
+
+mixmaster (2.9b36-6) unstable; urgency=low
+
+  * Use || true when calling update in postinst.
+  * Set default address to mixmaster@ (was: remailer@).
+  * mixmaster-drop returns exit code 75 on error, this makes this
+    delivery attempt fail softly with most MTAs.
+  * Make sure /etc/postfix/remailer.conf has strict permissions.
+  * Fix a typo: Anoymous Remailer.
+  * Removed procmail example.
+
+ -- Peter Palfrader <weasel@debian.org>  Tue, 20 Aug 2002 07:21:37 +0200
+
+mixmaster (2.9b36-5) unstable; urgency=low
+
+  * Add dependency on libmailtools-perl for mixmaster-filter.
+
+ -- Peter Palfrader <weasel@debian.org>  Fri, 16 Aug 2002 08:02:43 +0200
+
+mixmaster (2.9b36-4) unstable; urgency=low
+
+  * Make sure to get the list of stats sources.
+  * Add some check to mixmaster-update.
+
+ -- Peter Palfrader <weasel@debian.org>  Thu, 15 Aug 2002 18:20:23 +0200
+
+mixmaster (2.9b36-3) unstable; urgency=low
+
+  * Fix mixmaster-update and mixmaster-filter versions.
+
+ -- Peter Palfrader <weasel@debian.org>  Wed, 14 Aug 2002 19:00:57 +0200
+
+mixmaster (2.9b36-2) unstable; urgency=low
+
+  * mixmaster-update now checks that the download is valid.
+  * Added menu entry for mixmaster.
+  * Fix permissions of debian/build-postinst in debian/rules.
+
+ -- Peter Palfrader <weasel@debian.org>  Wed, 14 Aug 2002 18:39:34 +0200
+
+mixmaster (2.9b36-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Peter Palfrader <weasel@debian.org>  Mon, 22 Jul 2002 10:30:40 +0200
+

@@ -1,0 +1,113 @@
+Mixmaster for Debian
+--------------------
+
+Mixmaster is both a remailer client and a remailer server. The Debian package
+supports both uses while client only is default.
+
+More information on using Mixmaster is available in the Mixmaster FAQ
+available at http://mixmaster.sourceforge.net/faq.shtml
+
+
+Notes for clients and remailers
+===============================
+
+It is absolutely imperative that you have current stats before attempting any
+use of the remailer network. The Debian package for Mixmaster has a tool to
+update stats and keyrings from pingers (individuals who collect keys and stats
+and publish them for use by others).
+
+This tool, mixmaster-update, has a few built-in stats sources. It is possible
+that they are all obsolete by the time you make use of this package. In that
+case configure /etc/mixmaster/update.conf and specify URLs to keyrings and
+stats yourself.
+
+mixmaster-update is usually run from cron or ip-up (you get asked by debconf).
+If you did specify you want to do it manually please make sure you run it as
+the remailer user (su mixmaster -c "mixmaster-update").
+
+Both mixmaster and mixmaster-update also support user configuration besides
+system-wide configuration. This is usually stored in ~/.Mix
+
+Debian's mixmaster package is built without Nym support as that is not
+considered usable by the package maintainers and upstream.
+
+Integration with Mail User Agents
+---------------------------------
+
+Mutt on Debian is compiled with mixmaster support.  You probably want to set
+mixmaster = "/usr/bin/mixmaster-filter -m -S".  The script mixmaster-filter
+makes sure your From: header line (and other lines, consult the manual page)
+are not passed on to Mixmaster.  Mutt does set it!  "-m" instructs Mixmaster
+to read a mail message from stdin while "-S" tells it to send out the entire
+pool immediatly - if you don't use it you will collect your mail in ~/.Mix/
+without ever sending them (of course you may choose to run mixmaster -S at a
+later time too).
+
+[if _Your_ mail user agent also has mixmaster support, please let me know
+ by filing a wishlist bug on the package - PP]
+
+Using user specific stats rather than system wide stats
+-------------------------------------------------------
+
+By default Debian's mixmaster package uses the stats and keyrings in
+/var/lib/mixmaster/used-stats.  They are updated by cron, in ppp-up, or
+manually as configured by the system administrator.
+
+In order to use your own stats as a user place pubring.mix, mlist.txt and
+type2.list in your ~/.Mix/ directory, and add PUBRING, TYPE2REL, and TYPE2LIST
+to your ~/.Mix/mix.cfg file like this:
+
+PUBRING         pubring.mix
+TYPE2REL        mlist.txt
+TYPE2LIST       type2.list
+
+Note that type2.list is optional, but if it is there it may have a bad
+influence if it does not match your mlist.txt file.  Be aware that if you
+don't override the global config in your local mix.cfg file the global
+setting from /etc/mixmaster/client.conf will be used.  Setting it in your
+mix.cfg as given above and not having the file should work tho.
+
+
+Notes for Mixmaster in remailer mode
+====================================
+
+You can configure mixmaster for remailer mode in
+/etc/mixmaster/remailer.conf and start the daemon using the init script in
+/etc/init.d.  Note that mixmaster does not listen on the network, it
+just processes its mail from the mailspool.
+
+Make sure mail to your remailer address reaches mixmaster.  The Mixmaster
+daemon reads /var/mail/mixmaster regularly and processes its mail removing
+old mails.
+
+If you receive mail directly at this host this is probably very straight
+forward.  You can change the location where mixmaster should search for
+new mail by setting MAILIN in /etc/mixmaster/remailer.conf.  It may either
+be a mbox file or a Maildir folder (with / at the end of the directory
+name)
+
+If you want to query a pop3 server for mails you can either use fetchmail or
+similar or configure mixmaster to pop the mails. See
+/etc/mixmaster/remailer/pop3.cfg and the mixmaster(1) manual page.
+
+
+You should probably subscribe to the Remailer Operators' Mailinglist.
+Subscription instructions and the archive can be found at
+<URL:http://lists.mixmin.net/mailman/listinfo/remops>.
+
+Once you are happy with everything make sure your remailer gets known by
+announcing it to news:alt.privacy.anon-server and the Remailer Operators'
+mailinglist.
+
+You can also ask fellow Remailer Operators to give it a test run before
+announcing it to the public on this list.
+
+You may also want to disable your Mail Transfer Agent's logging so that there is
+no trace of who used your remailer.
+
+Please make sure you have your network operator's consent before you start a
+remailer and that you handle abuse complaints in a timely and proper fashion.
+
+
+ -- Peter Palfrader <weasel@debian.org> and
+ -- Colin Tuckley <colint@debian.org>  Wed, 21 Nov 2007 20:04:55 +0000

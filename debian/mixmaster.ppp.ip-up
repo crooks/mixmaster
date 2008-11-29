@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Get configuration
+. /etc/mixmaster/network.conf
+
+if [ "$NETWORK" = "PPP" ] && [ -x /usr/bin/mixmaster-update ]; then
+   su mixmaster -c "/usr/bin/mixmaster-update" &
+fi 

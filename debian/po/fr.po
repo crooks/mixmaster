@@ -1,0 +1,38 @@
+# translation of fr.po to French
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Christian Perrier <bubulle@debian.org>, 2007.
+msgid ""
+msgstr ""
+"Project-Id-Version: fr\n"
+"Report-Msgid-Bugs-To: weasel@debian.org\n"
+"POT-Creation-Date: 2007-02-16 07:41+0100\n"
+"PO-Revision-Date: 2007-02-16 07:50+0100\n"
+"Last-Translator: Christian Perrier <bubulle@debian.org>\n"
+"Language-Team: French <debian-l10n-french@lists.debian.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#. Type: boolean
+#. Description
+#: ../mixmaster.templates.in:1001
+msgid "Do you wish to update the reliability statistics now?"
+msgstr "Faut-il mettre à jour les statistiques de fiabilité maintenant ?"
+
+#. Type: boolean
+#. Description
+#: ../mixmaster.templates.in:1001
+msgid ""
+"If you choose this option, up to date reliability statistics and keyrings "
+"will be downloaded from the Internet once Mixmaster has been set up.  Once "
+"this has happened this option will be disabled to prevent further updates "
+"when the package will be updated."
+msgstr ""
+"Si vous choisissez cette option, les versions à jour des statistiques de "
+"fiabilité et les porte-clés (« keyrings ») seront téléchargés sur l'Internet "
+"une fois que Mixmaster aura été configuré. Après cette opération, cette "
+"option sera désactivée afin d'éviter de futures mises à jour lors des mises "
+"à jour du paquet."

@@ -1,0 +1,93 @@
+#!/bin/sh
+#
+# Start/Stop the Mixmaster daemon
+
+### BEGIN INIT INFO
+# Provides:          mixmaster
+# Required-Start:    $local_fs $remote_fs $named $network $time
+# Required-Stop:     $local_fs $remote_fs $named $network
+# Should-Start:      mail-transport-agent
+# Should-Stop:       mail-transport-agent
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Anonymous remailer client and server
+# Description:       Mixmaster is the reference implementation
+#                    of the type II remailer protocol
+#                    which is also called Mixmaster.
+### END INIT INFO
+
+set -e
+
+DESC="Mixmaster Daemon"
+NAME="mixmaster"
+DAEMON="/usr/bin/mixmaster"
+ARGS="--daemon --no-ask-passphrase"
+USER=mixmaster
+GROUP=mixmaster
+REMAILCONFIGFILE=/etc/mixmaster/remailer.conf
+
+
+# whitespace for some grep magic
+WS="[ `printf \\\t`]"
+WSE="[= `printf \\\t`]"
+
+grep_from_mix() {
+	VALUE=`grep "^$WS*$1$WSE" $REMAILCONFIGFILE | tail -n 1 | sed -e "s,^$WS*[a-zA-Z0-9_-]*$WS*\(\|=$WS*\),,"`
+}
+
+convert_bool() {
+	if [ "$1" = "false" ] ; then
+		if [ "$VALUE" = "y" -o "$VALUE" = "Y" ] ; then VALUE="true"; else VALUE="false"; fi
+	else
+		if [ "$VALUE" = "n" -o "$VALUE" = "n" ] ; then VALUE="false"; else VALUE="true"; fi
+	fi;
+}
+
+
+[ -x $DAEMON ] || exit 0
+[ -e $REMAILCONFIGFILE ] || exit 0
+
+. /lib/lsb/init-functions
+
+case $1 in
+  start)
+	grep_from_mix REMAIL; convert_bool false;
+	if [ ! "$VALUE" = "true" ]; then
+		echo "Not starting $DESC: remailer mode not enabled in $REMAILCONFIGFILE."
+        log_success_msg "Not starting $DESC: remailer mode not enabled in $REMAILCONFIGFILE."
+		exit 0;
+	fi
+
+	grep_from_mix PASSPHRASE
+	if [ "$VALUE" = "" ]; then
+		echo "Not starting $DESC: Passphrase must be set in $REMAILCONFIGFILE." >&2
+        log_failure_msg "Not starting $DESC: Passphrase must be set in $REMAILCONFIGFILE."
+		exit 1;
+	fi
+    log_begin_msg "Starting $DESC..." 
+    start-stop-daemon --start --quiet --user $USER --chuid $USER:$GROUP --exec $DAEMON -- $ARGS || { log_end_msg 1; exit 1; }
+    log_end_msg 0
+	;;
+
+  stop)
+    log_begin_msg "Stopping $DESC..." 
+    start-stop-daemon --stop --quiet --oknodo --pidfile /var/run/mixmaster/mixmaster.pid --user $USER --exec $DAEMON || { log_end_msg 1; exit 1; }
+    log_end_msg 0
+	;;
+
+  reload|force-reload|restart)
+	$0 stop
+	sleep 2
+	$0 start
+	;;
+
+  *)
+	echo "Usage: $0 (start|stop|reload|force-reload|restart)" >&2
+	exit 1
+	;;
+esac
+
+exit 0
+
+# vim:set ts=2:
+# vim:set shiftwidth=2:

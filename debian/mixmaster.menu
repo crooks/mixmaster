@@ -1,0 +1,7 @@
+?package(mixmaster):\
+	needs="text" \
+	section="Applications/Network/Communication" \
+	title="mixmaster" \
+	hints="Mail" \
+	longtitle="Mixmaster" \
+	command="/usr/bin/mixmaster"

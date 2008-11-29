@@ -1,0 +1,8 @@
+Template: mixmaster/stats-update
+Type: boolean
+Default: true
+_Description: Do you wish to update the reliability statistics now?
+ If you choose this option, up to date reliability statistics and keyrings
+ will be downloaded from the Internet once Mixmaster has been set up.  Once
+ this has happened this option will be disabled to prevent further updates
+ when the package will be updated.

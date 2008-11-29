@@ -1,0 +1,24 @@
+Source: mixmaster
+Section: mail
+Priority: optional
+Maintainer: Colin Tuckley <colint@debian.org>
+Uploaders: Peter Palfrader <weasel@debian.org>
+Homepage: http://mixmaster.sourceforge.net/
+Build-Depends: debhelper (> 5.0), libncurses5-dev, libpcre3-dev, libssl-dev, zlib1g-dev, bison, po-debconf
+Standards-Version: 3.7.3
+
+Package: mixmaster
+Architecture: any
+Depends: ${shlibs:Depends}, debconf (>= 1.2.9) | debconf-2.0, libwww-perl, libmailtools-perl, adduser
+Recommends: postfix | mail-transport-agent
+Suggests: mutt
+Description: Anonymous remailer client and server
+ Mixmaster is the reference implementation of the type II remailer protocol
+ which is also called Mixmaster.
+ .
+ An anonymous remailer is a computer service that privatizes your email. A
+ remailer allows you to send electronic mail to a Usenet news group or to a
+ person without the recipient knowing your name or your email address.
+ Anonymous remailers provide protection against traffic analysis.
+ .
+ This package provides both a client and an optional server installation.

@@ -1,0 +1,85 @@
+#!/bin/sh
+
+
+REMAILCONFIGFILE=/etc/mixmaster/remailer.conf
+
+# whitespace for some grep magic
+WS="[ `printf \\\t`]"
+WSE="[= `printf \\\t`]"
+
+grep_from_mix() {
+	VALUE=`grep "^$WS*$1$WSE" $REMAILCONFIGFILE | tail -n 1 | sed -e "s,^$WS*[a-zA-Z0-9_-]*$WS*\(\|=$WS*\),,"`
+}
+
+# escape slashes so that we can safely use this in a sed expression.
+make_safe() {
+    VALUE=`echo $VALUE | sed -e 's,/,\\\\/,g'`
+}
+
+convert_bool() {
+	if [ "$1" = "false" ] ; then
+		if [ "$VALUE" = "y" -o "$VALUE" = "Y" ] ; then VALUE="true"; else VALUE="false"; fi
+	else
+		if [ "$VALUE" = "n" -o "$VALUE" = "n" ] ; then VALUE="false"; else VALUE="true"; fi
+	fi;
+}
+
+if [ ! -e $REMAILCONFIGFILE ]; then
+	echo "$REMAILCONFIGFILE appears to not be available. Aborting." >&1
+	exit 1
+fi
+
+
+
+# Store values from config file into debconf db.
+
+grep_from_mix MIX        ; convert_bool true ; MIX=$VALUE
+grep_from_mix PGP        ; convert_bool true ; PGP=$VALUE
+grep_from_mix UNENCRYPTED; convert_bool false; UNENCRYPTED=$VALUE
+grep_from_mix REMAILERADDR; make_safe ; REMAILERADDR="$VALUE"
+grep_from_mix ANONADDR    ; make_safe ; ANONADDR="$VALUE"
+grep_from_mix COMPLAINTS  ; make_safe ; COMPLAINTS="$VALUE"
+grep_from_mix REMAILERNAME; make_safe ; REMAILERNAME="$VALUE"
+grep_from_mix NEWS
+if [ -z "$VALUE" ]; then
+	NEWS="false"
+else
+	NEWS="true"
+fi
+
+# Taken from mixmaster's install script and slightly adapted
+cd /etc/mixmaster/remailer
+MIXDEST=/var/lib/mixmaster/Mix
+REPLACE="s/%RMN/$REMAILERNAME/g;s/%RMA/$REMAILERADDR/g;s/%CA/$COMPLAINTS/g;s/%RAA/$ANONADDR/g"
+
+sed "$REPLACE" < intro.hlp >$MIXDEST/help-generated.txt
+if [ "$mix" = "true" ]; then
+	sed "$REPLACE" < mix.hlp >>$MIXDEST/help-generated.txt
+fi
+if [ "$unencrypted" = "true" ]; then
+	sed "$REPLACE" < type1.hlp >>$MIXDEST/help-generated.txt
+	if [ "$pgp" = "true" ]; then
+  		sed "$REPLACE" < pgp.hlp >>$MIXDEST/help-generated.txt
+ 	fi
+elif [ "$pgp" = "true" ]; then
+	sed "$REPLACE" < pgponly.hlp >>$MIXDEST/help-generated.txt
+fi
+if [ "$post" = "true" ]; then
+	if [ "$pgp" = "true" -o "$unencrypted" = "true" ]; then
+		sed "$REPLACE" < news.hlp >>$MIXDEST/help-generated.txt
+ 	fi
+fi
+sed "$REPLACE" < end.hlp >>$MIXDEST/help-generated.txt
+
+for i in \
+	abuse.txt.in \
+	blocked.txt.in \
+	reply.txt.in \
+	usage.txt.in; do
+	j=`echo $i | sed 's/\.txt.\in$/-generated.txt/'`
+	sed "$REPLACE" < $i >$MIXDEST/$j
+done
+
+
+# vim:set ts=4:
+# vim:set shiftwidth=4:

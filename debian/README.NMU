@@ -1,0 +1,16 @@
+Mixmaster for Debian
+--------------------
+
+If you change any Mixmaster source make sure you comply with license 1.6.iii:
+
+|      (iii) provide Anonymizer Inc. with a copy of the Source Code of
+|      such modifications or work by electronic mail, and grant
+|      Anonymizer Inc. a perpetual, royalty-free license to use and
+|      distribute the modifications or work in its products.
+
+According to Lance Cortrell (Anonymizer Inc.) posting on sourceforge is
+acceptable for notification. So either file a bug/patch with the change at
+http://www.sourceforge.net/mixmaster or send mail to
+mixmaster-devel@lists.sourceforge.net.
+
+ -- Peter Palfrader <weasel@debian.org>, Mon, 22 Jul 2002 10:30:40 +0200

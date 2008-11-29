@@ -1,0 +1,7 @@
+usr/bin
+usr/share/man/man1
+etc/mixmaster/remailer
+etc/ppp/ip-up.d
+usr/lib/mixmaster
+var/log/mixmaster
+var/run/mixmaster

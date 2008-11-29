@@ -1,0 +1,148 @@
+#!/usr/bin/make -f
+# Sample debian/rules that uses debhelper.
+# GNU copyright 1997 to 1999 by Joey Hess.
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+MIXDIR=
+LIBS=
+LDFLAGS=-lz -lcrypto -lncurses -lpcre
+DEF=-DUSE_ZLIB -DUSE_PCRE -DUSE_NCURSES -DHAVE_NCURSES_H -DGLOBALMIXCONF='\"/etc/mixmaster/client.conf\"' -DHOMEMIXDIR='\".Mix\"'
+INC=
+
+ifeq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	DEF += -O2
+endif
+
+
+MIXMASTER_UPDATE_VERSION=`grep '^my $$VERSION' debian/mixmaster-update | sed -e "s,^[^']*',," -e "s,'.*,,"`
+MIXMASTER_FILTER_VERSION=`grep '^my $$VERSION' debian/mixmaster-filter | sed -e "s,^[^']*',," -e "s,'.*,,"`
+STATSSOURCES=`perl debian/mixmaster-update --allpingers debian/etc_mixmaster/allpingers.txt --list-sources`
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+
+	sed -e "s,%MIXDIR,$(MIXDIR)," \
+	  -e "s,%LIBS,$(LIBS)," \
+	  -e "s,%LDFLAGS,$(LDFLAGS)," \
+	  -e "s,%INC,$(INC)," \
+	  -e "s,%DEF,$(DEF)," < Src/Makefile.in > Src/Makefile
+
+	touch configure-stamp
+
+build: build-stamp
+
+build-stamp: configure-stamp 
+	dh_testdir
+
+	cd Src && $(MAKE)
+	pod2man \
+		--section=1 \
+		--release="$(MIXMASTER_UPDATE_VERSION)" \
+		--center="mixmaster-update" \
+		debian/mixmaster-update $(CURDIR)/debian/mixmaster-update.1
+	! [ -z "$(STATSSOURCES)" ]
+	sed -e "s/DEFAULTSTATSSOURCES/$(STATSSOURCES)/" < debian/mixmaster.templates.in > debian/mixmaster.templates
+	pod2man \
+		--section=1 \
+		--release="$(MIXMASTER_FILTER_VERSION)" \
+		--center="mixmaster-filter" \
+		debian/mixmaster-filter $(CURDIR)/debian/mixmaster-filter.1
+	chmod +x debian/build-postinst
+	debian/build-postinst < debian/mixmaster.postinst.in > debian/mixmaster.postinst
+	
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+
+	chmod -x debian/build-postinst
+	-cd Src && $(MAKE) clean
+	rm -f Src/Makefile \
+	   debian/mixmaster-update.1 \
+	   debian/mixmaster-filter.1 \
+	   debian/mixmaster.templates \
+	   debian/mixmaster.postinst \
+	   Src/parsedate.tab.c
+
+	debconf-updatepo
+
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	
+	install -m 755 -o root -g root Src/mixmaster $(CURDIR)/debian/mixmaster/usr/bin/mixmaster
+	install -m 755 -o root -g root debian/mixmaster-update $(CURDIR)/debian/mixmaster/usr/bin/mixmaster-update
+	install -m 755 -o root -g root debian/mixmaster-filter $(CURDIR)/debian/mixmaster/usr/bin/mixmaster-filter
+	install -m 755 -o root -g root debian/mixmaster-rebuild $(CURDIR)/debian/mixmaster/usr/lib/mixmaster/mixmaster-rebuild
+
+	install -m 644 -o root -g root mixmaster.1 $(CURDIR)/debian/mixmaster/usr/share/man/man1/mixmaster.1
+	install -m 644 -o root -g root debian/mixmaster-update.1 $(CURDIR)/debian/mixmaster/usr/share/man/man1/mixmaster-update.1
+	install -m 644 -o root -g root debian/mixmaster-filter.1 $(CURDIR)/debian/mixmaster/usr/share/man/man1/mixmaster-filter.1
+	for file in client.conf filter.conf remailer.conf allpingers.txt network.conf update.conf; do \
+		install -m 644 -o root -g root debian/etc_mixmaster/$$file $(CURDIR)/debian/mixmaster/etc/mixmaster/$$file; \
+	done
+	install -m 644 -o root -g root debian/etc_mixmaster/remailer_pop3.cfg $(CURDIR)/debian/mixmaster/etc/mixmaster/remailer/pop3.cfg
+
+	for file in \
+		adminkey.txt \
+		header.blk \
+		dest.alw \
+		abuse.txt.in \
+		blocked.txt.in \
+		reply.txt.in \
+		usage.txt.in \
+		intro.hlp \
+		mix.hlp \
+		type1.hlp \
+		pgp.hlp \
+		pgponly.hlp \
+		news.hlp \
+		end.hlp ; do \
+			install -m 644 -o root -g root conf/$$file $(CURDIR)/debian/mixmaster/etc/mixmaster/remailer/$$file; \
+	done
+
+
+
+# Build architecture-independent files here.
+binary-indep: build install
+# We have nothing to do by default.
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installdebconf	
+	dh_installdocs
+	dh_installmenu
+	dh_installlogrotate
+	dh_installcron
+	dh_installman
+	dh_installinit
+	dh_installppp
+	dh_installchangelogs HISTORY
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+update-allpingers:
+	dh_testdir
+	wget -O - http://www.noreply.org/allpingers/allpingers.txt > debian/etc_mixmaster/allpingers.txt
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

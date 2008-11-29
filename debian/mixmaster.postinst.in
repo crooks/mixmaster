@@ -1,0 +1,104 @@
+#!/bin/sh -e
+
+# postinst for Mixmaster
+
+REMAILCONFIGFILE=/etc/mixmaster/remailer.conf
+UPDATECONFIG=/etc/mixmaster/update.conf
+
+. /usr/share/debconf/confmodule
+
+# whitespace for some grep magic
+WS="[ `printf \\\t`]"
+
+convert_bool() {
+	if [ "$RET" = "false" ] ; then
+		RET="n"
+	else
+		RET="y"
+	fi;
+}
+
+
+# Make sure the mixmaster user exists
+getent passwd mixmaster >/dev/null 2>&1 || (
+	echo Adding mixmaster user
+	adduser --system --shell /bin/bash --group --home /var/lib/mixmaster --gecos "Anonymous Remailer" mixmaster )
+
+# Fix permissions on /var/lib/mixmaster - the mixmaster's homedirectory
+# The user may have too strict permissions as default in adduser.conf
+if ( ! dpkg-statoverride --list /var/lib/mixmaster > /dev/null ); then
+	dpkg-statoverride --update --add mixmaster mixmaster 02755 /var/lib/mixmaster
+fi
+# Give the mixmaster user write permissions to /var/log/mixmaster
+if ( ! dpkg-statoverride --list /var/log/mixmaster > /dev/null ); then
+	dpkg-statoverride --update --add root mixmaster 02770 /var/log/mixmaster
+fi
+# Give the mixmaster user write permissions to /var/run/mixmaster
+if ( ! dpkg-statoverride --list /var/run/mixmaster > /dev/null ); then
+	dpkg-statoverride --update --add root mixmaster 02775 /var/run/mixmaster
+fi
+# Fix permissions on /etc/mixmaster/remailer.conf
+if ( ! dpkg-statoverride --list $REMAILCONFIGFILE > /dev/null ); then
+	dpkg-statoverride --update --add root mixmaster 00640 $REMAILCONFIGFILE
+fi
+
+
+########################################
+# setup all needed directories and files
+########################################
+if [ ! -e /var/lib/mixmaster/Mix ]; then
+	mkdir /var/lib/mixmaster/Mix
+	chown mixmaster: /var/lib/mixmaster/Mix
+	chmod 2700 /var/lib/mixmaster/Mix
+	ln -s $REMAILCONFIGFILE /var/lib/mixmaster/Mix/mix.cfg
+	ln -s $UPDATECONFIG /var/lib/mixmaster/Mix/update.conf
+	if [ -e /var/lib/mixmaster/Mix/dest.blk ]; then
+		DESTBLOCK /var/lib/mixmaster/Mix/dest.blk
+		chown mixmaster: /var/lib/mixmaster/Mix/dest.blk
+	fi
+fi
+if [ ! -e /var/lib/mixmaster/.Mix ]; then
+	ln -s Mix /var/lib/mixmaster/.Mix
+fi
+if [ ! -e /var/lib/mixmaster/stats ]; then
+	mkdir /var/lib/mixmaster/stats
+	chown mixmaster: /var/lib/mixmaster/stats
+	chmod 2755 /var/lib/mixmaster/stats
+
+	# The stats are probably way tooo old, but better than nothing
+	FILLIN MLIST /var/lib/mixmaster/stats/mlist.txt
+	FILLIN RLIST /var/lib/mixmaster/stats/rlist.txt
+	FILLIN PUBRINGMIX /var/lib/mixmaster/stats/pubring.mix
+	FILLIN PUBRINGASC /var/lib/mixmaster/stats/pubring.asc
+
+	chown mixmaster: /var/lib/mixmaster/stats/mlist.txt \
+	                 /var/lib/mixmaster/stats/rlist.txt \
+	                 /var/lib/mixmaster/stats/pubring.mix \
+	                 /var/lib/mixmaster/stats/pubring.asc
+fi
+if [ ! -e /var/lib/mixmaster/used-stats ]; then
+	ln -s stats /var/lib/mixmaster/used-stats
+fi
+
+
+
+#DEBHELPER#
+
+
+########################################################################
+# Configuration reprise
+########################################################################
+if [ "$1" = "configure" ]; then
+	db_get mixmaster/stats-update || true
+	if [ "$RET" = "true" ]; then
+		# Get resent stats _NOW_
+		su mixmaster -c "/usr/bin/mixmaster-update" || echo "Getting stats failed" >&2
+		# But don't do it again unless the user asks for it
+		db_set mixmaster/stats-update false
+	fi
+fi
+
+db_stop
+
+# vim:set ts=4:
+# vim:set shiftwidth=4:

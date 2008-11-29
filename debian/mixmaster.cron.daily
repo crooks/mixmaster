@@ -1,0 +1,9 @@
+#!/bin/sh
+# Mixmaster update cron job. To be run daily.
+
+# Get configuration
+. /etc/mixmaster/network.conf
+
+if [ "$NETWORK" = "permanent" ] && [ -x /usr/bin/mixmaster-update ]; then
+   su mixmaster -c "/usr/bin/mixmaster-update"
+fi 

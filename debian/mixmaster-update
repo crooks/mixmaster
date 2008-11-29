@@ -1,0 +1,431 @@
+#!/usr/bin/perl -w
+
+#   mixmaster-update: (c) 2002 Peter Palfrader <peter@palfrader.org>
+#   $Id: mixmaster-update 459 2007-11-21 10:12:30Z weasel $
+#
+#   This program is free software. you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program; if not, write to the Free Software
+#   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+=pod
+
+=head1 NAME
+
+mixmaster-update - Fetch new reliability stats and keyrings for mixmaster
+
+=over
+
+=head1 SYNOPSIS
+
+=item B<mixmaster-update> [B<--verbose>] [B<--source>=I<SOURCE>] [B<--configfile>=I<FILE>] [B<--destination>=I<DIRECTORY>]
+
+=item B<mixmaster-update> B<--list-sources>
+
+=item B<mixmaster-update> B<--help>
+
+=item B<mixmaster-update> B<--version>
+
+=back
+
+=head1 DESCRIPTION
+
+B<mixmaster-update> is a simple yet configurable script that downloads latest
+remailer reliability statistics and keyrings for your mixmaster.
+
+As having uptodate reliability statistics is imperative if you want to make use
+of remailers it is recommended that you always update this data should it be
+older that twelve or twentyfour hours and you intent to use mixmaster.
+
+B<mixmaster-update> has several built in stats sources. You can view the list
+of stats sources with the B<--list-sources> parameter.
+
+If you want to make use of another stats source which is not listed in the output
+of B<--list-sources> you can do so by setting the location of B<mlist> and others
+in your configuration file.
+
+=head1 OPTIONS
+
+=over
+
+=item B<--verbose>
+
+Print verbose output to standard output. May be given more than once to increase verbosity.
+
+=item B<--source>=I<SOURCE>
+
+Use this built in stats source.
+
+=item B<--configfile>=I<FILE>
+
+Also parse the configuration file I<FILE>.
+
+=item B<--destination>=I<DIRECTORY>
+
+Write output to I<DIRECTORY> rather than the directory given in the config file
+or ~/.Mix/.
+
+=item B<--list-sources>
+
+List available stats sources.
+
+=item B<--help>
+
+Print a brief help message and exit successfully.
+
+=item B<--version>
+
+Print a version information and exit successfully.
+
+=back
+
+
+=head1 FILES
+
+=over
+
+=item B</etc/mixmaster/update.conf>
+
+=item B<~/.Mix/update.conf>
+
+=item MIXMASTER_UPDATE_CONF environment
+
+=item B<--configfile> parameter
+
+=back
+
+These files are parsed in this order. Later definitions overwrite older ones.
+This config file defines proxy settings, where to write the results to and
+which stats source to use
+
+=over
+
+=item B</etc/mixmaster/allpingers.txt>
+
+=item B<~/.Mix/allpingers.txt>
+
+=item MIXMASTER_ALLPINGERS environment
+
+=item B<--allpingers> parameter
+
+=back
+
+These files are parsed in this order. Later definitions overwrite older ones.
+The B<allpingers.txt> is a list of all pingers.
+
+=head1 FILEFORMAT
+
+The B<update.conf> configuration file for B<mixmaster-update> is simple. Lines
+with whitespace only are ignored as are lines that have the hash our pound
+(C<#>) sign as their first non whitespace character.
+
+Lines are always truncated at the first hash our pound (C<#>) sign.
+
+Lines are pairs of keys and values seperated by a convenient amount of
+whitespace. The key is case insensitive.
+
+Allowed keys:
+
+=over
+
+=item B<source>
+
+Use the builtin stats source with this name
+
+=item B<destination>
+
+Write the downloaded data to this directory rather than ~/.Mix
+
+=item B<proxy>
+
+Set proxies for different protocols. The value is split into two parts:
+protocol and proxy URL. They are seperated by whitespace.
+
+  Example:
+    PROXY  http  http://proxy.example.com:8080/
+    PROXY  ftp   http://proxy.example.com:8080/
+
+=back
+
+
+
+The format for B<allpingers.txt> is simple too:
+
+  [example]
+    base        = http://stats.example.net/
+    rlist       = http://stats.example.net/rlist.txt
+    mlist       = http://stats.example.net/mlist.txt
+    rlist2      = http://stats.example.net/rlist2.txt
+    mlist2      = http://stats.example.net/mlist2.txt
+    rlist_html  = http://stats.example.net/rlist.html
+    mlist_html  = http://stats.example.net/mlist.html
+    rlist2_html = http://stats.example.net/rlist2.html
+    mlist2_html = http://stats.example.net/mlist2.html
+    rchain_html = http://stats.example.net/mlist2.html
+    pgpring     = http://stats.example.net/pgp-all.asc
+    pgpring_rsa = http://stats.example.net/pgp-rsa.asc
+    mixring     = http://stats.example.net/pubring.mix
+    type2list   = http://stats.example.net/type2.list
+
+The file may contain several such definitions.
+
+=head1 ENVIRONMENT
+
+=over
+
+=item MIXMASTER_UPDATE_CONF
+
+=item MIXMASTER_ALLPINGERS
+
+See the FILES section abobe.
+
+=item HOME
+
+Your homedirectory. Used for finding your user configuration file. Also the
+default destination directory is $HOME/.Mix/
+
+=back
+
+
+=head1 SEE ALSO
+
+B<mixmaster>(1)
+
+=head1 BUGS
+
+Please report them to the Debian Bug Tracking System as described at
+C<http://bugs.debian.org/> or use a tool like reportbug(1).
+
+=head1 AUTHOR
+
+Peter  Palfrader E<lt>peter@palfrader.orgE<gt>
+
+=cut
+
+use strict;
+use Getopt::Long;
+use English;
+use POSIX qw(:errno_h);
+
+my $VERSION = '$Revision: 459 $';
+my %SOURCES;
+my %DESTINATION_FILES = (
+	rlist	=> 'rlist.txt',
+	mlist	=> 'mlist.txt',
+	rlist2	=> 'rlist2.txt',
+	mlist2	=> 'mlist2.txt',
+	mixring	=> 'pubring.mix',
+	pgpring	=> 'pubring.asc' );
+my @configfiles  = ( '/etc/mixmaster/update.conf',
+                     $ENV{'HOME'}.'/.Mix/update.conf');
+my @sourcesfiles = ( '/etc/mixmaster/allpingers.txt',
+                     $ENV{'HOME'}.'/.Mix/allpingers.txt');
+my $destination  =   $ENV{'HOME'}.'/.Mix/';
+
+
+
+
+my $params;
+Getopt::Long::config('bundling');
+if (!GetOptions (
+	'help'         =>  \$params->{'help'},
+	'version'      =>  \$params->{'version'},
+	'verbose+'     =>  \$params->{'verbose'},
+	'configfile=s' =>  \$params->{'conffile'},
+	'allpingers=s' =>  \$params->{'allpingers'},
+	'source=s'     =>  \$params->{'source'},
+	'list-sources' =>  \$params->{'list-sources'},
+	'destination=s'=>  \$params->{'destination'},
+	)) {
+	die ("$PROGRAM_NAME: Usage: $PROGRAM_NAME [-fwhv]\n");
+};
+if ($params->{'help'}) {
+	print "Usage: $PROGRAM_NAME [options]\n";
+	print "mixmaster-update $VERSION - (c) 2002 Peter Palfrader <peter\@palfrader.org>\n";
+	print " --configfile FILE  Also source this config file.\n";
+	print " --source NAME      Use this built in source.\n";
+	print " --destination      Write files to this directory.\n";
+	print " --verbose          Be verbose.\n";
+	print "\n";
+	print " --list-sources     List available sources.\n";
+	print " --help             Print this message.\n";
+	print " --version          Print version information.\n";
+	print "\n";
+	print "ENVIRONMENT VARIABLES:\n";
+	print " MIXMASTER_UPDATE_CONF  Also source this config file.\n";
+	print " HOME                   Home directory (base for user config\n";
+	print "                         file and destination).\n";
+	exit 0;
+};
+if ($params->{'version'}) {
+	print ("mixmaster-update $VERSION\n");
+	print ("(c) 2002 Peter Palfrader <peter\@palfrader.org>\n");
+	exit 0;
+};
+
+
+push (@configfiles, $ENV{'MIXMASTER_UPDATE_CONF'}) if defined $ENV{'MIXMASTER_UPDATE_CONF'};
+push (@configfiles, $params->{'configfile'}) if defined $params->{'configfile'};
+
+push (@sourcesfiles, $ENV{'MIXMASTER_ALLPINGERS'}) if defined $ENV{'MIXMASTER_ALLPINGERS'};
+push (@sourcesfiles, $params->{'allpingers'}) if defined $params->{'allpingers'};
+
+for my $file (@sourcesfiles) {
+	next unless (-e $file);
+	my $source;
+	open(F,$file) or die("Could not open $file: $!");
+	while(<F>) {
+		s/\s*(.*)\s*/$1/;
+		$source = $1, next if (/^\[(.*)\]$/);
+		if (/(.+?)\s*=\s*(.+)/) {
+			$SOURCES{$source}->{$1} = $2 if defined $source;
+		};
+	};
+	close(F);
+};
+die("No stats sources available\n") unless scalar keys %SOURCES;
+
+if ($params->{'list-sources'}) {
+	print (join(', ', sort {$a cmp $b} keys %SOURCES), "\n");
+	exit 0;
+};
+
+my %proxy;
+
+my $source;
+for my $file (@configfiles) {
+	next unless (-e $file);
+	open (FILE, $file) or
+		warn ("Cannot open '$file': $!\n"), next;
+	my $line=0;
+	while (<FILE>) {
+		$line++;
+		chomp;
+		s/#.*//;
+		s/^\s*//;
+		s/\s*$//;
+		next unless $_;
+
+		my ($key, $value) = split(/\s+/, $_, 2);
+		$key = lc($key);
+		warn ("$PROGRAM_NAME: Value is not defined (line $line of $file)\n"), next
+			unless defined $value;
+
+		if ($key eq 'source') {
+			warn ("$PROGRAM_NAME: Source '$value' is not defined (line $line of $file)\n"), next
+				unless defined $SOURCES{$value};
+			$source = $SOURCES{$value};
+		} elsif ($key eq 'destination' ) {
+			$destination = $value;
+		} elsif ($key eq 'proxy' ) {
+			my ($proto, $proxy) = split(/\s+/, $value, 2);
+			$proxy{$proto} = $proxy;
+		} else {
+			warn "$PROGRAM_NAME: key '$key' not known (line $line of $file)\n";
+		};
+	};
+	close (FILE);
+};
+
+$destination = $params->{'destination'} if defined $params->{'destination'};
+
+if (defined $params->{'source'}) {
+	die ("$PROGRAM_NAME: Source '$params->{'source'}' is not defined\n")
+		unless (defined $SOURCES{$params->{'source'}});
+	$source = $SOURCES{$params->{'source'}};
+};
+
+die ("$PROGRAM_NAME: destination directory '$destination' does not exist or is not a directory.\n")
+	unless ( -d $destination );
+
+
+require LWP::UserAgent;
+my $user_agent =
+	LWP::UserAgent->new(env_proxy => 1,
+	                    keep_alive => 1,
+	                    timeout => 30 );
+
+for my $proto (keys %proxy) {
+	if ($proxy{$proto}) {
+		print "Setting proxy for protocol $proto to $proxy{$proto}\n"
+			if $params->{'verbose'};
+		$user_agent->proxy($proto, $proxy{$proto});
+	};
+};
+
+my %result;
+for my $key (keys %$source) {
+	warn ("$PROGRAM_NAME: $key is not defined, Skipping download\n"), next
+		unless defined $source->{$key};
+	next unless defined ($DESTINATION_FILES{$key});
+
+	my $value = $source->{$key};
+	print "Getting $value\n"
+		if $params->{'verbose'};
+
+	my $uri = URI->new($value);
+	if ($user_agent->is_protocol_supported( $uri )) {
+		eval {
+			local $SIG{ALRM} = sub { die "alarm\n" };
+			alarm 35;
+			my $response = $user_agent->get($value);
+			unless ($response->is_success) {
+				warn ("$PROGRAM_NAME: Get failed for $value (".$response->code()." ".$response->message().")\n");
+				alarm 0;
+				next;
+			};
+			my $content = $response->content;
+			$content =~ s/\r\n/\n/g;
+			$result{$key} = $content;
+			alarm 0;
+		};
+		if ($EVAL_ERROR) {
+			die unless ($EVAL_ERROR eq "alarm\n");
+			warn ("PROGRAM_NAME: Get timed out for $value\n");
+			next;
+		};
+	} else {
+		warn ("$PROGRAM_NAME: Protocoll for '$value' not supported\n");
+	};
+};
+
+if (defined $params->{'verbose'} &&  $params->{'verbose'} >= 2) {
+	print "Got results for:\n";
+	for my $key (keys %result) {
+		print "$key\n";
+		print "-------------------\n";
+		print $result{$key},"\n";
+		print "-------------------\n";
+	};
+};
+
+die ("Downloading of mlist and/or mixring failed (do you need a proxy?). Aborting.\n")
+	unless (defined $result{'mlist'} && defined $result{'mixring'});
+die ("mlist seems to not have the correct format (do you need a proxy?). Aborting.\n")
+	unless ($result{'mlist'} =~ /^Last update: /m && (
+		$result{'mlist'} =~ /^mixmaster\s/m ||
+		$result{'mlist'} =~ /^remailer\s/m));
+die ("pubring.mix seems to not have the correct format (do you need a proxy?). Aborting.\n")
+	unless ($result{'mixring'} =~ /^-----Begin Mix Key-----$/m);
+
+for my $key (keys %result) {
+	unless (open (F, '>'.$destination.'/'.$DESTINATION_FILES{$key})) {
+		my $hint = ($! == EACCES) ? ' (do you want --destination or run as a different user?)' : '';
+		warn ("$PROGRAM_NAME: Cannot write to $destination/$DESTINATION_FILES{$key}: $!$hint\n");
+		next;
+	};
+	print F $result{$key};
+	close F;
+}
+
+# vim:set ts=4:
+# vim:set shiftwidth=4:

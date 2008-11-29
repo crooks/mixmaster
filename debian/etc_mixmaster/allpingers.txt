@@ -1,0 +1,331 @@
+#  A L L   P I N G E R S'   I N D E X
+#
+# Generated: Wed, 21 Nov 2007 11:59:18 +0100
+#
+# This list can be found on the web on http://www.noreply.org/
+#
+# If anything is wrong/broken/missing please mail the maintainer at
+# pingers@palfrader.org
+
+[ath]
+base        = http://rlist.ath.cx/
+rlist       = http://rlist.ath.cx/rlist.txt
+mlist       = http://rlist.ath.cx/mlist.txt
+rlist2      = http://rlist.ath.cx/rlist2.txt
+mlist2      = http://rlist.ath.cx/mlist2.txt
+rlist_html  = http://rlist.ath.cx/rlist.html
+mlist_html  = http://rlist.ath.cx/mlist.html
+rlist2_html = http://rlist.ath.cx/rlist2.html
+mlist2_html = http://rlist.ath.cx/mlist2.html
+mixring     = http://rlist.ath.cx/pubring.mix
+type2list   = http://rlist.ath.cx/type2.list
+
+[austria]
+base        = http://www.tahina.priv.at/~cm/stats/
+rlist       = http://www.tahina.priv.at/~cm/stats/rlist.txt
+mlist       = http://www.tahina.priv.at/~cm/stats/mlist.txt
+rlist2      = http://www.tahina.priv.at/~cm/stats/rlist2.txt
+mlist2      = http://www.tahina.priv.at/~cm/stats/mlist2.txt
+rlist_html  = http://www.tahina.priv.at/~cm/stats/rlist.html
+mlist_html  = http://www.tahina.priv.at/~cm/stats/mlist.html
+rlist2_html = http://www.tahina.priv.at/~cm/stats/rlist2.html
+mlist2_html = http://www.tahina.priv.at/~cm/stats/mlist2.html
+pgpring     = http://www.tahina.priv.at/~cm/stats/pgp-all.asc
+pgpring_rsa = http://www.tahina.priv.at/~cm/stats/pgp-rsa.asc
+mixring     = http://www.tahina.priv.at/~cm/stats/pubring.mix
+type2list   = http://www.tahina.priv.at/~cm/stats/type2.list
+
+[banana]
+base        = http://pinger.bananasplit.info/
+rlist       = http://pinger.bananasplit.info/rlist.txt
+mlist       = http://pinger.bananasplit.info/mlist.txt
+rlist2      = http://pinger.bananasplit.info/rlist2.txt
+mlist2      = http://pinger.bananasplit.info/mlist2.txt
+rlist_html  = http://pinger.bananasplit.info/rlist.html
+mlist_html  = http://pinger.bananasplit.info/mlist.html
+rlist2_html = http://pinger.bananasplit.info/rlist2.html
+mlist2_html = http://pinger.bananasplit.info/mlist2.html
+pgpring     = http://pinger.bananasplit.info/pgp-all.asc
+pgpring_rsa = http://pinger.bananasplit.info/pgp-rsa.asc
+mixring     = http://pinger.bananasplit.info/pubring.mix
+type2list   = http://pinger.bananasplit.info/type2.list
+
+[citrus]
+base        = http://privacy.outel.org/
+rlist       = http://privacy.outel.org/rlist.txt
+mlist       = http://privacy.outel.org/mlist.txt
+rlist2      = http://privacy.outel.org/rlist2.txt
+mlist2      = http://privacy.outel.org/mlist2.txt
+rlist_html  = http://privacy.outel.org/rlist.html
+mlist_html  = http://privacy.outel.org/mlist.html
+rlist2_html = http://privacy.outel.org/rlist2.html
+mlist2_html = http://privacy.outel.org/mlist2.html
+pgpring     = http://privacy.outel.org/pgp-all.asc
+pgpring_rsa = http://privacy.outel.org/pgp-rsa.asc
+mixring     = http://privacy.outel.org/pubring.mix
+type2list   = http://privacy.outel.org/type2.list
+
+[cside]
+base        = http://www.cside.dyndns.org/stats/
+rlist       = http://www.cside.dyndns.org/stats/rlist.txt
+mlist       = http://www.cside.dyndns.org/stats/mlist.txt
+rlist2      = http://www.cside.dyndns.org/stats/rlist2.txt
+mlist2      = http://www.cside.dyndns.org/stats/mlist2.txt
+rlist_html  = http://www.cside.dyndns.org/stats/rlist.html
+mlist_html  = http://www.cside.dyndns.org/stats/mlist.html
+rlist2_html = http://www.cside.dyndns.org/stats/rlist2.html
+mlist2_html = http://www.cside.dyndns.org/stats/mlist2.html
+pgpring     = http://www.cside.dyndns.org/stats/pgp-all.asc
+pgpring_rsa = http://www.cside.dyndns.org/stats/pgp-rsa.asc
+mixring     = http://www.cside.dyndns.org/stats/pubring.mix
+type2list   = http://www.cside.dyndns.org/stats/type2.list
+
+[deuxpi]
+base        = http://www.deuxpi.ca/echolot/
+rlist       = http://www.deuxpi.ca/echolot/rlist.txt
+mlist       = http://www.deuxpi.ca/echolot/mlist.txt
+rlist2      = http://www.deuxpi.ca/echolot/rlist2.txt
+mlist2      = http://www.deuxpi.ca/echolot/mlist2.txt
+rlist_html  = http://www.deuxpi.ca/echolot/rlist.html
+mlist_html  = http://www.deuxpi.ca/echolot/mlist.html
+rlist2_html = http://www.deuxpi.ca/echolot/rlist2.html
+mlist2_html = http://www.deuxpi.ca/echolot/mlist2.html
+pgpring     = http://www.deuxpi.ca/echolot/pgp-all.asc
+pgpring_rsa = http://www.deuxpi.ca/echolot/pgp-rsa.asc
+mixring     = http://www.deuxpi.ca/echolot/pubring.mix
+type2list   = http://www.deuxpi.ca/echolot/type2.list
+
+[equars]
+base        = http://equars.com/echolot/
+rlist       = http://equars.com/echolot/rlist.txt
+mlist       = http://equars.com/echolot/mlist.txt
+rlist2      = http://equars.com/echolot/rlist2.txt
+mlist2      = http://equars.com/echolot/mlist2.txt
+rlist_html  = http://equars.com/echolot/rlist.html
+mlist_html  = http://equars.com/echolot/mlist.html
+rlist2_html = http://equars.com/echolot/rlist2.html
+mlist2_html = http://equars.com/echolot/mlist2.html
+pgpring     = http://equars.com/echolot/pgp-all.asc
+pgpring_rsa = http://equars.com/echolot/pgp-rsa.asc
+mixring     = http://equars.com/echolot/pubring.mix
+type2list   = http://equars.com/echolot/type2.list
+
+[eurovibes]
+base        = http://www.eurovibes.org/echolot/
+rlist       = http://www.eurovibes.org/echolot/rlist.txt
+mlist       = http://www.eurovibes.org/echolot/mlist.txt
+rlist2      = http://www.eurovibes.org/echolot/rlist2.txt
+mlist2      = http://www.eurovibes.org/echolot/mlist2.txt
+rlist_html  = http://www.eurovibes.org/echolot/rlist.html
+mlist_html  = http://www.eurovibes.org/echolot/mlist.html
+rlist2_html = http://www.eurovibes.org/echolot/rlist2.html
+mlist2_html = http://www.eurovibes.org/echolot/mlist2.html
+pgpring     = http://www.eurovibes.org/echolot/pgp-all.asc
+pgpring_rsa = http://www.eurovibes.org/echolot/pgp-rsa.asc
+mixring     = http://www.eurovibes.org/echolot/pubring.mix
+type2list   = http://www.eurovibes.org/echolot/type2.list
+
+[frell]
+base        = http://echolot.theremailer.net/
+rlist       = http://echolot.theremailer.net/rlist.txt
+mlist       = http://echolot.theremailer.net/mlist.txt
+rlist2      = http://echolot.theremailer.net/rlist2.txt
+mlist2      = http://echolot.theremailer.net/mlist2.txt
+rlist_html  = http://echolot.theremailer.net/rlist.html
+mlist_html  = http://echolot.theremailer.net/mlist.html
+rlist2_html = http://echolot.theremailer.net/rlist2.html
+mlist2_html = http://echolot.theremailer.net/mlist2.html
+pgpring     = http://echolot.theremailer.net/pgp-all.asc
+pgpring_rsa = http://echolot.theremailer.net/pgp-rsa.asc
+mixring     = http://echolot.theremailer.net/pubring.mix
+type2list   = http://echolot.theremailer.net/type2.list
+
+[george]
+base        = http://stats.mixmaster.it/
+rlist       = http://stats.mixmaster.it/rlist.txt
+mlist       = http://stats.mixmaster.it/mlist.txt
+rlist2      = http://stats.mixmaster.it/rlist2.txt
+mlist2      = http://stats.mixmaster.it/mlist2.txt
+rlist_html  = http://stats.mixmaster.it/rlist.html
+mlist_html  = http://stats.mixmaster.it/mlist.html
+rlist2_html = http://stats.mixmaster.it/rlist2.html
+mlist2_html = http://stats.mixmaster.it/mlist2.html
+pgpring     = http://stats.mixmaster.it/pgp-all.asc
+pgpring_rsa = http://stats.mixmaster.it/pgp-rsa.asc
+mixring     = http://stats.mixmaster.it/pubring.mix
+type2list   = http://stats.mixmaster.it/type2.list
+
+[hermetix]
+base        = http://www.hermetix.org/echolot/
+rlist       = http://www.hermetix.org/echolot/rlist.txt
+mlist       = http://www.hermetix.org/echolot/mlist.txt
+rlist2      = http://www.hermetix.org/echolot/rlist2.txt
+mlist2      = http://www.hermetix.org/echolot/mlist2.txt
+rlist_html  = http://www.hermetix.org/echolot/rlist.html
+mlist_html  = http://www.hermetix.org/echolot/mlist.html
+rlist2_html = http://www.hermetix.org/echolot/rlist2.html
+mlist2_html = http://www.hermetix.org/echolot/mlist2.html
+pgpring     = http://www.hermetix.org/echolot/pgp-all.asc
+pgpring_rsa = http://www.hermetix.org/echolot/pgp-rsa.asc
+mixring     = http://www.hermetix.org/echolot/pubring.mix
+type2list   = http://www.hermetix.org/echolot/type2.list
+
+[kroken]
+base        = http://rlist.ath.cx/
+rlist       = http://rlist.ath.cx/rlist.txt
+mlist       = http://rlist.ath.cx/mlist.txt
+rlist2      = http://rlist.ath.cx/rlist2.txt
+mlist2      = http://rlist.ath.cx/mlist2.txt
+rlist_html  = http://rlist.ath.cx/rlist.html
+mlist_html  = http://rlist.ath.cx/mlist.html
+rlist2_html = http://rlist.ath.cx/rlist2.html
+mlist2_html = http://rlist.ath.cx/mlist2.html
+pgpring     = http://rlist.ath.cx/pgp-all.asc
+pgpring_rsa = http://rlist.ath.cx/pgp-rsa.asc
+mixring     = http://rlist.ath.cx/pubring.mix
+type2list   = http://rlist.ath.cx/type2.list
+
+[mixmin]
+base        = http://pinger.mixmin.net/
+rlist       = http://pinger.mixmin.net/rlist.txt
+mlist       = http://pinger.mixmin.net/mlist.txt
+rlist2      = http://pinger.mixmin.net/rlist2.txt
+mlist2      = http://pinger.mixmin.net/mlist2.txt
+rlist_html  = http://pinger.mixmin.net/rlist.html
+mlist_html  = http://pinger.mixmin.net/mlist.html
+rlist2_html = http://pinger.mixmin.net/rlist2.html
+mlist2_html = http://pinger.mixmin.net/mlist2.html
+pgpring     = http://pinger.mixmin.net/pgp-all.asc
+pgpring_rsa = http://pinger.mixmin.net/pgp-rsa.asc
+mixring     = http://pinger.mixmin.net/pubring.mix
+type2list   = http://pinger.mixmin.net/type2.list
+
+[noreply]
+base        = http://www.noreply.org/echolot/
+rlist       = http://www.noreply.org/echolot/rlist.txt
+mlist       = http://www.noreply.org/echolot/mlist.txt
+rlist2      = http://www.noreply.org/echolot/rlist2.txt
+mlist2      = http://www.noreply.org/echolot/mlist2.txt
+rlist_html  = http://www.noreply.org/echolot/rlist.html
+mlist_html  = http://www.noreply.org/echolot/mlist.html
+rlist2_html = http://www.noreply.org/echolot/rlist2.html
+mlist2_html = http://www.noreply.org/echolot/mlist2.html
+pgpring     = http://www.noreply.org/echolot/pgp-all.asc
+pgpring_rsa = http://www.noreply.org/echolot/pgp-rsa.asc
+mixring     = http://www.noreply.org/echolot/pubring.mix
+type2list   = http://www.noreply.org/echolot/type2.list
+
+[panta]
+base        = http://www.panta-rhei.eu.org/stats/
+rlist       = http://www.panta-rhei.eu.org/stats/stats/rlist.txt
+mlist       = http://www.panta-rhei.eu.org/stats/stats/mlist.txt
+rlist2      = http://www.panta-rhei.eu.org/stats/stats/rlist2.txt
+mlist2      = http://www.panta-rhei.eu.org/stats/stats/mlist2.txt
+rlist_html  = http://www.panta-rhei.eu.org/stats/stats/rlist.html
+mlist_html  = http://www.panta-rhei.eu.org/stats/stats/mlist.html
+rlist2_html = http://www.panta-rhei.eu.org/stats/stats/rlist2.html
+mlist2_html = http://www.panta-rhei.eu.org/stats/stats/mlist2.html
+rchain      = http://www.panta-rhei.eu.org/stats/stats/rchain.txt
+rchain_html = http://www.panta-rhei.eu.org/stats/stats/rchain.html
+mixring     = http://www.panta-rhei.eu.org/stats/pubring.mix
+type2list   = http://www.panta-rhei.eu.org/stats/type2.lis
+
+[pboxlevel4]
+base        = http://pboxlevel4.winstonsmith.info/echolot/
+rlist       = http://pboxlevel4.winstonsmith.info/echolot/rlist.txt
+mlist       = http://pboxlevel4.winstonsmith.info/echolot/mlist.txt
+rlist2      = http://pboxlevel4.winstonsmith.info/echolot/rlist2.txt
+mlist2      = http://pboxlevel4.winstonsmith.info/echolot/mlist2.txt
+rlist_html  = http://pboxlevel4.winstonsmith.info/echolot/rlist.html
+mlist_html  = http://pboxlevel4.winstonsmith.info/echolot/mlist.html
+rlist2_html = http://pboxlevel4.winstonsmith.info/echolot/rlist2.html
+mlist2_html = http://pboxlevel4.winstonsmith.info/echolot/mlist2.html
+pgpring     = http://pboxlevel4.winstonsmith.info/echolot/pgp-all.asc
+pgpring_rsa = http://pboxlevel4.winstonsmith.info/echolot/pgp-rsa.asc
+mixring     = http://pboxlevel4.winstonsmith.info/echolot/pubring.mix
+type2list   = http://pboxlevel4.winstonsmith.info/echolot/type2.list
+
+[pboxmix]
+base        = http://pboxmix.homelinux.net/echolot/
+rlist       = http://pboxmix.homelinux.net/echolot/rlist.txt
+mlist       = http://pboxmix.homelinux.net/echolot/mlist.txt
+rlist2      = http://pboxmix.homelinux.net/echolot/rlist2.txt
+mlist2      = http://pboxmix.homelinux.net/echolot/mlist2.txt
+rlist_html  = http://pboxmix.homelinux.net/echolot/rlist.html
+mlist_html  = http://pboxmix.homelinux.net/echolot/mlist.html
+rlist2_html = http://pboxmix.homelinux.net/echolot/rlist2.html
+mlist2_html = http://pboxmix.homelinux.net/echolot/mlist2.html
+pgpring     = http://pboxmix.homelinux.net/echolot/pgp-all.asc
+pgpring_rsa = http://pboxmix.homelinux.net/echolot/pgp-rsa.asc
+mixring     = http://pboxmix.homelinux.net/echolot/pubring.mix
+type2list   = http://pboxmix.homelinux.net/echolot/type2.list
+
+[pobox]
+base        = http://www.antagonism.org/echolot/
+rlist       = http://www.antagonism.org/echolot/rlist.txt
+mlist       = http://www.antagonism.org/echolot/mlist.txt
+rlist2      = http://www.antagonism.org/echolot/rlist2.txt
+mlist2      = http://www.antagonism.org/echolot/mlist2.txt
+rlist_html  = http://www.antagonism.org/echolot/rlist.html
+mlist_html  = http://www.antagonism.org/echolot/mlist.html
+rlist2_html = http://www.antagonism.org/echolot/rlist2.html
+mlist2_html = http://www.antagonism.org/echolot/mlist2.html
+pgpring     = http://www.antagonism.org/echolot/pgp-all.asc
+pgpring_rsa = http://www.antagonism.org/echolot/pgp-rsa.asc
+mixring     = http://www.antagonism.org/echolot/pubring.mix
+type2list   = http://www.antagonism.org/echolot/type2.list
+
+[randseed]
+base        = http://stats.melontraffickers.com/
+rlist       = http://stats.melontraffickers.com/rlist.txt
+mlist       = http://stats.melontraffickers.com/mlist.txt
+rlist2      = http://stats.melontraffickers.com/rlist2.txt
+mlist2      = http://stats.melontraffickers.com/mlist2.txt
+rlist_html  = http://stats.melontraffickers.com/rlist.html
+mlist_html  = http://stats.melontraffickers.com/mlist.html
+rlist2_html = http://stats.melontraffickers.com/rlist2.html
+mlist2_html = http://stats.melontraffickers.com/mlist2.html
+pgpring     = http://stats.melontraffickers.com/pgp-all.asc
+pgpring_rsa = http://stats.melontraffickers.com/pgp-rsa.asc
+mixring     = http://stats.melontraffickers.com/pubring.mix
+type2list   = http://stats.melontraffickers.com/type2.list
+
+[senshi]
+base        = http://senshiweb.webhop.net/
+rlist2      = http://senshiweb.webhop.net/rlist2.txt
+mlist2      = http://senshiweb.webhop.net/mlist2.txt
+rlist_html  = http://senshiweb.webhop.net/rlist.html
+mlist_html  = http://senshiweb.webhop.net/mlist.html
+mixring     = http://senshiweb.webhop.net/pubring.mix
+type2list   = http://senshiweb.webhop.net/type2.lis
+
+[winters]
+base        = http://remailer.antagonism.org/echolot/
+rlist       = http://remailer.antagonism.org/echolot/rlist.txt
+mlist       = http://remailer.antagonism.org/echolot/mlist.txt
+rlist2      = http://remailer.antagonism.org/echolot/rlist2.txt
+mlist2      = http://remailer.antagonism.org/echolot/mlist2.txt
+rlist_html  = http://remailer.antagonism.org/echolot/rlist.html
+mlist_html  = http://remailer.antagonism.org/echolot/mlist.html
+rlist2_html = http://remailer.antagonism.org/echolot/rlist2.html
+mlist2_html = http://remailer.antagonism.org/echolot/mlist2.html
+pgpring     = http://remailer.antagonism.org/echolot/pgp-all.asc
+pgpring_rsa = http://remailer.antagonism.org/echolot/pgp-rsa.asc
+mixring     = http://remailer.antagonism.org/echolot/pubring.mix
+type2list   = http://remailer.antagonism.org/echolot/type2.list
+
+[zerofree]
+base        = http://zerofreedom.homeip.net/echolot/
+rlist       = http://zerofreedom.homeip.net/echolot/rlist.txt
+mlist       = http://zerofreedom.homeip.net/echolot/mlist.txt
+rlist2      = http://zerofreedom.homeip.net/echolot/rlist2.txt
+mlist2      = http://zerofreedom.homeip.net/echolot/mlist2.txt
+rlist_html  = http://zerofreedom.homeip.net/echolot/rlist.html
+mlist_html  = http://zerofreedom.homeip.net/echolot/mlist.html
+rlist2_html = http://zerofreedom.homeip.net/echolot/rlist2.html
+mlist2_html = http://zerofreedom.homeip.net/echolot/mlist2.html
+pgpring     = http://zerofreedom.homeip.net/echolot/pgp-all.asc
+pgpring_rsa = http://zerofreedom.homeip.net/echolot/pgp-rsa.asc
+mixring     = http://zerofreedom.homeip.net/echolot/pubring.mix
+type2list   = http://zerofreedom.homeip.net/echolot/type2.list
+
