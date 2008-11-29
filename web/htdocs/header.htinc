@@ -7,12 +7,12 @@
       <a href="./">Mixmaster Home</a> |
       <a href="related.shtml">Related Software/Resources</a><br>
       <a href="http://sourceforge.net/project/showfiles.php?group_id=37891">Download</a> |
-      <a href="http://svn.noreply.org/svn/mixmaster/trunk/Mix/HISTORY">Changelog</a> |
-      <a href="http://svn.noreply.org/svn/mixmaster/trunk/Mix/COPYRIGHT">License</a><br>
+      <a href="http://svn.debian.org/wsvn/pkg-mixmaster/trunk/Mix/HISTORY?op=file">Changelog</a> |
+      <a href="http://svn.debian.org/wsvn/pkg-mixmaster/trunk/Mix/COPYRIGHT?op=file">License</a><br>
       <a href="http://sourceforge.net/mail/?group_id=37891">Lists</a> |
       <a href="http://mixmaster.sourceforge.net/faq.shtml">FAQ</a> |
-      <a href="http://svn.noreply.org/svn/mixmaster/trunk/Mix/">Source (via http/svn)</a> |
-      <a href="http://svn.noreply.org/">Source (via viewcvs)</a> |
+      <a href="http://svn.debian.org/viewsvn/pkg-mixmaster/trunk/Mix/">Source (via http/svn)</a> |
+      <a href="http://svn.debian.org/wsvn/pkg-mixmaster">Source (via viewcvs)</a> |
       <a href="http://sourceforge.net/tracker/?group_id=37891&amp;atid=423727">Bugs</a> |
       <a href="http://sourceforge.net/tracker/?group_id=37891&amp;atid=423729">Patches</a> |
       <a href="http://sourceforge.net/projects/mixmaster/">Sourceforge</a>
