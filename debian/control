@@ -2,14 +2,13 @@ Source: mixmaster
 Section: mail
 Priority: optional
 Maintainer: Colin Tuckley <colint@debian.org>
-Uploaders: Peter Palfrader <weasel@debian.org>
 Homepage: http://mixmaster.sourceforge.net/
 Build-Depends: debhelper (> 5.0), libncurses5-dev, libpcre3-dev, libssl-dev, zlib1g-dev, bison, po-debconf
-Standards-Version: 3.7.3
+Standards-Version: 3.8.3
 
 Package: mixmaster
 Architecture: any
-Depends: ${shlibs:Depends}, debconf (>= 1.2.9) | debconf-2.0, libwww-perl, libmailtools-perl, adduser
+Depends: ${misc:Depends}, ${shlibs:Depends}, debconf (>= 1.2.9) | debconf-2.0, libwww-perl, libmailtools-perl, adduser
 Recommends: postfix | mail-transport-agent
 Suggests: mutt
 Description: Anonymous remailer client and server

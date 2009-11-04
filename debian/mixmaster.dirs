@@ -4,4 +4,3 @@ etc/mixmaster/remailer
 etc/ppp/ip-up.d
 usr/lib/mixmaster
 var/log/mixmaster
-var/run/mixmaster

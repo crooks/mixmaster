@@ -47,6 +47,12 @@ convert_bool() {
 [ -x $DAEMON ] || exit 0
 [ -e $REMAILCONFIGFILE ] || exit 0
 
+# ensure pid file directory exists
+if [ ! -e /var/run/mixmaster ]; then
+    mkdir -m 02775 /var/run/mixmaster
+    chown root:mixmaster /var/run/mixmaster
+fi
+
 . /lib/lsb/init-functions
 
 case $1 in

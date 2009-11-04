@@ -23,9 +23,9 @@
 
 mixmaster-update - Fetch new reliability stats and keyrings for mixmaster
 
-=over
-
 =head1 SYNOPSIS
+
+=over
 
 =item B<mixmaster-update> [B<--verbose>] [B<--source>=I<SOURCE>] [B<--configfile>=I<FILE>] [B<--destination>=I<DIRECTORY>]
 

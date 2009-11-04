@@ -23,9 +23,9 @@
 
 mixmaster-filter - Wrapper around mixmaster that removes unwanted header lines
 
-=over
-
 =head1 SYNOPSIS
+
+=over
 
 =item B<mixmaster-filter>
 

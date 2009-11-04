@@ -11,6 +11,7 @@ case "$1" in
 		rm -rf /var/lib/mixmaster/stats
 		rm -rf /var/lib/mixmaster/used-stats
 		rm -f /var/lib/mixmaster/.Mix
+		rmdir /var/lib/mixmaster 2>/dev/null || true
 		rmdir /etc/mixmaster/remailer 2>/dev/null || true
 		rmdir /etc/mixmaster 2>/dev/null || true
 
@@ -22,16 +23,16 @@ case "$1" in
 		# we mimic dpkg as closely as possible, so we remove configuration
 		# files with dpkg backup extensions too:
 		for ext in '~' '%' .bak .dpkg-tmp .dpkg-new .dpkg-old .dpkg-dist .ucf-new .ucf-old .ucf-dist; do
-		    rm -f /etc/mixmaster/update.conf$ext
-		    rm -f /etc/mixmaster/network.conf$ext
+			rm -f /etc/mixmaster/update.conf$ext
+			rm -f /etc/mixmaster/network.conf$ext
 		done
 
 		rm -f /etc/mixmaster/update.conf
 		rm -f /etc/mixmaster/network.conf
 
 		if which ucf >/dev/null; then
-		    ucf --purge /etc/mixmaster/update.conf
-		    ucf --purge /etc/mixmaster/network.conf
+			ucf --purge /etc/mixmaster/update.conf
+			ucf --purge /etc/mixmaster/network.conf
 		fi
 
 		;;

@@ -1,3 +1,29 @@
+mixmaster (3.0.0-4) unstable; urgency=low
+
+  * Add ja.po debconf template (Closes: #554094)
+    supplied by Hideki Yamane.
+  * bump standards version to 3.8.3 (no changes required).
+
+ -- Colin Tuckley <colint@debian.org>  Wed, 04 Nov 2009 20:33:02 +0000
+
+mixmaster (3.0.0-3) unstable; urgency=low
+
+  * Fix unowned files after purge Bug (Closes: #531285).
+  * bump standards version to 3.8.2 (no changes required).
+  * dynamically create /var/run/mixmaster.
+  * Fix pod-2-man errors.
+
+ -- Colin Tuckley <colint@debian.org>  Mon, 06 Jul 2009 20:19:26 +0100
+
+mixmaster (3.0.0-2) unstable; urgency=low
+
+  * Fix FTBFS with GCC 4.4: #elif is missing defined() in pgp.c
+    patch from Martin Michlmayr <tbm@cyrius.com> (Closes: #504830).
+  * bump standards version to 3.8.0 (no changes required).
+  * remove weasel from uploaders at his request.
+
+ -- Colin Tuckley <colint@debian.org>  Tue, 17 Feb 2009 19:12:35 +0000
+
 mixmaster (3.0.0-1) unstable; urgency=low
 
   * New Upstream version.
