@@ -319,6 +319,7 @@ typedef struct {
     unsigned int hash:1;
     unsigned int ek:1;
     unsigned int esub:1;
+    unsigned int hsub:1;
 
     unsigned int nym:1;
     unsigned int newnym:1;

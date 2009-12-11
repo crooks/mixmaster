@@ -77,6 +77,7 @@ int t1_rlist(REMAILER remailer[], int badchains[MAXREM][MAXREM])
       remailer[i].flags.middle = strfind(flags, " middle");
       remailer[i].flags.ek = strfind(flags, " ek");
       remailer[i].flags.esub = strfind(flags, " esub");
+      remailer[i].flags.hsub = strfind(flags, " hsub");
       remailer[i].flags.newnym = strfind(flags, " newnym");
       remailer[i].flags.nym = strfind(flags, " nym");
       remailer[i].info[1].reliability = 0;
