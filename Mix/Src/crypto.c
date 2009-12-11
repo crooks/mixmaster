@@ -58,6 +58,21 @@ int digest_sha1(BUFFER *b, BUFFER *md)
   return (digestmem_sha1(b->data, b->length, md));
 }
 
+static int digestmem_sha256(byte *b, int n, BUFFER *md)
+{
+  byte m[SHA256_DIGEST_LENGTH];
+
+  SHA256((unsigned char *)b, (unsigned long)n, (unsigned char *)m);
+  buf_reset(md);
+  buf_append(md, m, SHA256_DIGEST_LENGTH);
+  return (0);
+}
+
+int digest_sha256(BUFFER *b, BUFFER *md)
+{
+  return (digestmem_sha256(b->data, b->length, md));
+}
+
 static int digestmem_rmd160(byte *b, int n, BUFFER *md)
 {
   byte m[RIPEMD160_DIGEST_LENGTH];
