@@ -418,6 +418,8 @@ void conf_premail(BUFFER *out)
   }
 #ifdef USE_IDEA
   buf_appends(out, " esub");
+#else
+  buf_appends(out, " esubbf");
 #endif /* USE_IDEA */
   buf_appends(out, " hsub");
 #if 0				/* obsolete */
