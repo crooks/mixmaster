@@ -408,20 +408,20 @@ void conf_premail(BUFFER *out)
     buf_appends(out, " remix");
   else if (REMIX)
     buf_appends(out, " remix2");
-  if (PGP || UNENCRYPTED)
-    buf_appends(out, " latent hash cut test");
+  if (PGP || UNENCRYPTED) {
+#ifdef USE_IDEA
+    buf_appends(out, " esub");
+#else
+    buf_appends(out, " esubbf");
+#endif /* USE_IDEA */
+    buf_appends(out, " hsub latent hash cut test");
+  }
   if (PGP) {
 #ifdef USE_IDEA
     buf_appends(out, " ek");
 #endif /* USE_IDEA */
     buf_appends(out, " ekx");
   }
-#ifdef USE_IDEA
-  buf_appends(out, " esub");
-#else
-  buf_appends(out, " esubbf");
-#endif /* USE_IDEA */
-  buf_appends(out, " hsub");
 #if 0				/* obsolete */
 #ifdef USE_NSUB
   buf_appends(out, " nsub");
