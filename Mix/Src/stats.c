@@ -416,7 +416,9 @@ void conf_premail(BUFFER *out)
 #endif /* USE_IDEA */
     buf_appends(out, " ekx");
   }
+#ifdef USE_IDEA
   buf_appends(out, " esub");
+#endif /* USE_IDEA */
   buf_appends(out, " hsub");
 #if 0				/* obsolete */
 #ifdef USE_NSUB
