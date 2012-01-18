@@ -444,10 +444,8 @@ header:
   if (newsgroups->length > 0)
     buf_appendf(out, "Newsgroups: %b\n", newsgroups);
   if (subject->length > 0) {
-#ifdef USE_IDEA
     if (esub->length > 0)
       t1_esub(esub, subject);
-#endif /* USE_IDEA */
     if (hsub == 1)
       t1_hsub(subject);
     buf_appendf(out, "Subject: %b\n", subject);
