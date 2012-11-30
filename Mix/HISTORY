@@ -499,8 +499,15 @@
 			   tidied up --config option in help and man page.
 			   check more than one email address per line in doallow()
 
+2012-11-30     3.0.1
+                           Added support for hSub.
+                           Fixed a compile error in pgp.c (exposed by gcc-4.4)
+                           Updated stats files
+                           Disable AUTOBLOCK by default (no challenge-response)
+
 Mixmaster maintainer history:
 
 1998-2000: Ulf Möller -- versions 2.9beta0 through 2.9beta22.
 2000: Johannes Kroeger -- version 2.9beta23.
-2001-2008: Len Sassaman -- versions 2.9beta24 through present.
+2001-2011: Len Sassaman -- versions 2.9beta24 through 3.0
+2011-2012: Colin Tuckley -- version 3.1-alpha1

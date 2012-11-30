@@ -45,7 +45,7 @@ BINFILTER           n
 ## remailer a message containing the line "destination-block"
 ## Note: as no challenge-response mechanisms are used (yet),
 ##       attackers could dest-block arbitrary addresses
-AUTOBLOCK           y
+AUTOBLOCK           n
 
 ## Automatically respond to non-remailer mail and mail to COMPLAINTS address
 AUTOREPLY           n
@@ -104,7 +104,7 @@ STAREX              starex.txt
 ## Add more mail2news gateways to increase posting reliability
 ## (and mail load on your MTA). Additional m2n include:
 ## mail2news@news.gradwell.net
-#NEWS                mail2news@dizum.com,mail2news@anon.lcs.mit.edu
+#NEWS                mail2news@dizum.com,mail2news@m2n.mixmin.net
 ORGANIZATION        Anonymous Posting Service
 
 ## Anti-spam message IDs on Usenet (MD5 of message body)?

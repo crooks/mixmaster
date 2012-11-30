@@ -1,61 +1,87 @@
-$remailer{"antani"} = "<mixmaster@firenze.linux.it> cpunk max mix middle pgp pgponly repgp remix latent hash cut test ekx inflt50 rhop5 reord post";
+$remailer{"3nails"} = "<3nails@peculiar.user32.com> cpunk mix hybrid middle pgp pgponly latent ek ekx esub cut hash repgp remix reord ext max test inflt75 rhop5 klen1000";
+$remailer{"anon"} = "<anon@anonusa.net> cpunk max mix middle pgp pgponly repgp remix latent hash cut test ekx inflt50 rhop5 reord post klen1024";
 $remailer{"austria"} = "<mixmaster@remailer.privacy.at> cpunk max mix pgp pgponly repgp remix latent hash cut test ekx inflt50 rhop5 reord klen1024";
-$remailer{"beton"} = "<remailer@hyperreal.info> cpunk max mix middle pgp repgp remix latent hash cut test ek ekx esub inflt50 rhop5 reord klen10000";
-$remailer{"borked"} = "<remailer@pseudo.borked.net> cpunk max mix pgp pgponly repgp remix latent hash cut test ek ekx esub inflt50 rhop3 reord post klen1024";
-$remailer{"citrus"} = "<mix@outel.org> cpunk max mix middle pgp pgponly repgp remix latent hash cut test ek ekx esub inflt50 rhop5 reord";
-$remailer{"cyberiad"} = "<mixmaster@remailer.cyberiade.it> cpunk max mix pgp pgponly repgp remix latent hash cut test ek ekx esub inflt50 rhop5 reord post";
-$remailer{"deuxpi"} = "<anon@deuxpi.ca> cpunk max mix middle pgp pgponly repgp remix latent hash cut test ekx inflt50 rhop5 reord post";
+$remailer{"awxcnx"} = "<mix@awxcnx.de> cpunk max mix middle pgp pgponly repgp remix latent hash cut test ekx inflt50 rhop5 reord post klen900";
+$remailer{"breaka"} = "<remailer@breaka.net> cpunk max mix pgp pgponly repgp remix latent hash cut test ekx inflt50 rhop5 reord post";
+$remailer{"cmeclax"} = "<cmeclax@ixazon.dynip.com> cpunk max mix middle pgp pgponly repgp remix latent hash cut test ekx hsub inflt50 rhop5 reord";
+$remailer{"cripto"} = "<anon@ecn.org> cpunk max mix middle pgp pgponly repgp remix latent hash cut test ekx inflt50 rhop5 reord post klen150";
 $remailer{"dizum"} = "<remailer@dizum.com> cpunk max mix pgp pgponly repgp remix latent hash cut test ek ekx esub inflt50 rhop5 reord post klen64";
+$remailer{"freierede"} = "<mixmaster@freie-re.de> cpunk max mix middle pgp pgponly repgp remix latent hash cut test ekx inflt50 rhop5 reord post";
 $remailer{"frell"} = "<godot@remailer.frell.eu.org> cpunk max mix pgp pgponly repgp remix latent hash cut test ek ekx esub inflt50 rhop5 reord post klen1024";
-$remailer{"george"} = "<mix@mixmaster.it> cpunk max mix pgp pgponly repgp remix latent hash cut test ek ekx esub inflt50 rhop5 reord post";
-$remailer{"hastio"} = "<anon@remailer.hastio.org> cpunk mix hybrid pgp latent ek ekx esub cut hash repgp remix ext max test inflt75 rhop6 klen1000";
-$remailer{"hermetix"} = "<mix@hermetix.org> cpunk max mix pgp pgponly repgp remix latent hash cut test ek ekx esub inflt50 rhop5 reord post klen5000";
+$remailer{"hermetix"} = "<mix@hermetix.org> cpunk max mix middle pgp pgponly repgp remix latent hash cut test ekx inflt50 rhop5 reord post klen5000";
+$remailer{"hsub"} = "<hsub@mixmaster.mixmin.net> cpunk max middle pgp pgponly repgp remix esubbf hsub latent hash cut test ekx inflt50 rhop5 reord klen100";
+$remailer{"kreti"} = "<mixmaster@mail.hoi-polloi.org> cpunk max mix pgp pgponly repgp remix latent hash cut test ekx inflt50 rhop5 reord post";
 $remailer{"kroken"} = "<remailer@kroken.dynalias.com> cpunk mix middle pgp pgponly repgp remix latent hash cut test ek ekx esub inflt50 rhop20 reord klen1024";
-$remailer{"metacolo"} = "<mix@remailer.metacolo.com> cpunk mix pgp repgp remix latent hash cut test ek ekx esub inflt50 rhop20 reord post";
-$remailer{"nymkey"} = "<mixmaster@nymkey.com> cpunk max mix pgp pgponly repgp remix latent hash cut test ekx inflt50 rhop5 reord post";
-$remailer{"panta"} = "<remailer@panta-rhei.eu.org> cpunk mix hybrid hcnews pgp latent ek ekx esub cut hash post repgp remix reord ext max test inflt75 rhop5 klen1000";
-$remailer{"pboxmix"} = "<mixmaster@pboxmix.winstonsmith.info> cpunk max mix pgp pgponly repgp remix latent hash cut test ekx inflt50 rhop5 reord post";
+$remailer{"paranoia"} = "<mixmaster@remailer.paranoici.org> cpunk max mix pgp pgponly repgp remix esubbf hsub latent hash cut test ekx inflt50 rhop5 reord post klen150";
+$remailer{"raspberry"} = "<mixmaster@drooper.mixmin.net> cpunk max mix middle pgp pgponly repgp remix latent hash cut test ekx inflt50 rhop5 reord post klen256";
 $remailer{"senshi"} = "<senshiremailer@gmx.de> cpunk middle pgp latent ek ekx esub cut hash repgp reord ext max test inflt10 rhop2 klen200";
-$remailer{"starwars"} = "<mixmaster@tatooine.homelinux.net> cpunk max mix middle pgp pgponly repgp remix latent hash cut test ek ekx esub inflt50 rhop5 reord post";
+$remailer{"slug"} = "<mix@slug.slugish.net> cpunk max mix pgp pgponly repgp remix esubbf hsub latent hash cut test ekx inflt50 rhop5 reord";
+
+Groups of remailers sharing a machine or operator:
+(banana hsub slow)
+
 
 Broken type-I remailer chains:
-(austria borked)
-(borked senshi)
-(cyberiad borked)
-(deuxpi senshi)
-(dizum borked)
-(frell senshi)
-(george borked)
-(senshi beton)
+(* senshi)
+(3nails dizum)
+(3nails slug)
+(anon slug)
+(dizum hermetix)
+(frell dizum)
+(frell slug)
+(raspberry hsub)
+(slug anon)
+(slug austria)
 
 Broken type-II remailer chains:
-(austria borked)
-(borked cyberiad)
-(cthulu antani)
-(deuxpi tonga)
-(metacolo tonga)
-(pobox tonga)
-(winters tonga)
+(3nails bunker)
+(3nails dizum)
+(austria bunker)
+(devurandom slug)
+(eurovibes bunker)
+(fotonl1 bunker)
+(fotonl1 slug)
+(freierede slug)
+(frell bunker)
+(frell dizum)
+(hermetix slug)
+(kreti slug)
+(kroken bunker)
+(kroken slug)
+(lulunga slug)
+(paranoia slug)
+(pobox slug)
+(rabbi bunker)
+(raspberry bunker)
+(raspberry slug)
+(slow bunker)
+(slug austria)
+(slug awxcnx)
+(slug bunker)
+(slug dizum)
+(slug fotonl1)
+(slug hermetix)
+(slug lulunga)
+(slug pobox)
 
-Last update: Sat 22 Dec 2007 14:50:04 GMT
+Last update: Fri 30 Nov 2012 10:20:00 GMT
 remailer  email address                        history  latency  uptime
 -----------------------------------------------------------------------
-nymkey   mixmaster@nymkey.com                      *-- 12:06:55 100.00%
-george   mix@mixmaster.it                          *-- 12:01:01 100.00%
-kroken   remailer@kroken.dynalias.com              +-- 11:11:08 100.00%
-cyberiad mixmaster@remailer.cyberiade.it           *-- 11:08:55 100.00%
-hermetix mix@hermetix.org                          *-- 10:35:57 100.00%
-borked   remailer@pseudo.borked.net                *-- 10:18:00 100.00%
-dizum    remailer@dizum.com                        +-- 10:34:31  99.94%
-metacolo mix@remailer.metacolo.com                 *-- 11:56:00  99.86%
-antani   mixmaster@firenze.linux.it                +-- 13:52:33  99.83%
-pboxmix  mixmaster@pboxmix.winstonsmith.i          *-- 11:49:00  99.80%
-citrus   mix@outel.org                             +-- 14:16:05  98.71%
-starwars mixmaster@tatooine.homelinux.net          +-- 11:44:55  97.44%
-frell    godot@remailer.frell.eu.org               +-- 14:32:02  96.77%
-senshi   senshiremailer@gmx.de                ___  +-- 16:50:04  76.28%
-beton    remailer@hyperreal.info             ____  +-- 18:10:57  71.85%
-deuxpi   anon@deuxpi.ca                            *-- 11:37:00  52.80%
-austria  mixmaster@remailer.privacy.at          _  +-- 12:14:01  45.38%
-hastio   anon@remailer.hastio.org                      99:59:59   0.00%
-panta    remailer@panta-rhei.eu.org                    99:59:59   0.00%
+austria  mixmaster@remailer.privacy.at    ************    26:30 100.00%
+breaka   remailer@breaka.net              ************    26:59 100.00%
+cripto   anon@ecn.org                     ************    27:00 100.00%
+paranoia mixmaster@remailer.paranoici.org ************    32:30 100.00%
+raspberr mixmaster@drooper.mixmin.net     ************    15:30 100.00%
+dizum    remailer@dizum.com               ************    16:00  99.94%
+kroken   remailer@kroken.dynalias.com     ++**+*+*++++  1:02:00  99.73%
+cmeclax  cmeclax@ixazon.dynip.com         +++++*++++++  1:15:00  99.67%
+anon     anon@anonusa.net                 ************    23:00  99.56%
+3nails   3nails@peculiar.user32.com       ++++-+++-+++  1:28:00  99.44%
+hsub     hsub@mixmaster.mixmin.net        +-++++-----+  4:12:30  99.27%
+frell    godot@remailer.frell.eu.org      -----------+  5:42:00  99.24%
+freiered mixmaster@freie-re.de            +*++*+++++++  1:18:29  99.22%
+awxcnx   mix@awxcnx.de                    +++++*+*++++  1:16:00  98.32%
+senshi   senshiremailer@gmx.de            +-++++++-+++  3:26:00  96.88%
+kreti    mixmaster@mail.hoi-polloi.org    +++**+++*++*  1:23:00  95.35%
+hermetix mix@hermetix.org                 ++++++++++++  1:43:30  50.44%
+slug     mix@slug.slugish.net             ********        16:00  48.45%

@@ -1,48 +1,77 @@
 
+Groups of remailers sharing a machine or operator:
+(banana hsub slow)
+
+
 Broken type-I remailer chains:
-(austria borked)
-(borked senshi)
-(cyberiad borked)
-(deuxpi senshi)
-(dizum borked)
-(frell senshi)
-(george borked)
-(senshi beton)
+(* senshi)
+(3nails dizum)
+(3nails slug)
+(anon slug)
+(dizum hermetix)
+(frell dizum)
+(frell slug)
+(raspberry hsub)
+(slug anon)
+(slug austria)
 
 Broken type-II remailer chains:
-(austria borked)
-(borked cyberiad)
-(cthulu antani)
-(deuxpi tonga)
-(metacolo tonga)
-(pobox tonga)
-(winters tonga)
-Last update: Sat 22 Dec 2007 14:50:04 GMT
+(3nails bunker)
+(3nails dizum)
+(austria bunker)
+(devurandom slug)
+(eurovibes bunker)
+(fotonl1 bunker)
+(fotonl1 slug)
+(freierede slug)
+(frell bunker)
+(frell dizum)
+(hermetix slug)
+(kreti slug)
+(kroken bunker)
+(kroken slug)
+(lulunga slug)
+(paranoia slug)
+(pobox slug)
+(rabbi bunker)
+(raspberry bunker)
+(raspberry slug)
+(slow bunker)
+(slug austria)
+(slug awxcnx)
+(slug bunker)
+(slug dizum)
+(slug fotonl1)
+(slug hermetix)
+(slug lulunga)
+(slug pobox)
+Last update: Fri 30 Nov 2012 10:20:00 GMT
 mixmaster           history  latency  uptime
 --------------------------------------------
-cthulu                  +-- 12:23:02 100.00%
-nymkey                  *-- 12:15:01 100.00%
-cyberiad                *-- 12:10:30 100.00%
-george                  *-- 11:53:04 100.00%
-dizum                   +-- 11:43:56 100.00%
-pboxmix                 *-- 11:27:59 100.00%
-banana                  +-- 11:16:59 100.00%
-borked                  *-- 11:13:06 100.00%
-metacolo                *-- 11:01:08 100.00%
-hermetix                *-- 10:35:00 100.00%
-deuxpi                  *-- 10:25:01 100.00%
-cside                   +-- 11:04:57  99.88%
-antani                  +-- 13:38:02  99.49%
-frell                   --- 16:59:02  99.03%
-citrus                  +-- 14:20:01  98.42%
-starwars                +-- 13:51:02  98.27%
-kroken                  +-- 10:25:33  96.30%
-pobox                   +-- 11:48:00  95.82%
-eurovibes               +-- 11:33:00  92.45%
-winters                 +--  9:52:06  89.99%
-beton              ___  +-- 64:40:28  64.21%
-austria              _  +-- 11:04:58  45.96%
-tonga                   +--  4:48:00  30.70%
-bunker                  +-- 14:50:01  24.07%
-hastio                      99:59:59   0.00%
-panta                       99:59:59   0.00%
+anon           ************    25:00 100.00%
+austria        ************    29:59 100.00%
+banana         ************    21:00 100.00%
+breaka         ************    22:00 100.00%
+cmeclax        *+++++++++++  1:15:59 100.00%
+devurandom     ************    21:30 100.00%
+dizum          ************    21:00 100.00%
+fotonl1        ************    27:00 100.00%
+fotoro1        ************    26:00 100.00%
+hermetix       ++++++++++++  1:39:00 100.00%
+paranoia       ************    25:30 100.00%
+eurovibes      ++++++++++++  1:40:00  99.91%
+lulunga        ++++++++++++  1:33:00  99.88%
+awxcnx         ++++++++++++  1:28:00  99.78%
+rabbi          ++++++++++++  1:30:00  99.76%
+raspberry      ************    12:00  99.51%
+kroken         *+++**+++++*  1:02:00  99.51%
+cripto         ************    28:00  99.46%
+frell          -+---------+  5:10:30  99.30%
+3nails         ++*+-+++-+++  1:35:30  98.89%
+freierede      ++++++++++++  1:19:00  97.78%
+kreti          +*+**+++*++*  1:10:00  96.91%
+slow           -----------+ 16:49:59  94.49%
+winters        +++++*++++++  1:30:00  92.40%
+pobox          ++++++++++++  1:28:00  91.97%
+slug           ********        16:00  49.32%
+bunker           +-++ ++-    1:51:29   7.08%
