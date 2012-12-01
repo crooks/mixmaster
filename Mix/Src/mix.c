@@ -99,6 +99,7 @@ char ANONADDR[LINELEN];
 char COMPLAINTS[LINELEN];
 int AUTOREPLY;
 char SMTPRELAY[LINELEN];
+int SMTPPORT;
 char SMTPUSERNAME[LINELEN];
 char SMTPPASSWORD[LINELEN];
 
@@ -443,6 +444,7 @@ static void mix_setdefaults()
 	strnncpy(ANONADDR     , "");
 	strnncpy(COMPLAINTS   , "");
 	strnncpy(SMTPRELAY    , "");
+	SMTPPORT              = 25;
 	AUTOREPLY             = 0;
 
 #ifdef USE_SOCK
@@ -617,6 +619,7 @@ int mix_configline(char *line)
 
 	  read_conf_i(CLIENTAUTOFLUSH) ||
 	  read_conf_i(MAXRECIPIENTS) ||
+	  read_conf_i(SMTPPORT) ||
 	  
 	  read_conf_t(TIMESKEW_FORWARD) ||
 	  read_conf_t(TIMESKEW_BACK) ||

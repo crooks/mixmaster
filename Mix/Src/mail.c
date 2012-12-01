@@ -425,7 +425,7 @@ SOCKET smtp_open(void)
 
 #ifdef USE_SOCK
   if (SMTPRELAY[0] != '\0')
-    s = opensocket(SMTPRELAY, 25);
+    s = opensocket(SMTPRELAY, SMTPPORT);
   if (s != INVALID_SOCKET) {
     line = buf_new();
     sock_getsmtp(s, line);

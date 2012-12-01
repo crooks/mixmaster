@@ -324,6 +324,7 @@ extern char SENDMAIL[];
 extern char SENDANONMAIL[];
 extern char PRECEDENCE[];
 extern char SMTPRELAY[];
+extern int SMTPPORT;
 extern char SMTPUSERNAME[];
 extern char SMTPPASSWORD[];
 extern char NEWS[];
