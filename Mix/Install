@@ -77,7 +77,7 @@ findlib()
  LDFLAG=
  MAKELIB=
 
- for i in /usr/local/lib /usr/lib /lib /usr/lib64 /usr/lib/i386-linux-gnu
+ for i in /usr/local/lib /usr/lib /lib /usr/lib64 /usr/lib/x86_64-linux-gnu /usr/lib/i386-linux-gnu
  do
   if [ -r $i/$lib -o -r $i/$libso ]
   then
