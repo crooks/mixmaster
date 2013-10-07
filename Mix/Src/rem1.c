@@ -446,7 +446,7 @@ header:
   if (subject->length > 0) {
     if (esub->length > 0)
       t1_esub(esub, subject);
-    if (hsub == 1)
+    else if (hsub == 1)
       t1_hsub(subject);
     buf_appendf(out, "Subject: %b\n", subject);
   }
