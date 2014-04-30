@@ -40,18 +40,37 @@ int url_download(char *url, char *dest) {
   else
     return 0;
 #else
-  char s[PATHMAX];
-  snprintf(s, PATHMAX, "%s -q %s -O %s", WGET, url, dest);
-  err = system(s);
-
-  if (err != -1) {
-    if (WIFEXITED(err) == 0)
-      return -1; /* abnormal child exit */
-    else
-      return 0;
+  {
+      pid_t pid;
+      if (0 != strncmp(url, "http", 4)) {
+          /* url should start "http" */
+          errlog(ERRORMSG, "refusing external program %s with url=%s dest=%s\n", WGET, url, dest);
+          return 1;
+      }
+      errlog(LOG, "calling external program %s with url=%s dest=%s\n", WGET, url, dest);
+      pid=fork();
+      if (!pid) {
+          char *narg[10];
+          /* arguments for wget process called with execvp() NOT system()
+             https://www.owasp.org/index.php/Injection_Flaws
+          */
+          narg[0]=WGET;
+          narg[1]="-q";
+          narg[2]=url;
+          narg[3]="-O";
+          narg[4]=dest;
+          narg[5]=(char *) 0;
+          execvp(WGET, narg);
+          exit(1);
+      }
+      waitpid(pid, &err, 0);
   }
-  else
-    return -1;
+
+  if (WIFEXITED(err) == 0) {
+      errlog(ERRORMSG, "failure of %s\n", WGET);
+      return -1; /* abnormal child exit */
+  } else
+      return 0;
 #endif /* WIN32 */
 }
 
