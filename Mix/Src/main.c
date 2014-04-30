@@ -45,6 +45,8 @@ int main(int argc, char *argv[])
   int daemon = 0, type_list = 0, nodetach = 0;
   int update_stats = 0, update_pingerlist = 0;
   int never_ask_for_passphrase = 0;
+  long int lifeindays=0;
+  long int keysize=4096;
 
 #ifdef USE_SOCK
   int pop3 = 0;
@@ -75,6 +77,7 @@ int main(int argc, char *argv[])
   field = buf_new();
   content = buf_new();
   statssrc = buf_new();
+  mix_global_verbose=0;
 
 #ifdef USE_NCURSES
   if (argc == 1) {
@@ -100,9 +103,10 @@ int main(int argc, char *argv[])
 	  version = 1, deflt = 0;
 	else if (streq(p, "about"))
 	  about = 1, deflt = 0;
-	else if (streq(p, "verbose"))
+	else if (streq(p, "verbose")) {
 	  verbose = 1;
-	else if (streq(p, "type-list"))
+	  mix_global_verbose = 1;
+	} else if (streq(p, "type-list"))
 	  type_list = 1;
 	else if (streq(p, "dummy"))
 	  send = MSG_NULL, deflt = 0;
@@ -153,6 +157,23 @@ int main(int argc, char *argv[])
 	    deflt = 0;
 	    fprintf(stderr, "%s: No current stats source --%s\n", argv[0], p);
 	  }
+	} else if (strleft(p, "lifetime") && p[strlen("lifetime")] == '=') {
+            lifeindays=strtol(p + strlen("lifetime") + 1,NULL,10);
+            if (lifeindays<0)
+                lifeindays=0;
+	} else if (strleft(p, "size") && p[strlen("size")] == '=') {
+            keysize=strtol(p + strlen("size") + 1,NULL,10);
+            switch(keysize) {
+             case 1024:
+             case 2048:
+             case 3072:
+             case 4096:
+               /* only certain permitted sizes */
+               break;
+             default:
+               keysize=4096;
+               break;
+            }
 	} else if (strleft(p, "update-stats") && p[strlen("update-stats")] == '=') {
 	  buf_clear(statssrc);
 	  buf_appendf(statssrc, "%s", (p + strlen("update-stats") + 1));
@@ -240,6 +261,7 @@ int main(int argc, char *argv[])
 	    break;
 	  case 'v':
 	    verbose = 1;
+	    mix_global_verbose = 1;
 	    break;
 	  case 'h':
 	    help = 1, deflt = 0;
@@ -682,7 +704,7 @@ WinNT service:\n\
 
   if (keygen) {
     check_get_pass(0, never_ask_for_passphrase);
-    keymgt(keygen);
+    keymgt(keygen,lifeindays,keysize);
   }
   if (sendpool)
     mix_send();

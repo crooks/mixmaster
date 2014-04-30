@@ -78,18 +78,27 @@ end:
   return (err);
 }
 
-static int isnewid(BUFFER *id, long timestamp)
+static int isnewid(BUFFER *id, char rsa1234, long timestamp)
 /* return values:
  *   0: ignore message, no error
  *   1: ok, process message
  *  -1: bad message, send reply
  */
 {
-  FILE *f;
+  FILE *f=NULL, *rf=NULL, *tf;
   int ret = 1;
   long now, old = 0;
+  int old_day, now_day, ri, rj, flag;
+  char queue[30][LINELEN];
+  struct tm *gt;
+  time_t od;
   LOCK *i = NULL;
+  LOCK *j = NULL;
   idlog_t idbuf;
+  struct {
+    long time;
+    int r[5];
+  } rs;
 
   if (REMAIL == 0)
     return (1); /* don't keep statistics for the client */
@@ -114,6 +123,7 @@ static int isnewid(BUFFER *id, long timestamp)
 	idbuf.time = now;
 	fwrite(&idbuf,1,sizeof(idlog_t),f);
 	fclose(f);
+        f=NULL;
 	errlog(NOTICE, "Creating %s\n", IDLOG);
       } else {
 	errlog(ERRORMSG, "Can't create %s\n", IDLOG);
@@ -149,10 +159,73 @@ static int isnewid(BUFFER *id, long timestamp)
   memcpy(idbuf.id,id->data,sizeof(idbuf.id));
   idbuf.time = now;
   fwrite(&idbuf,1,sizeof(idlog_t),f);
+
+  /* What key lengths are being used? */
+  /* XXXXX TODO: The rest of this function is new code
+   * that uses line endings and has not been tested on Windows.
+   */
+  if ((rf = mix_openfile(RSASTATSFILE, "rb+")) == NULL) {
+    /* create it */
+    if ((rf = mix_openfile(RSASTATSFILE, "wb+")) == NULL) {
+        ret=-1;
+        goto end;
+    }
+    memset(&rs, 0, sizeof(rs));
+    fwrite(&rs,1,sizeof(rs),rf);
+  } else {
+    j = lockfile(RSASTATSFILE);
+    fread(&rs,1,sizeof(rs),rf);
+    fseek(rf,0,0);
+    old = rs.time;
+    old_day = old/SECONDSPERDAY;
+    if (old_day<15706) old_day=15706;
+    now_day = now/SECONDSPERDAY;
+    if (old_day == now_day) {
+        /* add current item to stats  */
+        rs.r[rsa1234]++;
+        fwrite(&rs,1,sizeof(rs),rf);
+    } else {
+        /* write text and restart the daily file */
+        if ((tf = mix_openfile(RSATEXTFILE, "a")) != NULL) {
+            od=old_day * (SECONDSPERDAY);
+            gt = gmtime(&od);
+            fprintf(tf, "%04d-%02d-%02d %6d %6d %6d %6d\n",
+                 1900+gt->tm_year, 1+gt->tm_mon, gt->tm_mday,
+                 rs.r[1], rs.r[2], rs.r[3], rs.r[4]);
+            fclose(tf);
+            ri=0,rj=0,flag=0;
+            if ((tf = mix_openfile(RSATEXTFILE, "r")) != NULL) {
+                while ( fgets (queue[ri], LINELEN, tf) ) {
+                    queue[ri][LINELEN-1]='\0';
+                    ri++; ri %= 30;
+                    if (!ri) flag=1;
+                }
+                fclose(tf);
+            }
+            rj=ri;
+            if (flag) {
+                errlog(NOTICE, "rotating file %s from line %d\n", RSATEXTFILE, ri);
+                if ((tf = mix_openfile(RSATEXTFILE, "w")) != NULL) {
+                    do  {
+                        fprintf(tf, "%s", queue[ri]);
+                        ri++; ri %= 30;
+                    } while (ri != rj);
+                    fclose(tf);
+                }
+            }
+        }
+        memset(&rs, 0, sizeof(rs));
+        rs.time = now_day * SECONDSPERDAY;
+        rs.r[rsa1234]++;
+        fwrite(&rs,1,sizeof(rs),rf);
+    }
+  }
+
 end:
-  if (i)
-    unlockfile(i);
-  fclose(f);
+  if (i) unlockfile(i);
+  if (j) unlockfile(j);
+  if (f) fclose(f);
+  if (rf) fclose(rf);
   return (ret);
 }
 
@@ -162,7 +235,7 @@ int mix2_decrypt(BUFFER *m)
       * -2: old message */
 {
   int err = 0;
-  int i;
+  int i,rsalen,rsalen_as_byte;
   BUFFER *privkey;
   BUFFER *keyid;
   BUFFER *dec, *deskey;
@@ -170,6 +243,9 @@ int mix2_decrypt(BUFFER *m)
   int type, packet = 0, numpackets = 0, timestamp = 0;
   BUFFER *body;
   BUFFER *header, *out;
+  BUFFER *otherdigest, *bodydigest, *antitag, *extract;
+  BUFFER *ttedigest, *hkey, *aes_pre_key, *aes_header_key, *aes_body_key, *aes_tte_key, *aes_iv;
+  BUFFER *trail;
 
   privkey = buf_new();
   keyid = buf_new();
@@ -185,26 +261,139 @@ int mix2_decrypt(BUFFER *m)
   body = buf_new();
   header = buf_new();
   out = buf_new();
+  otherdigest = buf_new();
+  bodydigest = buf_new();
+  antitag = buf_new();
+  extract = buf_new();
+  ttedigest = buf_new();
+  hkey = buf_new();
+  aes_pre_key = buf_new();
+  aes_header_key = buf_new();
+  aes_body_key = buf_new();
+  aes_tte_key = buf_new();
+  aes_iv = buf_new();
+  trail=buf_new();
+
+  aes_pre_key->sensitive=1;
+  aes_body_key->sensitive=1;
+  aes_tte_key->sensitive=1;
+  dec->sensitive=1;
+  deskey->sensitive=1;
+  extract->sensitive=1;
+  hkey->sensitive=1;
+  privkey->sensitive=1;
 
   buf_get(m, keyid, 16);
   err = db_getseckey(keyid->data, privkey);
-  if (err == -1)
+  if (err == -1) {
+    errlog(WARNING, "rem2.c mix2_decrypt not found keyid %s\n", showdata(keyid,0));
     goto end;
-  buf_get(m, deskey, buf_getc(m));
-  err = pk_decrypt(deskey, privkey);
-  if (err == -1 || deskey->length != 24) {
+  }
+  rsalen_as_byte=buf_getc(m);
+  switch(rsalen_as_byte) {
+      case 128:
+        /* legacy 1024-bit */
+        rsalen_as_byte=1;
+        rsalen=128;
+        break;
+      case 2:
+        rsalen_as_byte=2;
+        rsalen=256;
+        break;
+      case 3:
+        rsalen_as_byte=3;
+        rsalen=384;
+        break;
+      case 4:
+        rsalen_as_byte=4;
+        rsalen=512;
+        break;
+      default:
+        err = -1;
+        errlog(NOTICE, "problem with RSA key size encoded as %d\n", rsalen_as_byte);
+        goto end;
+        break;
+  }
+  assert(128==rsalen || 256==rsalen || 384==rsalen || 512==rsalen);
+  buf_get(m, extract, rsalen);   /* 3DES key and maybe more */
+  err = pk_decrypt(extract, privkey);
+  if (err == -1) {
     err = -1;
     errlog(NOTICE, "Cannot decrypt message.\n");
     goto end;
   }
+  buf_append(body, m->data + 20 * 512, 10240);
   buf_get(m, iv, 8);
   buf_get(m, dec, 328);
+  if (128==rsalen) {
+      if (extract->length != 24) {
+        err = -1;
+        errlog(NOTICE, "Cannot decrypt message - RSA 1024 data has wrong length %d not 24.\n", extract->length);
+        /* If this length is greater someone may have wrongly sent digests under 1k RSA. */
+        goto end;
+      }
+      buf_cat(deskey, extract);
+  } else {
+      if (extract->length != 216) {
+        err = -1;
+        errlog(NOTICE, "Cannot decrypt message - RSA (large key) data has wrong length %d.\n", extract->length);
+        /* supposed to be:
+         * 3DES
+         * hmac key
+         * hmac-sha256(18*512 headers)
+         * hmac-sha256(body)
+         * hmac-sha256(328-block)
+         * aes_pre_key
+         */
+        goto end;
+      }
+      /* antitagging measure */
+      buf_get(extract, deskey, 24);
+      buf_get(extract, hkey, 64);
+      buf_get(extract, otherdigest, 32);
+      buf_get(extract, bodydigest, 32);
+      buf_get(extract, ttedigest, 32);
+      buf_get(extract, aes_pre_key, 32);
+
+      buf_reset(temp);
+      hmac_sha256(body, hkey, temp);
+      if (!buf_eq(bodydigest, temp)) {
+          errlog(NOTICE, "Antitagging test - wrong digest on body.\n");
+          err = -1;
+          goto end;
+      }
+      buf_reset(temp);
+      hmac_sha256(dec, hkey, temp);
+      if (!buf_eq(ttedigest, temp)) {
+          errlog(NOTICE, "Antitagging test - wrong digest on 328-block.\n");
+          err = -1;
+          goto end;
+      }
+      /* There is one more test applicable if packet type is 0. */
+
+      derive_aes_keys(aes_pre_key, hkey,
+                      aes_header_key, aes_body_key, aes_tte_key, aes_iv);
+      buf_aescrypt(dec, aes_tte_key, aes_iv, DECRYPT);
+  }
+
   buf_crypt(dec, deskey, iv, DECRYPT);
   buf_get(dec, packetid, 16);
   buf_get(dec, deskey, 24);
   type = buf_getc(dec);
+
+
   switch (type) {
   case 0:
+    if (rsalen>=256) {
+      buf_append(antitag, m->data +  2*512, 2*512);
+      buf_reset(temp);
+      hmac_sha256(antitag, hkey, temp);
+      if (!buf_eq(otherdigest, temp)) {
+          errlog(NOTICE, "Antitagging test - wrong digest on later header\n");
+          err = -1;
+          goto end;
+      }
+    }
     buf_get(dec, ivvec, 152);
     buf_get(dec, addr, 80);
     break;
@@ -233,23 +422,36 @@ int mix2_decrypt(BUFFER *m)
     err = -1;
     goto end;
   }
-  buf_get(dec, digest, 16);
 
+  buf_get(dec, digest, 16);  /* digest of this block, but not so far as to include the digest  */
   dec->length = dec->ptr - 16;	/* ignore digest */
   dec->ptr = dec->length;
-
+  /* If using 1024-bit RSA this is the only integrity protection.
+     (It is still present but less important with larger key sizes.)
   if (!isdigest_md5(dec, digest)) {
     errlog(NOTICE, "Message digest does not match.\n");
     err = -1;
     goto end;
   }
-  switch (isnewid(packetid, timestamp * SECONDSPERDAY)) {
+
+/* Statistics are gathered in the isnewid() function. */
+  switch (isnewid(packetid, rsalen_as_byte, timestamp * SECONDSPERDAY)) {
     case  0: err = -2; /* redundant message */
 	     goto end;
     case -1: err = -1; /* future timestamp */
 	     goto end; 
   }
-  buf_append(body, m->data + 20 * 512, 10240);
+
+  if (rsalen == 128) {
+     /* skip either 1 or 2 blocks of 512 bytes */
+     buf_append(trail, m->data + 512, 19*512);
+  } else {
+     /* and AES */
+     buf_aescrypt(body, aes_body_key, aes_iv, DECRYPT);
+ 
+     buf_append(trail, m->data + 2*512, 19*512);
+     buf_aescrypt(trail, aes_header_key, aes_iv, DECRYPT);
+  }
 
   switch (type) {
   case 0:
@@ -258,14 +460,14 @@ int mix2_decrypt(BUFFER *m)
     buf_nl(out);
     for (i = 0; i < 19; i++) {
       buf_reset(header);
-      buf_append(header, m->data + (i + 1) * 512, 512);
+      buf_append(header, trail->data + i * 512, 512);
       buf_reset(iv);
       buf_append(iv, ivvec->data + i * 8, 8);
       buf_crypt(header, deskey, iv, DECRYPT);
       buf_cat(out, header);
     }
     buf_reset(header);
-    buf_pad(header, 512);
+    buf_pad(header, 512); /* one block of 512 random data regardless of RSA key size */
     buf_cat(out, header);
     buf_reset(iv);
     buf_append(iv, ivvec->data + 144, 8);
@@ -287,20 +489,32 @@ int mix2_decrypt(BUFFER *m)
     break;
   }
 end:
-  buf_free(privkey);
-  buf_free(keyid);
+  buf_free(addr);
+  buf_free(aes_body_key);
+  buf_free(aes_header_key);
+  buf_free(aes_iv);
+  buf_free(aes_pre_key);
+  buf_free(aes_tte_key);
+  buf_free(antitag);
+  buf_free(body);
+  buf_free(bodydigest);
   buf_free(dec);
   buf_free(deskey);
-  buf_free(packetid);
-  buf_free(mid);
   buf_free(digest);
-  buf_free(addr);
-  buf_free(temp);
+  buf_free(extract);
+  buf_free(header);
+  buf_free(hkey);
   buf_free(iv);
   buf_free(ivvec);
-  buf_free(body);
-  buf_free(header);
+  buf_free(keyid);
+  buf_free(mid);
+  buf_free(otherdigest);
   buf_free(out);
+  buf_free(packetid);
+  buf_free(privkey);
+  buf_free(temp);
+  buf_free(trail);
+  buf_free(ttedigest);
 
   return (err);
 }

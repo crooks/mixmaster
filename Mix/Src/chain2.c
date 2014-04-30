@@ -74,7 +74,9 @@ int mix2_rlist(REMAILER remailer[], int badchains[MAXREM][MAXREM])
 
   char line[LINELEN], name[LINELEN], addr[LINELEN], keyid[LINELEN],
   version[LINELEN], flags[LINELEN], createdstr[LINELEN], expiresstr[LINELEN];
-  int assigned;
+  char textkeyid[LINELEN][MAXREM];
+  int flag4log[MAXREM];
+  int assigned, nw, k, rsalen;
   time_t created, expires;
   BUFFER *starex;
 
@@ -90,16 +92,24 @@ int mix2_rlist(REMAILER remailer[], int badchains[MAXREM][MAXREM])
     buf_free(starex);
     return (-1);
   }
+  /* Loop to fill the array starts at 1 leaving remailer[0] to represent a random choice. */
   for (n = 1; fgets(line, sizeof(line), list) != NULL && n < MAXREM;)
-    if (strleft(line, begin_key)) {
-      while (fgets(line, sizeof(line), list) != NULL &&
-	     !strleft(line, end_key)) ;
-    } else if (strlen(line) > 36 && line[0] != '#') {
+    if (strlen(line) > 50 && line[0] != '#') {
       flags[0] = '\0';
       assigned = sscanf(line, "%127s %127s %127s %127s %127s %127s %127s",
 		 name, addr, keyid, version, flags, createdstr, expiresstr);
       if (assigned < 4)
 	continue;
+      expires=0;
+      rsalen=0;
+      while (fgets(line, sizeof(line), list) != NULL && !strleft(line, end_key))  {
+          if (!rsalen) {
+              if (!strcmp(line,"258\n")) rsalen=1024;
+              if (!strcmp(line,"514\n")) rsalen=2048;
+              if (!strcmp(line,"770\n")) rsalen=3072;
+              if (!strcmp(line,"1026\n")) rsalen=4096;
+          }
+      }
       if (assigned >= 6) {
 	created = parse_yearmonthday(createdstr);
 	if (created == 0 || created == -1) {
@@ -122,26 +132,85 @@ int mix2_rlist(REMAILER remailer[], int badchains[MAXREM][MAXREM])
 	  continue;
 	};
       }
-      strncpy(remailer[n].name, name, sizeof(remailer[n].name));
-      remailer[n].name[sizeof(remailer[n].name) - 1] = '\0';
-      strncpy(remailer[n].addr, addr, sizeof(remailer[n].addr));
-      remailer[n].addr[sizeof(remailer[n].addr) - 1] = '\0';
-      remailer[n].flags.mix = 1;
-      remailer[n].flags.cpunk = 0;
-      remailer[n].flags.nym = 0;
-      remailer[n].flags.newnym = 0;
-      id_decode(keyid, remailer[n].keyid);
-      remailer[n].version = N(version[0]);
-      remailer[n].flags.compress = strfind(flags, "C");
-      remailer[n].flags.post = strfind(flags, "N");
-      remailer[n].flags.middle = strfind(flags, "M");
-      remailer[n].info[0].reliability = 0;
-      remailer[n].info[0].latency = 0;
-      remailer[n].info[0].history[0] = '\0';
-      remailer[n].flags.star_ex = bufifind(starex, name);
-      n++;
+      /* Have we seen the same remailer multple times in the list? */
+      nw=n; /* array index to write to */
+      for (k=0;(k<n) && (nw==n);k++) {
+          int eqname=0, eqaddr=0;
+          if (strieq(name, remailer[k].name))
+              eqname=1;
+          if (strieq(addr, remailer[k].addr))
+              eqaddr=2;
+          switch (eqname+eqaddr) {
+              case 0:
+                  /* normal - no confusion */
+                  break;
+              case 1:
+                  errlog(WARNING, "remailer name %s used with addresses %s and %s\n",
+                                   name, addr, remailer[k].addr);
+                  break;
+              case 2:
+                  errlog(WARNING, "remailer address %s used with names %s and %s\n",
+                                   addr, name, remailer[k].name);
+                  break;
+              case 3:
+                  /* The same remailer has appeared twice in pubring.mix which is ok but
+                   * it means we must prefer one entry over another.
+                   * Either keep the exiting array entry (by "continue")
+                   * or proceed with this loop after setting nw=k (instead of n).
+                   * Earlier expiry is preferred.
+                   * A larger key size (2048 vs 1024) is preferred more strongly.
+                   */
+                   if ((rsalen>remailer[k].rsalen) ||
+                       ((rsalen==remailer[k].rsalen) && (expires) &&
+                        (expires < remailer[k].expires) && (expires > time(NULL)) )) {
+/* Key expiry time is when you need to stop sending with that key */
+/* so expires is compared to time() and the extra grace period is done in the remailer. */
+                       nw=k;    /* overwrite earlier data with this */
+                   } else {
+                       nw=-1;   /* keep earlier data and ignore this */
+                   }
+                   flag4log[k]=1;
+                  break;
+              default:
+	          errlog(WARNING, "unreachable code reached\n");
+                  return(-1);
+                  break;
+          }
+      }
+      if (nw<0) continue;
+      strncpy(remailer[nw].name, name, sizeof(remailer[nw].name));
+      remailer[nw].name[sizeof(remailer[nw].name) - 1] = '\0';
+      strncpy(remailer[nw].addr, addr, sizeof(remailer[nw].addr));
+      remailer[nw].addr[sizeof(remailer[nw].addr) - 1] = '\0';
+      remailer[nw].flags.mix = 1;
+      remailer[nw].flags.cpunk = 0;
+      remailer[nw].flags.nym = 0;
+      remailer[nw].flags.newnym = 0;
+      strncpy(textkeyid[nw],keyid,sizeof(textkeyid[nw]));  /* saves converting back to text to show in stderr */
+      textkeyid[nw][sizeof(textkeyid[nw]) - 1] = '\0';
+      id_decode(keyid, remailer[nw].keyid);
+      remailer[nw].version = N(version[0]);
+      remailer[nw].flags.compress = strfind(flags, "C");
+      remailer[nw].flags.post = strfind(flags, "N");
+      remailer[nw].flags.middle = strfind(flags, "M");
+      remailer[nw].info[0].reliability = 0;
+      remailer[nw].info[0].latency = 0;
+      remailer[nw].info[0].history[0] = '\0';
+      remailer[nw].flags.star_ex = bufifind(starex, name);
+      remailer[nw].expires=expires;
+      remailer[nw].rsalen=rsalen;
+#ifdef SHOW_KEYID_SELECTION
+      fprintf(stderr, "STORING nw=%d %s %s has rsalen=%d exp=%d\n",
+      nw, remailer[nw].name, textkeyid[nw], remailer[nw].rsalen, remailer[nw].expires);
+#endif
+      if (nw == n) n++;
     }
   fclose(list);
+  for (k=1;k<n;k++) { /* start from 1 */
+      if (flag4log[k] && mix_global_verbose) 
+          fprintf(stderr, "For %s keyid %s (%d-bit) was chosen.\n", remailer[k].name, textkeyid[k], remailer[k].rsalen);
+          /* This is printed to stderr but not logged - not using errlog(). */
+  }
   list = mix_openfile(TYPE2REL, "r");
   if (list != NULL) {
     while (fgets(line, sizeof(line), list) != NULL &&
@@ -233,8 +302,8 @@ static int send_packet(int numcopies, BUFFER *packet, int chain[],
  */
 {
   BUFFER *pid, *out, *header, *other, *encrypted, *key, *body;
-  BUFFER *iv, *ivarray, *temp;
-  BUFFER *pubkey;
+  BUFFER *iv, *ivarray, *temp, *hkey, *antitag, *aes_pre_key;
+  BUFFER *pubkey, *aes_header_key, *aes_tte_key, *aes_body_key, *aes_iv;
   char addr[LINELEN];
   int thischain[20];
   int hop;
@@ -253,6 +322,20 @@ static int send_packet(int numcopies, BUFFER *packet, int chain[],
   iv = buf_new();
   ivarray = buf_new();
   temp = buf_new();
+  hkey = buf_new();
+  antitag = buf_new();
+  aes_pre_key = buf_new();
+  aes_header_key=buf_new();
+  aes_body_key=buf_new();
+  aes_tte_key=buf_new();
+  aes_iv=buf_new();
+
+  temp->sensitive=1;
+  hkey->sensitive=1;
+  aes_pre_key->sensitive=1;
+  aes_header_key->sensitive=1;
+  aes_body_key->sensitive=1;
+  aes_tte_key->sensitive=1;
 
   if (redirect_to != NULL) {
     assert(packet->length == 20480);
@@ -300,7 +383,7 @@ static int send_packet(int numcopies, BUFFER *packet, int chain[],
 	  buf_setrnd(ivarray, 18 * 8);
 	  buf_cat(ivarray, iv);	/* 19th IV equals the body IV */
 
-	  buf_appendc(encrypted, 0);
+	  buf_appendc(encrypted, 0);  /* packet type is intermediate */
 	  buf_cat(encrypted, ivarray);
 	  memset(addr, 0, 80);
 	  if (hop == 0) {
@@ -323,20 +406,6 @@ static int send_packet(int numcopies, BUFFER *packet, int chain[],
 	  buf_cat(encrypted, iv);	/* body encryption IV */
 	}
 
-	/* timestamp */
-	buf_appends(encrypted, "0000");
-	buf_appendc(encrypted, '\0');	/* timestamp magic */
-	timestamp = time(NULL) / SECONDSPERDAY - rnd_number(4);
-	buf_appendi_lo(encrypted, timestamp);
-
-	/* message digest for this header */
-	digest_md5(encrypted, temp);
-	buf_cat(encrypted, temp);
-	buf_pad(encrypted, 328);
-
-	/* encrypt message body */
-	buf_crypt(body, key, iv, ENCRYPT);
-
 	if (hop > 0 || redirect_to != NULL) {
 	  /* encrypt the other header charts */
 	  buf_clear(other);
@@ -351,31 +420,135 @@ static int send_packet(int numcopies, BUFFER *packet, int chain[],
 	} else
 	  buf_setrnd(other, 19 * 512);	/* fill with random data */
 
-	/* create session key and IV to encrypt the header ... */
-	buf_setrnd(key, 24);
-	buf_setrnd(iv, 8);
-	buf_crypt(encrypted, key, iv, ENCRYPT);
+	/* timestamp */
+	buf_appends(encrypted, "0000");
+	buf_appendc(encrypted, '\0');	/* timestamp magic */
+	timestamp = time(NULL) / SECONDSPERDAY - rnd_number(4);
+	buf_appendi_lo(encrypted, timestamp);
+
+        /* There's been some reordering round here to have "other" and "pubkey" known before finalising the 328-block. */
 	pubkey = buf_new();
 	err = db_getpubkey(remailer[thischain[hop]].keyid, pubkey);
 	if (err == -1)
 	  goto end;
-	err = pk_encrypt(key, pubkey);	/* ... and encrypt the
-					   session key */
+
+	/* message digest for this header */
+	digest_md5(encrypted, temp);
+	buf_cat(encrypted, temp);
+	buf_pad(encrypted, 328);
+
+	/* encrypt message body with 3DES */
+	buf_crypt(body, key, iv, ENCRYPT);
+
+	/* create session key and IV to encrypt the header ... */
+	buf_setrnd(key, 24);
+	buf_setrnd(iv, 8);
+	buf_crypt(encrypted, key, iv, ENCRYPT);
+        if (258==pubkey->length) {
+            /* traditional 24-bytes of 3DES with 1k RSA */
+	    err = pk_encrypt(key, pubkey);	/* ... and encrypt the session key */
+        } else {
+            /* More data with the 3DES key inside the RSA encryption. */
+
+            /* See Tom Ritter https://crypto.is/blog/tagging_attack_on_mixmaster */
+            /* This is not done for 1k RSA keys to keep compatibility with old remailers. */
+	    /*
+             *  24    3deskey     (already in variable "key" then we append to it)
+             *  64    hmac_key
+             *  32    hmac(2*512 of other) (except in hop 0)
+             *  32    hmac(body)
+             *  32    hmac(328block)
+             *  32    aes_pre_key
+             */
+
+            buf_reset(hkey);
+            buf_setrnd(hkey, 64);  /* compulsory length unless extended by 0s */
+            /* hmac key*/    buf_cat(key, hkey);
+            /* generate aes keys */
+                buf_reset(aes_pre_key);
+                buf_setrnd(aes_pre_key, 32);
+                derive_aes_keys(aes_pre_key, hkey,
+                                aes_header_key, aes_body_key, aes_tte_key, aes_iv);
+
+/*
+               fprintf(stderr, "  BODY KEY=%s\n", showdata(aes_body_key,0));
+               fprintf(stderr, "HEADER KEY=%s\n", showdata(aes_header_key,0));
+               fprintf(stderr, "   TTE KEY=%s\n", showdata(aes_tte_key,0));
+               fprintf(stderr, "        IV=%s\n", showdata(aes_iv,0));
+*/
+               buf_aescrypt(encrypted, aes_tte_key, aes_iv, ENCRYPT);
+               buf_aescrypt(body, aes_body_key, aes_iv, ENCRYPT);
+               buf_aescrypt(other, aes_header_key, aes_iv, ENCRYPT);
+
+            /* Only 2*512 headers covered by digest so no remailer can tell where it is in the chain. */
+                if (!hop) {
+                  /* Hop 0 (final) should not have a valid HMAC of the following heaer.
+                   * If it did that would tell the exit remailer whether the chain was
+                   * maximum length (e.g. 10 hops with large keys).
+                   */
+                        buf_reset(temp);
+	                buf_setrnd(temp,32);
+                } else {
+                        buf_reset(antitag);
+                        buf_append(antitag, other->data, 2*512);
+                        buf_reset(temp);
+	                hmac_sha256(antitag, hkey, temp);
+                }
+            /* antitag */   buf_cat(key, temp);
+                        buf_reset(temp);
+	                hmac_sha256(body, hkey, temp);
+            /* body */   buf_cat(key, temp);
+
+                        buf_reset(temp);
+	                hmac_sha256(encrypted, hkey, temp);
+            /* encrypted-328-block */   buf_cat(key, temp);
+
+            /* AES pre key */  buf_cat(key, aes_pre_key);
+
+	    err = pk_encrypt(key, pubkey);	/* ... and encrypt the session key etc  */
+        }
+
 	buf_free(pubkey);
-	if (err == -1 || key->length != 128) {
+	if (err == -1 ||
+            (key->length != 128 && key->length != 256  &&
+	     key->length != 384 && key->length != 512)) {
 	  clienterr(feedback, "Encryption failed!");
 	  err = -1;
 	  goto end;
 	}
+
 	/* now build the new header */
 	buf_clear(header);
 	buf_append(header, remailer[thischain[hop]].keyid, 16);
-	buf_appendc(header, 128);
+        /* one byte to show RSA length */
+        switch(key->length) {
+            case 128:
+              /* Legacy 1024-bit RSA means 128 bytes. */
+	      buf_appendc(header, 128);
+              break;
+            case 256:
+	      buf_appendc(header, 2); /* 2048 */
+              break;
+            case 384:
+	      buf_appendc(header, 3); /* 3072 */
+              break;
+            case 512:
+	      buf_appendc(header, 4); /* 4096 */
+              break;
+            default:
+	      clienterr(feedback, "RSA key size not acceptable!");
+	      err = -1;
+	      goto end;
+              break;
+        }
 	buf_cat(header, key);
 	buf_cat(header, iv);
 	buf_cat(header, encrypted);
-	buf_pad(header, 512);
-	buf_cat(header, other);
+	buf_pad(header, key->length==128 ? 512:1024);  /* 512 bytes if RSA is 1024 bits */
+        if (128==key->length) 
+            buf_cat(header, other);
+        else
+            buf_append(header, other->data, 18*512);
 	break;
       default:
 	err = -1;
@@ -400,17 +573,26 @@ static int send_packet(int numcopies, BUFFER *packet, int chain[],
       buf_nl(feedback);
     }
   }
-end:
-  buf_free(pid);
+	   
+ end:
+  buf_free(aes_body_key);
+  buf_free(aes_header_key);
+  buf_free(aes_iv);
+  buf_free(aes_pre_key);
+  buf_free(aes_tte_key);
+  buf_free(antitag);
   buf_free(body);
-  buf_free(out);
-  buf_free(header);
-  buf_free(temp);
-  buf_free(other);
-  buf_free(key);
   buf_free(encrypted);
+  buf_free(header);
+  buf_free(hkey);
   buf_free(iv);
   buf_free(ivarray);
+  buf_free(key);
+  buf_free(other);
+  buf_free(out);
+  buf_free(pid);
+  buf_free(temp);
+
   return (err);
 }
 

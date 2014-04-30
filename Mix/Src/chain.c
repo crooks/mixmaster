@@ -103,6 +103,10 @@ void parse_badchains(int badchains[MAXREM][MAXREM], char *file, char *startindic
 int chain_select(int hop[], char *chainstr, int maxrem, REMAILER *remailer,
 		 int type, BUFFER *feedback)
 {
+/* hop[] is returned containing the chain as integers (0 means random like *)
+ * chainstr is the input desired chain such as *,*,*,*
+ * remailer is an input list of remailer details (see mix2_rlist())
+ */
   int len = 0;
   int i, j, k;
   BUFFER *chain, *selected, *addr;

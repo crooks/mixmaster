@@ -702,3 +702,12 @@ int closedir(DIR *dir)
 }
 
 #endif /* _MSC */
+
+char *showdata(BUFFER *buf, int max)
+{
+static char slurp[60];
+int i;
+memset(slurp, 0, sizeof(slurp));
+for (i=0;(i<25) && (i < buf->length) && (!max || i<max);i++) sprintf(slurp + i*2, "%02x", buf->data[i]);
+return slurp;
+}

@@ -54,7 +54,7 @@ int stats_out(int pool)
 
 int stats(BUFFER *b)
 {
-  FILE *s, *f;
+  FILE *s, *f, *rs;
   char line[LINELEN];
   long now, today, then;
   time_t t;
@@ -238,6 +238,16 @@ int stats(BUFFER *b)
 #endif /* 0 */
       buf_nl(b);
     }
+  }
+  if (b && (rs=mix_openfile(RSATEXTFILE, "r")) != NULL) {
+      buf_nl(b);
+      buf_appends(b, "Mix key sizes used (1024, 2048, 3072 and 4096 bit RSA)\n");
+      while ( fgets(line, sizeof(line), rs) ) {
+          line[sizeof(line)-1]='\0';
+          buf_append(b, line, strlen(line));
+          if (line[strlen(line)-1] != '\n') buf_nl(b);
+      }
+      buf_nl(b);
   }
   return (0);
 }

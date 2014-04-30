@@ -210,7 +210,7 @@ int digest_sha1(BUFFER *b, BUFFER *md);
 int digest_rmd160(BUFFER *b, BUFFER *md);
 
 #define KEY_ID_LEN 32
-int keymgt(int force);
+int keymgt(int force,long int lifeindays,long int keysize);
 int key(BUFFER *b);
 int adminkey(BUFFER *b);
 
@@ -234,7 +234,7 @@ int pk_decrypt(BUFFER *encrypted, BUFFER *privkey);
 int pk_encrypt(BUFFER *plaintext, BUFFER *privkey);
 int check_seckey(BUFFER *buf, const byte id[]);
 int check_pubkey(BUFFER *buf, const byte id[]);
-int v2createkey(void);
+int v2createkey(long int lifeindays,long int keysize);
 int getv2seckey(byte keyid[], BUFFER *key);
 int seckeytopub(BUFFER *pub, BUFFER *sec, byte keyid[]);
 
@@ -308,6 +308,8 @@ typedef struct {
   int version;
   char addr[128];
   byte keyid[16];
+  time_t expires;
+  int rsalen;
   struct {
     unsigned int mix:1;
     unsigned int compress:1;
@@ -371,6 +373,7 @@ int v2partial(BUFFER *body, BUFFER *mid, int packet, int numpackets);
 int v2_merge(BUFFER *mid);
 int mix_armor(BUFFER *in);
 int mix_dearmor(BUFFER *armored, BUFFER *bin);
+int deleteoldkeys(void);
 
 /* type 1 */
 #define HDRMARK "::"

@@ -136,11 +136,12 @@ int rnd_bytes(byte *b, int n)
   if (n + idx < BUFSIZE) {
     memcpy(b, rand + idx, n);
     idx += n;
-  } else
-    RAND_bytes(b, n);
+  } else {
+    if (1!=RAND_bytes(b, n)) errlog(WARNING, "deficient randomness while filling buffer\n");
+  }
 
   if (idx + 256 > BUFSIZE) {
-    RAND_bytes(rand, BUFSIZE);
+    if (1!=RAND_bytes(rand, BUFSIZE)) errlog(WARNING, "deficient randomness while filling static cache\n");
     idx = 0;
   }
   return (0);

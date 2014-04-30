@@ -802,6 +802,10 @@ int buf_unzip(BUFFER *buf, int type);
 #ifndef _MIXLIB_H
 #define _MIXLIB_H
 
+#define RSASTATSFILE "rsastats.daily"
+#define RSATEXTFILE  "rsastats.txt"
+int mix_global_verbose;
+
 #include <stdio.h>
 #include <time.h>
 #ifdef WIN32
@@ -915,3 +919,4 @@ time_t parsedate(char *p);
 #endif /* WIN32 */
 
 #endif /* not _MIXLIB_H */
+

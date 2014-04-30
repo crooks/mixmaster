@@ -490,11 +490,11 @@ static void mix_setdefaults()
 	SENDPOOLTIME  = 0;              /* frequency for sending pool messages */
 	MAILINTIME    = 5 * 60;		/* frequency for processing MAILIN mail */
 
-	KEYLIFETIME      = 13 * 30 * 24 * 60 * 60;	/* validity period for keys. */
-	KEYOVERLAPPERIOD =  1 * 30 * 24 * 60 * 60;	/* when keys have this amount of time */
+	KEYLIFETIME      =  6 * 30 * SECONDSPERDAY;	/* default validity period for keys. */
+	KEYOVERLAPPERIOD =      30 * SECONDSPERDAY;	/* when keys have this amount of time */
 	                                                /* left before expiration, create  */
 	                                        	/* new ones when ./mix -K is run.*/
-	KEYGRACEPERIOD   =       7 * 24 * 60 * 60;	/* accept mail to the old key for this */
+	KEYGRACEPERIOD   =       7 * SECONDSPERDAY;	/* accept mail to the old key for this */
 	                                        	/* amount of time after it has expired. */
 
 
@@ -1025,7 +1025,7 @@ int mix_daily(void)
   pgpmaxexp();
   pool_packetexp();
   stats(NULL);
-  keymgt(0);
+  keymgt(0,0,4096);
   return (0);
 }
 
@@ -1204,7 +1204,7 @@ void errlog(int type, char *fmt,...)
   msg = buf_new();
   buf_appends(msg, line);
   p = msg->length;
-  buf_appendf(msg, "%s: ", err[type]);
+  buf_appendf(msg, "%s: [%d] ", err[type], getpid());
   va_start(args, fmt);
   buf_vappendf(msg, fmt, args);
   va_end(args);
