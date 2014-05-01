@@ -1057,7 +1057,7 @@ void sighandler(int signal) {
 
     @param restart  Whether or not system calls should be
                     restarted. Usually we want this, the
-                    only excetion is the sleep() in the
+                    only exception is the sleep() in the
                     daemon mail loop.
     @author         PP
     @return         -1 if calling sigaction failed, 0 on

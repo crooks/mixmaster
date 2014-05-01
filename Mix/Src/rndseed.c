@@ -96,7 +96,7 @@ int rnd_seed(void)
     if (!isatty(fileno(stdin)))
       rnd_error();
 #else /* end of 1 */
-#error "should initialize the prng from system ressources"
+#error "should initialize the prng from system resources"
 #endif /* else if not 1 */
     fprintf(stderr, "Please enter some random characters.\n");
     kbd_noecho();
