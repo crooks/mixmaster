@@ -311,6 +311,7 @@ static int send_packet(int numcopies, BUFFER *packet, int chain[],
   int timestamp = 0;
   int israndom = 0;
   int err = 1;
+  int whiner=0;
 
   body = buf_new();
   pid = buf_new();
@@ -448,6 +449,7 @@ static int send_packet(int numcopies, BUFFER *packet, int chain[],
         if (258==pubkey->length) {
             /* traditional 24-bytes of 3DES with 1k RSA */
 	    err = pk_encrypt(key, pubkey);	/* ... and encrypt the session key */
+            whiner++;
         } else {
             /* More data with the 3DES key inside the RSA encryption. */
 
@@ -507,6 +509,7 @@ static int send_packet(int numcopies, BUFFER *packet, int chain[],
             /* AES pre key */  buf_cat(key, aes_pre_key);
 
 	    err = pk_encrypt(key, pubkey);	/* ... and encrypt the session key etc  */
+            whiner+=2;
         }
 
 	buf_free(pubkey);
@@ -517,6 +520,11 @@ static int send_packet(int numcopies, BUFFER *packet, int chain[],
 	  err = -1;
 	  goto end;
 	}
+        if (whiner>20) {
+	  clienterr(feedback, "Chain too long.  Limit is 20 of 1k keys, or 10 of large keys, or somewhere between.");
+	  err = -1;
+	  goto end;
+        }
 
 	/* now build the new header */
 	buf_clear(header);
