@@ -349,6 +349,7 @@ static int send_packet(int numcopies, BUFFER *packet, int chain[],
   buf_setrnd(pid, 16);
 
   for (c = 0; c < numcopies; c++) {
+    whiner=0;
     buf_set(body, packet);
 
     for (hop = 0; hop < chainlen; hop++)
