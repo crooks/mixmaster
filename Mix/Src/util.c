@@ -537,48 +537,43 @@ int write_pidfile(char *pidfile)
   int err = 0;
 #ifdef POSIX
   FILE *f;
-  char host[LINELEN], myhostname[LINELEN];
   int pid, mypid;
   int assigned;
 
   mypid = getpid();
-  gethostname(myhostname, LINELEN);
-  myhostname[LINELEN-1] = '\0';
-
   f = mix_openfile(pidfile, "r+");
   if (f != NULL) {
-    assert(LINELEN > 71);
-    assigned = fscanf(f, "%d %70s", &pid, host);
-    if (assigned == 2) {
-      if (strcmp(host, myhostname) == 0) {
-	if (kill (pid, 0) == -1) {
-	  if (errno == ESRCH) {
-	    fprintf(stderr, "Rewriting stale pid file.\n");
-	    rewind(f);
-	    ftruncate(fileno(f), 0);
-	    fprintf(f, "%d %s\n", mypid, myhostname);
-	  } else {
-	    fprintf(stderr, "Pid file exists and process still running.\n");
-	    err = -1;
-	  }
-	} else {
-	  fprintf(stderr, "Pid file exists and process still running.\n");
-	  err = -1;
-	}
+    /* The pid file exists */
+    assigned = fscanf(f, "%d", &pid);
+    if (assigned == 1) {
+      /* Got a pid number from the pidfile */
+      if (kill (pid, 0) == -1) {
+        /* Error check of process returned a problem */
+        if (errno == ESRCH) {
+          /* pid process cannot be found */
+          fprintf(stderr, "Rewriting stale pid file.\n");
+          rewind(f);
+          ftruncate(fileno(f), 0);
+          fprintf(f, "%d\n", mypid);
+        } else {
+          fprintf(stderr, "Pid file exists and process still running.\n");
+          err = -1;
+        }
       } else {
-	/* Pid file was written on another host, fail */
-	fprintf(stderr, "Pid file exists and was created on another host (%s).\n", host);
-	err = -1;
+        fprintf(stderr, "Pid file exists and process still running.\n");
+        err = -1;
       }
     } else {
+      /* Failed to parse a pid number from the pidfile */
       fprintf(stderr, "Pid file exists and and could not be parsed.\n");
       err = -1;
     }
   } else {
+    /* pidfile does not exist */
     if (errno == ENOENT) {
       f = mix_openfile(pidfile, "w+");
       if (f != NULL) {
-	fprintf(f, "%d %s\n", mypid, myhostname);
+	fprintf(f, "%d\n", mypid);
       } else {
 	fprintf(stderr, "Could not open pidfile for writing: %s\n", strerror(errno));
 	err = -1;
